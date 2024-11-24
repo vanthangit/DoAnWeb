@@ -16,16 +16,16 @@ import java.sql.Date;
 public class Payment{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long paymentId;
-    private String paymentMethod;
+    private Long payment_id;
+    private String payment_method;
 
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus;
+    private PaymentStatus payment_status;
 
-    private Date paymentDate;
+    private Date payment_date;
     private Double total;
 
     @OneToOne
-    @JoinColumn(name = "orderId", referencedColumnName = "orderId")
-    private Order order;
+    @JoinColumn(name = "order_id", referencedColumnName = "order_id")
+    private Orders order;
 }

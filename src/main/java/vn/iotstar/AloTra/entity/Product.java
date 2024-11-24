@@ -14,9 +14,9 @@ import java.util.List;
 public class Product{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
-    private String productCode;
-    private String productName;
+    private Long product_id;
+    private String product_code;
+    private String product_name;
     private String category;
     private Double cost;
     private String image;

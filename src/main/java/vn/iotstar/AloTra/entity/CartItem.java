@@ -12,7 +12,7 @@ import lombok.*;
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartItemId;
+    private Long cart_item_id;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -26,7 +26,7 @@ public class CartItem {
     @EqualsAndHashCode.Exclude
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "cartId", referencedColumnName = "cartId")
+    @JoinColumn(name = "cart_id", referencedColumnName = "cart_id")
     private Cart cart;
 
 

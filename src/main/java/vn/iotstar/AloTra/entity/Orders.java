@@ -13,23 +13,23 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "[order]")
-public class Order{
+@Table(name = "orders")
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
-    private Long customerId;
-    private Date orderDate;
-    private String shippingAddress;
+    private Long order_id;
+    private Long customer_id;
+    private Date order_date;
+    private String shipping_address;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    private OrderStatus order_status;
 
-    private Date deliveryDate;
+    private Date delivery_date;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<OrderLine> orderLines=new HashSet<>();
 }

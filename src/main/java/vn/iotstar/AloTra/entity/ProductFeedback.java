@@ -15,14 +15,14 @@ import java.sql.Date;
 public class ProductFeedback{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productFeedbackId;
+    private Long product_feedback_id;
     @Column(columnDefinition = "LONGTEXT")
     private String comment;
-    private Date feedbackDate;
-    private Long customerId;
+    private Date feedback_date;
+    private Long customer_id;
     private Double rating;
 
     @ManyToOne
-    @JoinColumn(name = "productId", referencedColumnName = "productId")
+    @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     private Product product;
 }

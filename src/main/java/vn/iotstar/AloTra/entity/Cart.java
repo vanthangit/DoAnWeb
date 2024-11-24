@@ -13,7 +13,7 @@ import java.util.*;
 public class Cart{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartId;
+    private Long cart_id;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -22,6 +22,6 @@ public class Cart{
     private Set<CartItem> cartItems=new HashSet<>();
 
     @OneToOne
-    @JoinColumn(name = "customerId")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 }

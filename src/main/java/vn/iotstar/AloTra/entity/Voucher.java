@@ -13,12 +13,12 @@ import java.sql.Date;
 public class Voucher{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long voucherId;
-    private Double voucherValue;
-    private Date startDate;
-    private Date endDate;
+    private Long voucher_id;
+    private Double voucher_value;
+    private Date start_date;
+    private Date end_date;
 
     @ManyToOne
-    @JoinColumn(name = "orderId", referencedColumnName = "orderId")
-    private Order order;
+    @JoinColumn(name = "order_id", referencedColumnName = "order_id")
+    private Orders order;
 }

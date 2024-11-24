@@ -13,7 +13,7 @@ import lombok.*;
 public class OrderLine{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderLineId;
+    private Long order_line_id;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -26,7 +26,7 @@ public class OrderLine{
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne
-    @JoinColumn(name = "orderId", referencedColumnName = "orderId")
+    @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     @JsonBackReference
-    private Order order;
+    private Orders orders;
 }

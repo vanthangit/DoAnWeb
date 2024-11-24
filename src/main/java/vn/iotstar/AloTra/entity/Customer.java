@@ -12,5 +12,5 @@ import java.sql.Date;
 @Entity
 @Table(name="customer")
 public class Customer extends User {
-    private Date birthDate;
+    private Date birth_date;
 }

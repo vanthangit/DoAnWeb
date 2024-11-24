@@ -12,7 +12,7 @@ import lombok.*;
 public class Account{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long accountId;
+    protected Long account_id;
     @Column(unique = true)
     protected String username;
     protected String password;
@@ -23,7 +23,7 @@ public class Account{
     protected User user;
 
     @ManyToOne
-    @JoinColumn(name = "roleId", referencedColumnName = "roleId")
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     protected Role role;
 
 }

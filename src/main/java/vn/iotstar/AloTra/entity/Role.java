@@ -11,6 +11,6 @@ import lombok.*;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roleId;
-    private String roleName;
+    private Long role_id;
+    private String role_name;
 }
