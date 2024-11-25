@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+        crossorigin="anonymous"/>
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/grid.css">
+  <link rel="stylesheet" href="/assets/css/admin/header.css">
+  <link rel="stylesheet" href="/assets/css/admin/sidebar.css">
+  <title>Owner</title>
+</head>
+<body>
+<div class="grid wide">
+  <div th:replace="/owner/fragments/header :: header"></div>
+  <div class="row">
+    <div class="col l-3 m-2 c-12">
+      <div th:replace="/owner/fragments/left :: left"></div>
+    </div>
+    <div class="col l-9 m-10 c-12">
+      <div layout:fragment="content"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="/assets/css/admin/chart.js"></script>
+</body>
+</html>

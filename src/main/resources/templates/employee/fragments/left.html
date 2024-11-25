@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<body>
+<div th:fragment="left">
+<!--Nội dung-->
+    <div class="grid wide">
+        <div class="sidebar__chooses">
+            <div class="sidebar__chooses-item">
+                <i class="sidebar__chooses-item__icon far fa-chart-bar"></i>
+            </div>
+            <div class="sidebar__chooses-item">
+                <i class="sidebar__chooses-item__icon fas fa-pen"></i>
+            </div>
+            <div class="sidebar__chooses-item">
+                <i class="sidebar__chooses-item__icon fas fa-mask"></i>
+            </div>
+            <div class="sidebar__chooses-item">
+                <i class="sidebar__chooses-item__icon fas fa-cogs"></i>
+            </div>
+        </div>
+        <ul class="sidebar">
+            <li class="sidebar__item">
+                <i class="sidebar__item-icon fas fa-tachometer-alt"></i>
+                <a href="#" class="sidebar__item-link">Quản lý doanh thu</a>
+            </li>
+            <input hidden id = 'check-sidebar-list' type="checkbox">
+            <li class="sidebar__item">
+                <i class="sidebar__item-icon fas fa-tshirt"></i>
+                <a href="#" class="sidebar__item-link">Quản lý sản phẩm</a>
+            </li>
+            <label for = 'check-sidebar-list' class="sidebar__item">
+                <i class="sidebar__item-icon fas fa-users"></i>
+                <a href="#" class="sidebar__item-link">Quản lý tài khoản</a>
+            </label>
+            <label for = 'check-sidebar-list' class="sidebar__item">
+                <i class="sidebar__item-icon fas fa-store"></i>
+                <a href="#" class="sidebar__item-link">Quản lý đơn hàng</a>
+            </label>
+            <label for = 'check-sidebar-list' class="sidebar__item">
+                <i class="sidebar__item-icon fas fa-store"></i>
+                <a href="#" class="sidebar__item-link">Quản lý mã giảm giá</a>
+            </label>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
