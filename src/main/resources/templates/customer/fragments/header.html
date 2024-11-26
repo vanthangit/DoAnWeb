@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <body>
 <div th:fragment="header">
-<!--Nội dung điền vô đây-->
+    <!--Nội dung điền vô đây-->
     <header class="header">
         <div class="grid wide ">
             <div class="row navbar">
@@ -25,7 +25,7 @@
                             </a>
                         </li>
                         <li class="navbar__item">
-                            <a class="navbar__item-link" href="../about.html">
+                            <a class="navbar__item-link" th:href="@{/about-us}">
                                 VỀ CHÚNG TÔI
                             </a>
                         </li>
@@ -51,7 +51,8 @@
                         <div class="cart-list">
                             <!-- empty cart list -->
                             <div class="cart-list__empty-cart">
-                                <img src="/assets/img/icon/empty_cart.png" alt="Empty cart" class="cart-list__empty-cart-img">
+                                <img src="/assets/img/icon/empty_cart.png" alt="Empty cart"
+                                     class="cart-list__empty-cart-img">
                                 <div class="cart-list__empty-cart-title">
                                     Unfortunately, Your Cart Is Empty
                                 </div>
@@ -69,7 +70,8 @@
                                 <ul class="cart-list__filled-cart__items-list">
                                     <a href="./" class="cart-list__filled-cart__item-wrapper">
                                         <li class="cart-list__filled-cart__item">
-                                            <img src="https://hcm.fstorage.vn/images/2024/11/tra-o-long-dau-min-20241113105844.png" alt="foundation" class="filled-cart__item-img">
+                                            <img src="https://hcm.fstorage.vn/images/2024/11/tra-o-long-dau-min-20241113105844.png"
+                                                 alt="foundation" class="filled-cart__item-img">
                                             <div class="cart-list__filled-cart__item-info">
                                                 <div class="cart-list__filled-cart__item-info-head">
                                                         <span class="cart-list__filled-cart__item-name">
@@ -97,8 +99,9 @@
                                         </li>
                                     </a>
                                 </ul>
-                                <a href="../cart.html" class="cart-list__filled-cart__footer">
-                                    <button id="cart-list__view-button" class="buttons buttons--smaller">View Cart</button>
+                                <a th:href="@{/cart}" class="cart-list__filled-cart__footer">
+                                    <button id="cart-list__view-button" class="buttons buttons--smaller">View Cart
+                                    </button>
                                 </a>
                             </div>
                         </div>
@@ -151,6 +154,167 @@
         </div>
     </header>
     <!--Header: end-->
+    <!--    modal-->
+    <div class="modal">
+        <div class="modal__icon-close">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+        <input type="text" class="modal__input" placeholder="Search...">
+        <!-- Search history -->
+        <div class="modal__history">
+            <h3 class="modal__history-history-heading">Search history</h3>
+            <ul class="modal__history-history-list">
+                <li class="modal__history-item">
+                    <a href="">Body mist</a>
+                </li>
+                <li class="modal__history-item">
+                    <a href="">Innisfee green tea</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--modal account-->
+    <div class="modal-account">
+        <div class="modal__overlay"></div>
+        <div class="modal__body">
+            <!--Register form -->
+            <div class="register-form">
+                <div class="auth-form">
+                    <div class="auth-form__container">
+                        <div class="auth-form__header">
+                            <h3 class="auth-form__heading">Register</h3>
+                            <span class="login-from__btn auth-form__switch-btn">Login</span>
+                        </div>
+                        <div class="auth-form__form">
+                            <div class="auth-form__group">
+                                <input type="mail" class="auth-form__input" placeholder="User name">
+                            </div>
+                            <div class="auth-form__group">
+                                <input type="mail" class="auth-form__input" placeholder="Email">
+                            </div>
+                            <div class="auth-form__group">
+                                <input type="password" class="auth-form__input" placeholder="Password">
+                            </div>
+                            <div class="auth-form__group">
+                                <input type="password" class="auth-form__input" placeholder="Confirm password">
+                            </div>
+
+                        </div>
+                        <div class="auth-form__aside">
+                            <p class="auth-form__policy-text">
+                                By registering, you agree with Cosmetics
+                                <a href="" class="auth-form__text-link">
+                                    Terms of service
+                                </a>&
+                                <a href="" class="auth-form__text-link">
+                                    Privacy policy
+                                </a>
+                            </p>
+                        </div>
+                        <div class="auth-form__controls">
+                            <button class="btn buttons auth-form__controls-back ">
+                                BACK
+                            </button>
+                            <button class="buttons">
+                                REGISTER
+                            </button>
+                        </div>
+                    </div>
+                    <div class="auth-form_socials">
+                        <a href="" class="auth-form_socials--face btn  btn--size-s btn--width-icon">
+                            <i class="auth-form_socials-icon fab fa-facebook-square"></i>
+                            <span class="auth-form__social-title">
+                                Connect to Facebook</span>
+                        </a>
+                        <a href=""
+                           class="auth-form_socials-icon auth-form_socials--google btn btn--size-s btn--width-icon">
+                            <i class="icon-gg fab fa-google-plus-square"></i>
+                            <span class="auth-form__social-title">
+                                Connect to Google</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!--Login form -->
+            <div class="login-form">
+                <div class="auth-form">
+                    <div class="auth-form__container">
+                        <div class="auth-form__header">
+                            <h3 class="auth-form__heading">Login</h3>
+                            <span class="register-from__btn auth-form__switch-btn">Register</span>
+
+                        </div>
+                        <div class="auth-form__form">
+                            <div class="auth-form__group">
+                                <input id="mail" type="email" class="auth-form__input" placeholder="User name">
+                            </div>
+                            <div class="auth-form__group">
+                                <input id="password" type="password" class="auth-form__input" placeholder="Password">
+                            </div>
+
+
+                        </div>
+                        <div class="auth-form__aside">
+                            <div class="auth-form__help">
+                                <span href="" class="auth-form__help-link auth-form__help-link--forgot">Forgot
+                                    password</span>
+                                <span class="auth-form__help-separate"></span>
+                                <a href="" class="auth-form__help-link">Help?</a>
+                            </div>
+                        </div>
+                        <div class="auth-form__controls">
+                            <button class="btn buttons auth-form__controls-back ">
+                                BACK
+                            </button>
+                            <a><input id="submit" type="submit" class="buttons" name="Login"> </a>
+
+                        </div>
+                    </div>
+                    <div class="auth-form_socials">
+                        <a href="" class="auth-form_socials--face btn  btn--size-s btn--width-icon">
+                            <i class="auth-form_socials-icon fab fa-facebook-square"></i>
+                            <span class="auth-form__social-title">
+                                Kết nối với Facebook</span>
+                        </a>
+                        <a href=""
+                           class="auth-form_socials-icon auth-form_socials--google btn btn--size-s btn--width-icon">
+                            <i class="icon-gg fab fa-google-plus-square"></i>
+                            <span class="auth-form__social-title">
+                                Kết nối với Google</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!--Forgot password-->
+            <div class="forgot-pass-form">
+                <div class="auth-form">
+                    <div class="auth-form__container">
+                        <div class="auth-form__header">
+                            <h3 class="auth-form__heading">Forgot password</h3>
+                        </div>
+                        <div class="auth-form__form">
+                            <div class="auth-form__group">
+                                <input type="mail" class="auth-form__input" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="auth-form__controls">
+                            <button class="btn buttons auth-form__controls-back ">
+                                BACK
+                            </button>
+                            <button class="buttons">
+                                SEND
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Back to top  -->
+    <div id="back-to-top" class="back-to-top" title="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
 </div>
 
 </body>

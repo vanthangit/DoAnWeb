@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{/customer/layout-customer.html}">
+<body>
+<section layout:fragment="content">
+    <div id="app">
+        <div class="product-container">
+            <div class="product-container__inner">
+                <div class="product-frame">
+                    <div class="grid wide product-content">
+                        <div class="row">
+                            <div class="col l-6 m-7 c-12">
+                                <div class="product-content__img-wrapper">
+                                    <img class="product-img"
+                                         src="https://hcm.fstorage.vn/images/2024/11/tra-o-long-dau-min-20241113105844.png"
+                                         style="height: 300px" alt=""/>
+                                </div>
+                            </div>
+
+                            <div class="col l-6 m-5 c-12">
+                                <div class="product-content__text-wrapper">
+                                    <div class="product-content__text">
+                                        <div class="product-content__text__title">Trà Ô Long Dâu (L)</div>
+
+                                        <p class="product-price price">
+                                            <span class="product-price__old del">65000đ</span>
+                                            <span class="product-price__new">60000đ</span>
+                                        </p>
+
+                                        <div class="product-content__rating">
+                                            <i class="fas fa-star star-rating"></i>
+                                            <i class="fas fa-star star-rating"></i>
+                                            <i class="fas fa-star star-rating"></i>
+                                            <i class="fas fa-star star-rating"></i>
+                                            <i class="fas fa-star star-rating"></i>
+
+                                            <a href="#" class="product-content__rating-description">(1 customer
+                                                review)</a>
+                                        </div>
+                                        <div class="product-content__quantity-vs-purchase">
+                                            <div class="quantity-buttons">
+                                                <button class="quantity-buttons--minus">-</button>
+                                                <div class="quantity-buttons--number">1</div>
+                                                <button class="quantity-buttons--plus">+</button>
+                                            </div>
+
+                                            <div class="purchase-buttons buttons">Add to Cart</div>
+                                        </div>
+
+                                        <a href="#" class="product-content__add-to-wishlist">
+                                            <i class="far fa-heart product-content__add-to-wishlist__icon"></i>
+                                            Add to Wishlist
+                                        </a>
+
+                                        <div class="product-content__meta">
+
+                                        <span class="meta__category-wrapper">
+                                            Category:
+                                            <span class="meta__category">Bst mới tearamisu</span>
+                                        </span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- review: start -->
+                        <div class="tabs-content__review">
+                            <div class="product-review__wrapper">
+                                <span class="product-review__title">Product reviews</span>
+                                <div class="product-review__header">
+                                    <div class="product-review__rating-wrapper">
+                                        <span class="product-review__average-rating">5</span>
+                                        /5
+                                        <div class="product-review__rating">
+                                            <i class="fas fa-star star-rating"></i>
+                                            <i class="fas fa-star star-rating"></i>
+                                            <i class="fas fa-star star-rating"></i>
+                                            <i class="fas fa-star star-rating"></i>
+                                            <i class="fas fa-star star-rating"></i>
+                                        </div>
+                                    </div>
+                                    <div class="product-review__body">
+                                        <!-- comment -->
+                                        <div class="product-comment__wrapper">
+                                            <div class="product-comment__user-img">
+                                                <img src="https://th.bing.com/th/id/OIP.QZIRZKUSWt1HBifjDRKGzAHaFj?w=232&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="avatar">
+                                            </div>
+                                            <div class="product-comment__body">
+                                                <span class="product-comment__user-name">NhanTran</span>
+                                                <div class="product-content__rating product-content__user-rating">
+                                                    <i class="fas fa-star star-rating"></i>
+                                                    <i class="fas fa-star star-rating"></i>
+                                                    <i class="fas fa-star star-rating"></i>
+                                                    <i class="fas fa-star star-rating"></i>
+                                                    <i class="fas fa-star star-rating"></i>
+                                                </div>
+                                                <div class="product-comment__content-wrapper">
+                                                    <span class="product-comment__content">Good product</span>
+                                                </div>
+                                                <div class="product-comment__created-time-wrapper">
+                                                    <span class="product-comment__created-time">2021-11-16 22:30</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="review-load-comment__wrapper">
+                                            <button class="buttons">load more...</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- review: end -->
+                            <textarea id="your-review-text" class="review-text" placeholder="Write your review"
+                                      required></textarea>
+                            <input id="your-name-text" class="review-name" type="text" placeholder="Your name" required>
+                            <input id="your-email-text" class="review-email" type="email" placeholder="Your email"
+                                   required>
+                            <div class="review-commit__wrapper">
+                                <button type="submit" class="buttons">Submit</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Related products -->
+                    <div class="grid wide">
+                        <div class="related-products__title">Sản phẩm liên quan</div>
+                        <!-- Product recommend -->
+                        <div class="row products">
+
+                            <a href="#" class="col l-2-4 m-4 c-6">
+                                <div class="product__item">
+                                    <img class="product__item-img"
+                                         src="https://hcm.fstorage.vn/images/2024/11/tra-tearamisu-min-20241113105753.png">
+                                    <h5 class="product__item-name">
+                                        Trà Tearamisu (L)
+                                    </h5>
+                                    <div class="product__item-price-wrapper">
+                                        <h3 class="product__item-price product__item-price--old">
+                                            70000đ
+                                        </h3>
+                                        <h3 class="product__item-price">
+                                            65000đ
+                                        </h3>
+                                    </div>
+                                    <div class="star-link-sold-wrapper">
+                                        <div class="star-link">
+                                            <i class="fa fa-star star--fill" aria-hidden="true"></i>
+                                            <i class="fa fa-star star--fill" aria-hidden="true"></i>
+                                            <i class="fa fa-star star--fill" aria-hidden="true"></i>
+                                            <i class="fa fa-star star--fill" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="product__sold-number">27 sold</div>
+                                    </div>
+                                    <div class="product__item-category-wrapper">
+                                        <span class="product__item-category">Bst mới tearamisu</span>
+                                        <span class="product__item-origin-name">VIETNAM</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Search mobile-->
+        <div class="search-mobile">
+            <div class="search-mobile__input">
+                <input class="search-mobile__input-text" placeholder="Search...">
+                <i class="icon-search fas fa-search"></i>
+            </div>
+
+            <a href="./cart.html" class="cart-link">
+                <i class="fa fa-cart-plus"></i>
+            </a>
+            <a class="login-link " style="padding-right: 10px">
+                <i class="fa fa-user"></i>
+            </a>
+        </div>
+    </div>
+    <script src="/assets/js/JSProduct.js"></script>
+    <script type="module" src="/assets/js/showHide.js"></script>
+</section>
+</body>
+</html>
