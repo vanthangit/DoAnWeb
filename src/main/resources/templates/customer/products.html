@@ -12,30 +12,28 @@
                 <div class="row">
                     <div class="col l-2 m-2 c-0">
                         <div class="product__items">
-                            <h3 class="product_item-title">
-                                Danh mục
-                            </h3>
+                            <h3 class="product_item-title">Danh mục</h3>
                             <ul class="product__items-list">
-                                <a href="" class="product__item-link">
-                                    <li class="product__items-item active-btn">Bst mới tearamisu</li>
+                                <a th:href="@{/products/{category}(category='Bst mới tearamisu')}" class="product__item-link">
+                                    <li class="product__items-item" th:classappend="${category == 'Bst mới tearamisu' ? ' active-btn' : ''}">Bst mới tearamisu</li>
                                 </a>
-                                <a href="" class="product__item-link">
-                                    <li class="product__items-item">Trà trái cây</li>
+                                <a th:href="@{/products/{category}(category='Trà trái cây')}" class="product__item-link">
+                                    <li class="product__items-item" th:classappend="${category == 'Trà trái cây' ? ' active-btn' : ''}">Trà trái cây</li>
                                 </a>
-                                <a href="" class="product__item-link">
-                                    <li class="product__items-item">Trà sữa</li>
+                                <a th:href="@{/products/{category}(category='Trà sữa')}" class="product__item-link">
+                                    <li class="product__items-item" th:classappend="${category == 'Trà sữa' ? ' active-btn' : ''}">Trà sữa</li>
                                 </a>
-                                <a href="" class="product__item-link">
-                                    <li class="product__items-item">Kem silky</li>
+                                <a th:href="@{/products/{category}(category='Kem silky')}" class="product__item-link">
+                                    <li class="product__items-item" th:classappend="${category == 'Kem silky' ? ' active-btn' : ''}">Kem silky</li>
                                 </a>
-                                <a href="" class="product__item-link">
-                                    <li class="product__items-item">Cà phê</li>
+                                <a th:href="@{/products/{category}(category='Cà phê')}" class="product__item-link">
+                                    <li class="product__items-item" th:classappend="${category == 'Cà phê' ? ' active-btn' : ''}">Cà phê</li>
                                 </a>
-                                <a href="" class="product__item-link">
-                                    <li class="product__items-item">Đá xay</li>
+                                <a th:href="@{/products/{category}(category='Đá xay')}" class="product__item-link">
+                                    <li class="product__items-item" th:classappend="${category == 'Đá xay' ? ' active-btn' : ''}">Đá xay</li>
                                 </a>
-                                <a href="" class="product__item-link">
-                                    <li class="product__items-item">Bst kim cúc mộc tê</li>
+                                <a th:href="@{/products/{category}(category='Bst kim cúc mộc tê')}" class="product__item-link">
+                                    <li class="product__items-item" th:classappend="${category == 'Bst kim cúc mộc tê' ? ' active-btn' : ''}">Bst kim cúc mộc tê</li>
                                 </a>
                             </ul>
                         </div>
@@ -60,42 +58,37 @@
                         <nav class="mobile-category">
                             <ul class="mobile-category__list">
                                 <li class="mobile-category__item">
-                                    <a href="" class="mobile-category__link active-border">Bst mới tearamisu</a>
+                                    <a th:href="@{/products/{category}(category='Bst mới tearamisu')}" class="mobile-category__link active-border">Bst mới tearamisu</a>
                                 </li>
                                 <li class="mobile-category__item">
-                                    <a href="" class="mobile-category__link">Trà trái cây</a>
+                                    <a th:href="@{/products/{category}(category='Trà trái cây')}" class="mobile-category__link">Trà trái cây</a>
                                 </li>
                                 <li class="mobile-category__item">
-                                    <a href="" class="mobile-category__link">Trà sữa</a>
+                                    <a th:href="@{/products/{category}(category='Trà sữa')}" class="mobile-category__link">Trà sữa</a>
                                 </li>
                                 <li class="mobile-category__item">
-                                    <a href="" class="mobile-category__link">Kem silky</a>
+                                    <a th:href="@{/products/{category}(category='Kem silky')}" class="mobile-category__link">Kem silky</a>
                                 </li>
                                 <li class="mobile-category__item">
-                                    <a href="" class="mobile-category__link">Cà phê</a>
+                                    <a th:href="@{/products/{category}(category='Cà phê')}" class="mobile-category__link">Cà phê</a>
                                 </li> <li class="mobile-category__item">
-                                <a href="" class="mobile-category__link">Đá xay</a>
+                                <a th:href="@{/products/{category}(category='Đá xay')}" class="mobile-category__link">Đá xay</a>
                             </li>
                                 <li class="mobile-category__item">
-                                <a href="" class="mobile-category__link">Bst kim cúc mộc tê</a>
+                                <a th:href="@{/products/{category}(category='Bst kim cúc mộc tê')}" class="mobile-category__link">Bst kim cúc mộc tê</a>
                             </li>
                             </ul>
                         </nav>
                         <br>
                         <div class="row products">
-                            <a th:href="@{/product}" class="col l-2-4 m-4 c-6">
+                            <a th:href="@{/product/{id}(id=${product.product_id})}" th:each="product : ${products}" class="col l-2-4 m-4 c-6">
                                 <div class="product__item">
-                                    <img class="product__item-img" src="https://hcm.fstorage.vn/images/2024/11/tra-o-long-dau-min-20241113105844.png" alt="">
-                                    <h5 class="product__item-name">
-                                        Trà Ô Long Dâu (L)
-                                    </h5>
+                                    <img th:src="${product.image}" class="product__item-img" alt="">
+                                    <h5 class="product__item-name" th:text="${product.product_name}"></h5>
                                     <div class="product__item-price-wrapper">
-                                        <h3 class="product__item-price product__item-price--old">
-                                            70000đ
-                                        </h3>
-                                        <h3 class="product__item-price">
-                                            65000đ
-                                        </h3>
+<!--                                        <h3 class="product__item-price product__item-price&#45;&#45;old"
+                                            th:text="${product.cost + 5000 + 'đ'}"></h3>-->
+                                        <h3 class="product__item-price" th:text="${product.cost + 'đ'}"></h3>
                                     </div>
                                     <div class="star-link-sold-wrapper">
                                         <div class="star-link">
@@ -105,20 +98,14 @@
                                             <i class="fa fa-star star--fill" aria-hidden="true"></i>
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                         </div>
-                                        <div class="product__sold-number">203 sold</div>
                                     </div>
                                     <div class="product__item-category-wrapper">
-                                        <span class="product__item-category">Bst mới tearamisu</span>
+                                        <span class="product__item-category" th:text="${product.category}"></span>
                                         <span class="product__item-origin-name">VIETNAM</span>
                                     </div>
-
-
                                 </div>
                             </a>
                         </div>
-                        <button class="buttons" style="margin: 20px auto; display: block">
-                            Xem thêm
-                        </button>
                     </div>
                 </div>
             </div>
