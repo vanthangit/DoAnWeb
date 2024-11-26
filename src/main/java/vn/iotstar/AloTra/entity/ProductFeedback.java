@@ -19,7 +19,7 @@ public class ProductFeedback{
     @Column(columnDefinition = "LONGTEXT")
     private String comment;
     private Date feedback_date;
-    private Long customer_id;
+    private Long user_id;
     private Double rating;
 
     @ManyToOne

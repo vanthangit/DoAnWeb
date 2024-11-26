@@ -11,22 +11,27 @@ import lombok.*;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "user")
-public abstract class User{
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long user_id;
-    protected String full_name;
-    protected String phone;
+    private Long user_id;
+    private String full_name;
+    private String phone;
     @Enumerated(EnumType.STRING)
-    protected Gender gender;
-    protected String address;
+    private Gender gender;
+    private String address;
 
     @Column(unique = true)
-    protected String email;
+    private String email;
 
-    protected String password;
+    private String password;
+
 
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     private Role role;
+
+    @OneToOne
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
 }

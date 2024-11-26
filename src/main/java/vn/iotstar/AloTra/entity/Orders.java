@@ -18,7 +18,7 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long order_id;
-    private Long customer_id;
+    private Long user_id;
     private Date order_date;
     private String shipping_address;
 

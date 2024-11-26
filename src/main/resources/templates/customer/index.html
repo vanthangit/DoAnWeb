@@ -430,39 +430,6 @@
                 <br>
             </div>
             <!-- New Items: end-->
-
-            <!--JS LOGIN-->
-            <script>
-                var index = 0;
-                showSliders(index)
-                function plusSlider(n) {
-                    showSliders(index += n);
-                }
-                function currentSlider(n) {
-                    showSliders(index = n)
-                }
-                function showSliders(n) {
-                    let i;
-                    let slider = document.getElementsByClassName("mySlider");
-                    let dotSlider = document.getElementsByClassName("dotSlider");
-                    if (n > slider.length) {
-                        index = 1
-                    }
-                    if (n < 1) {
-                        index = slider.length;
-                    }
-                    for (i = 0; i < slider.length; i++) {
-                        slider[i].style.display = "none";
-                    }
-                    for (i = 0; i < dotSlider.length; i++) {
-                        dotSlider[i].className = dotSlider[i].className.replace(" active", "");
-
-                    }
-                    slider[index - 1].style.display = "block";
-                    dotSlider[index - 1].className += " active";
-                }
-            </script>
-
         </div>
         <!--Content: end-->
         <!--Search mobile-->
@@ -647,30 +614,39 @@
     <!-- Popup -->
     <div class="popup-wrapper">
         <div class="popup-overlay"></div>
-        <div class="popup stay-in-touch">
-            <div class="close-wrapper">
-                <a href="javascript:void(0)" class="close">
-                    <i class="fas fa-times close-icon"></i>
-                </a>
-            </div>
-            <div class="stay-in-touch__title">
-                <h2>Stay in touch</h2>
-            </div>
-            <div class="stay-in-touch__form">
-                <input type="text" placeholder="E-mail address">
-                <button class="buttons">Send</button>
-            </div>
-            <div class="stay-in-touch__form-description">
-                <p>*At vero eos et accusamus et iusto odio dignissimos</p>
-            </div>
-            <div class="stay-in-touch__prevent">
-                <input type="checkbox" value="1" id="input-checkbox-prevent">
-                <label for="input-checkbox-prevent">
-                    <p>Prevent This Pop-up</p>
-                </label>
-            </div>
-        </div>
     </div>
+
+    <!--JS LOGIN-->
+    <script>
+        var index = 0;
+        showSliders(index)
+        function plusSlider(n) {
+            showSliders(index += n);
+        }
+        function currentSlider(n) {
+            showSliders(index = n)
+        }
+        function showSliders(n) {
+            let i;
+            let slider = document.getElementsByClassName("mySlider");
+            let dotSlider = document.getElementsByClassName("dotSlider");
+            if (n > slider.length) {
+                index = 1
+            }
+            if (n < 1) {
+                index = slider.length;
+            }
+            for (i = 0; i < slider.length; i++) {
+                slider[i].style.display = "none";
+            }
+            for (i = 0; i < dotSlider.length; i++) {
+                dotSlider[i].className = dotSlider[i].className.replace(" active", "");
+
+            }
+            slider[index - 1].style.display = "block";
+            dotSlider[index - 1].className += " active";
+        }
+    </script>
 
 
         <!--Js slide-->
