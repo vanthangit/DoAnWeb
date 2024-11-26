@@ -1,0 +1,25 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /alotra
+
+spring:
+  application:
+    name: AloTra
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  datasource:
+    url: jdbc:mysql://localhost:3306/alo_tra
+    username: root
+    password: root
+logging:
+  level:
+    org:
+      hibernate:
+        orm:
+          connections:
+            pooling: off
