@@ -26,5 +26,4 @@ public abstract class User{
     @JoinColumn(name = "account_id")
     @JsonManagedReference
     protected Account account;
-
 }
