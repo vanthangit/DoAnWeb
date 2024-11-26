@@ -20,10 +20,13 @@ public abstract class User{
     @Enumerated(EnumType.STRING)
     protected Gender gender;
     protected String address;
+
+    @Column(unique = true)
     protected String email;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "account_id")
-    @JsonManagedReference
-    protected Account account;
+    protected String password;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    private Role role;
 }
