@@ -1,6 +1,5 @@
 package vn.iotstar.AloTra.service.impl;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +22,7 @@ public class ProductService implements IProductService {
 
     @Autowired
     ProductMapper productMapper;
+
     @Override
     public List<ProductDTO> getProductsByCategory(String category) {
         List<Product> products = productRepository.findByCategory(category);
@@ -46,5 +46,4 @@ public class ProductService implements IProductService {
         Page<Product> productsPage = productRepository.findAll(pageable);
         return productsPage.map(productMapper::toDto);
     }
-
 }
