@@ -1,9 +1,8 @@
 package vn.iotstar.AloTra.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,4 +18,11 @@ public class Branch {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "order_id")
+    @JsonBackReference
+    private Orders orders;
 }

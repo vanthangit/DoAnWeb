@@ -2,6 +2,10 @@ package vn.iotstar.AloTra.service.impl;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import vn.iotstar.AloTra.dto.ProductDTO;
 import vn.iotstar.AloTra.entity.Product;
@@ -28,10 +32,19 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductDTO> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        return products.stream()
-                .map(productMapper::toDto) // Map từ Entity sang DTO
-                .collect(Collectors.toList());
+    public Page<ProductDTO> getAllProducts(int page, int size, String sort) {
+        Pageable pageable;
+        if ("none".equals(sort)) {
+            pageable = PageRequest.of(page, size);
+        } else {
+            // Chuyển đổi sort thành Sort.Direction
+            Sort.Direction direction = "desc".equalsIgnoreCase(sort) ? Sort.Direction.DESC : Sort.Direction.ASC;
+            pageable = PageRequest.of(page, size, Sort.by(direction, "cost"));
+        }
+
+        // Lấy danh sách sản phẩm từ repository
+        Page<Product> productsPage = productRepository.findAll(pageable);
+        return productsPage.map(productMapper::toDto);
     }
+
 }

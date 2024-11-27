@@ -7,6 +7,7 @@ import vn.iotstar.AloTra.enums.OrderStatus;
 
 import java.sql.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -32,4 +33,10 @@ public class Orders {
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<OrderLine> orderLines=new HashSet<>();
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "orders")
+    @JsonManagedReference
+    private List<Branch> branch;
 }

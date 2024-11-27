@@ -22,11 +22,11 @@
           rel="stylesheet">
 </head>
 <body>
-<div th:replace="/customer/fragments/header :: header"></div>
+<div th:replace="~{/customer/fragments/header :: header}"></div>
 
 <div layout:fragment="content"></div>
 
-<div th:replace="/customer/fragments/footer :: footer"></div>
+<div th:replace="~{/customer/fragments/footer :: footer}"></div>
 <script src="/assets/js/JSProduct.js"></script>
 <script type="module" src="/assets/js/showHide.js"></script>
 </body>

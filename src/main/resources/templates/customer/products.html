@@ -41,16 +41,18 @@
                     <div class="col l-10 m-10 c-12">
                         <div class="home-filter hide-on-mobile-tablet">
                             <span class="home-filter__lable">Sắp xếp</span>
-                            <button class="home-filter__btn btn btn--primary">Mới</button>
                             <div class="select-input">
-                                <span class="select-input__lable">Giá</span>
+                                <span class="select-input__lable" th:text="${sort == 'desc' ? 'Giảm dần' : (sort == 'asc' ? 'Tăng dần' : 'Mặc định')}"></span>
                                 <i class="select-input__icon fas fa-angle-down "></i>
                                 <ul class="select-input__list">
                                     <li class="select-input__item">
-                                        <a href="" class="select-input__link">Tăng dần</a>
+                                        <a th:href="@{/products(page=${currentPage}, size=${10}, sort='none')}" class="select-input__link">Mặc định</a>
                                     </li>
                                     <li class="select-input__item">
-                                        <a href="" class="select-input__link">Giảm dần</a>
+                                        <a th:href="@{/products(page=${currentPage}, size=${10}, sort='asc')}" class="select-input__link">Tăng dần</a>
+                                    </li>
+                                    <li class="select-input__item">
+                                        <a th:href="@{/products(page=${currentPage}, size=${10}, sort='desc')}" class="select-input__link">Giảm dần</a>
                                     </li>
                                 </ul>
                             </div>
@@ -106,10 +108,31 @@
                                 </div>
                             </a>
                         </div>
+                        <div class="d-flex justify-content-center mt-4" th:if="${hasPagination}">
+                            <ul class="pagination">
+                                <!-- Nút Trang đầu -->
+                                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                    <a class="page-link" th:href="@{|/products?page=0&size=10&sort=${sort}|}">Trang đầu</a>
+                                </li>
+
+                                <!-- Hiển thị 3 trang liên tiếp -->
+                                <li class="page-item"
+                                    th:each="i : ${#numbers.sequence((currentPage - 1 < 0 ? 0 : currentPage - 1),
+                                            (currentPage + 1 >= totalPages ? totalPages - 1 : currentPage + 1))}"
+                                    th:classappend="${i == currentPage} ? 'active'">
+                                    <a class="page-link" th:href="@{|/products?page=${i}&size=10&sort=${sort}|}" th:text="${i + 1}"></a>
+                                </li>
+
+                                <!-- Nút Trang cuối -->
+                                <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                                    <a class="page-link" th:href="@{|/products?page=${totalPages - 1}&size=10&sort=${sort}|}">Trang cuối</a>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
             </div>
-
         </div>
         <!--Content: end-->
         <!--Search mobile-->

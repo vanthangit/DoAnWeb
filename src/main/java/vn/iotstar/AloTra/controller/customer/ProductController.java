@@ -2,12 +2,11 @@ package vn.iotstar.AloTra.controller.customer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import vn.iotstar.AloTra.dto.ProductDTO;
 import vn.iotstar.AloTra.service.IProductService;
 
@@ -25,13 +24,27 @@ public class ProductController {
         List<ProductDTO> products = productService.getProductsByCategory(category);
         model.addAttribute("category", category);  // Gửi category vào model
         model.addAttribute("products", products);  // Gửi sản phẩm theo category
+        model.addAttribute("hasPagination", false);
         return "customer/products";
     }
 
     @GetMapping("")
-    public String getAllProducts(Model model) {
-        List<ProductDTO> products = productService.getAllProducts();
-        model.addAttribute("products", products);  // Gửi sản phẩm theo category
+    public String getAllProducts(@RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "10") int size,
+                                 @RequestParam(required = false) String sort,
+                                 Model model) {
+        if (sort == null) {
+            sort = "none";
+        }
+        Page<ProductDTO> productPage = productService.getAllProducts(page, size, sort);
+
+        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("hasPagination", productPage.getTotalPages() > 1);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("totalItems", productPage.getTotalElements());
+        model.addAttribute("sort", sort);
+
         return "customer/products";
     }
 }

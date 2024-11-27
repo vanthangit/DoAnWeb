@@ -32,4 +32,9 @@ public class Product{
     @JsonBackReference
     private List<OrderLine> orderLines;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "product")
+    @JsonBackReference
+    private List<ProductFeedback> productFeedbacks;
 }

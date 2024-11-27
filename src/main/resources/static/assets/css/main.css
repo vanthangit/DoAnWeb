@@ -3,7 +3,6 @@ h1{
     color: #ff253a;
 }
 
-/**--------------------Đào Thị Thu Thảo - start-----------------*/
 /*Header: begin*/
 #app{
     overflow: hidden ;
@@ -2894,5 +2893,46 @@ select.auth-form__input:hover {
     border-radius: 1px;
 }
 
-/**-------------------Triệu Huệ Mẩn - end-----------------------*/
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
 
+.pagination .page-item {
+    margin-top: 30px;
+    margin-left: 5px;
+    margin-bottom: 15px;
+}
+
+.pagination .page-item a {
+    color: black;
+    text-decoration: none;
+    border: 1px solid #e9ecef;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.pagination .page-item.active a {
+    background-color: black;
+    color: white;
+    font-weight: 700;
+}
+
+.pagination .page-item a:hover {
+    background-color: #f0f0f0;
+    color: black;
+}
+.pagination .active .page-link {
+    background-color: black;
+    color: white;
+    border-color: black;
+}
+.pagination .disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+}
