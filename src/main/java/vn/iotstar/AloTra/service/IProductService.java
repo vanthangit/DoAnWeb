@@ -8,7 +8,13 @@ import java.util.List;
 
 @Service
 public interface IProductService {
-    public List<ProductDTO> getProductsByCategory(String category);
+    public List<ProductDTO> getProductsByCategory(String category, String sort);
 
     public Page<ProductDTO> getAllProducts(int page, int size, String sort);
+
+    public ProductDTO getProductById(Long id);
+
+    public List<ProductDTO> findByCategory(String category, Long excludedProductId);
+
+    public List<ProductDTO> getTop5NewProducts();
 }

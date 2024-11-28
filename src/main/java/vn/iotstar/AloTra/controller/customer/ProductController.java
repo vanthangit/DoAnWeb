@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vn.iotstar.AloTra.dto.ProductDTO;
+import vn.iotstar.AloTra.entity.Product;
+import vn.iotstar.AloTra.entity.ProductFeedback;
 import vn.iotstar.AloTra.service.IProductService;
 
 import java.util.List;
@@ -23,28 +25,79 @@ public class ProductController {
     public String getAllProducts(@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "10") int size,
                                  @RequestParam(required = false) String sort,
+                                 @RequestParam(required = false) String category,
                                  Model model) {
         if (sort == null) {
             sort = "none";
         }
-        Page<ProductDTO> productPage = productService.getAllProducts(page, size, sort);
 
-        model.addAttribute("products", productPage.getContent());
-        model.addAttribute("hasPagination", productPage.getTotalPages() > 1);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", productPage.getTotalPages());
-        model.addAttribute("totalItems", productPage.getTotalElements());
+        List<ProductDTO> products;
+        boolean hasPagination = true;
+
+        if (category != null && !category.isEmpty()) {
+            // Lấy sản phẩm theo category
+            products = productService.getProductsByCategory(category, sort);
+            hasPagination = false;
+        } else {
+            // Lấy toàn bộ sản phẩm có phân trang
+            Page<ProductDTO> productPage = productService.getAllProducts(page, size, sort);
+            products = productPage.getContent();
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", productPage.getTotalPages());
+            model.addAttribute("totalItems", productPage.getTotalElements());
+            hasPagination = productPage.getTotalPages() > 1;
+        }
+
+        // Tính điểm trung bình rating cho từng sản phẩm
+        products.forEach(product -> {
+            List<ProductFeedback> feedbackList = product.getProductFeedbacks();
+            double averageRating = feedbackList.stream()
+                    .mapToDouble(ProductFeedback::getRating)
+                    .average()
+                    .orElse(0); // Nếu không có feedback, mặc định là 0
+            product.setAvg_rating(averageRating);
+        });
+
+        model.addAttribute("products", products);
+        model.addAttribute("category", category);
+        model.addAttribute("hasPagination", hasPagination);
         model.addAttribute("sort", sort);
 
         return "customer/products";
     }
 
-    @GetMapping("/{category}")
-    public String getProductsByCategory(@PathVariable String category, Model model) {
-        List<ProductDTO> products = productService.getProductsByCategory(category);
-        model.addAttribute("category", category);  // Gửi category vào model
-        model.addAttribute("products", products);  // Gửi sản phẩm theo category
-        model.addAttribute("hasPagination", false);
-        return "customer/products";
+
+    @GetMapping("/{id}")
+    public String getProductById(@PathVariable Long id, Model model) {
+        // Lấy thông tin sản phẩm từ service
+        ProductDTO product = productService.getProductById(id);
+        // Tính toán trung bình rating
+        List<ProductFeedback> feedbackList = product.getProductFeedbacks();
+        double averageRating = feedbackList.stream()
+                .mapToDouble(ProductFeedback::getRating)
+                .average()
+                .orElse(0); // Nếu không có feedback, mặc định là 0
+        product.setAvg_rating(averageRating);
+
+        //Lấy sản phẩm liên quan
+        List<ProductDTO> relatedProducts = productService.findByCategory(product.getCategory(), id);
+
+        // Tính điểm trung bình rating cho từng sản phẩm
+        relatedProducts.forEach(relatedProduct -> {
+            List<ProductFeedback> relatedFeedbackList = relatedProduct.getProductFeedbacks();
+            double relatedAverageRating = relatedFeedbackList.stream()
+                    .mapToDouble(ProductFeedback::getRating)
+                    .average()
+                    .orElse(0); // Nếu không có feedback, mặc định là 0
+            relatedProduct.setAvg_rating(relatedAverageRating);
+        });
+
+
+        // Thêm sản phẩm vào model
+        model.addAttribute("product", product);
+        model.addAttribute("relatedProducts", relatedProducts);
+
+        // Trả về tên view hiển thị sản phẩm chi tiết
+        return "customer/product-detail";
     }
 }

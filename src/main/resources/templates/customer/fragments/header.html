@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
-
-<head>
-    <link rel="stylesheet" th:href="@{../static/assets/css/customer/style.css}">
-</head>
 <body>
 <div th:fragment="header">
     <!--Nội dung điền vô đây-->
@@ -164,82 +160,69 @@
             <i class="fa fa-times" aria-hidden="true"></i>
         </div>
         <input type="text" class="modal__input" placeholder="Search...">
-        <!-- Search history -->
-        <div class="modal__history">
-            <h3 class="modal__history-history-heading">Search history</h3>
-            <ul class="modal__history-history-list">
-                <li class="modal__history-item">
-                    <a href="">Body mist</a>
-                </li>
-                <li class="modal__history-item">
-                    <a href="">Innisfee green tea</a>
-                </li>
-            </ul>
-        </div>
     </div>
     <!--modal account-->
     <div class="modal-account">
         <div class="modal__overlay"></div>
         <div class="modal__body">
             <!--Register form -->
-            <form>
-                <div class="register-form">
-                    <div class="auth-form">
-                        <div class="auth-form__container">
-                            <div class="auth-form__header">
-                                <h3 class="auth-form__heading">Register</h3>
-                                <span class="login-from__btn auth-form__switch-btn">Login</span>
+            <div class="register-form">
+                <div class="auth-form">
+                    <div class="auth-form__container">
+                        <div class="auth-form__header">
+                            <h3 class="auth-form__heading">Register</h3>
+                            <span class="login-from__btn auth-form__switch-btn">Login</span>
+                        </div>
+                        <div class="auth-form__form">
+                            <div class="auth-form__group">
+                                <input type="email" class="auth-form__input" placeholder="User name">
+                            </div>
+                            <div class="auth-form__group">
+                                <input type="email" class="auth-form__input" placeholder="Email">
+                            </div>
+                            <div class="auth-form__group">
+                                <input type="password" class="auth-form__input" placeholder="Password">
+                            </div>
+                            <div class="auth-form__group">
+                                <input type="password" class="auth-form__input" placeholder="Confirm password">
                             </div>
 
-                            <div class="auth-form__form">
-                                <div class="auth-form__group">
-                                    <input type="email" class="auth-form__input" id="email" placeholder="Email">
-                                </div>
-                                <div class="auth-form__group">
-                                    <input type="text" class="auth-form__input" id="name" placeholder="Họ và tên">
-                                </div>
-                                <div class="auth-form__group">
-                                    <input type="text" class="auth-form__input" id="phone" placeholder="Số điện thoại">
-                                </div>
-                                <div class="auth-form__group">
-                                    <input type="text" class="auth-form__input" id="gender" placeholder="Giới tính">
-                                </div>
-                                <div class="auth-form__group">
-                                    <input type="text" class="auth-form__input" id="address" placeholder="Địa chỉ">
-                                </div>
-                                <div class="auth-form__group">
-                                    <input type="password" class="auth-form__input" id="pass-word" placeholder="Mật khẩu">
-                                </div>
-                                <div class="auth-form__group">
-                                    <input type="password" class="auth-form__input" id="confirm-password" placeholder="Xác nhận mật khẩu">
-                                </div>
-                            </div>
-
-                            <div class="auth-form__aside">
-                                <p class="auth-form__policy-text">
-                                    By registering, you agree with Cosmetics
-                                    <a href="" class="auth-form__text-link">
-                                        Terms of service
-                                    </a>&
-                                    <a href="" class="auth-form__text-link">
-                                        Privacy policy
-                                    </a>
-                                </p>
-                            </div>
-                            <div class="auth-form__controls">
-                                <button class="btn buttons auth-form__controls-back ">
-                                    BACK
-                                </button>
-
-                                <button id="register-button" class="buttons" type="submit">
-                                    REGISTER
-                                </button>
-                            </div>
+                        </div>
+                        <div class="auth-form__aside">
+                            <p class="auth-form__policy-text">
+                                By registering, you agree with Cosmetics
+                                <a href="" class="auth-form__text-link">
+                                    Terms of service
+                                </a>&
+                                <a href="" class="auth-form__text-link">
+                                    Privacy policy
+                                </a>
+                            </p>
+                        </div>
+                        <div class="auth-form__controls">
+                            <button class="btn buttons auth-form__controls-back ">
+                                BACK
+                            </button>
+                            <button class="buttons">
+                                REGISTER
+                            </button>
                         </div>
                     </div>
+                    <div class="auth-form_socials">
+                        <a href="" class="auth-form_socials--face btn  btn--size-s btn--width-icon">
+                            <i class="auth-form_socials-icon fab fa-facebook-square"></i>
+                            <span class="auth-form__social-title">
+                                Connect to Facebook</span>
+                        </a>
+                        <a href=""
+                           class="auth-form_socials-icon auth-form_socials--google btn btn--size-s btn--width-icon">
+                            <i class="icon-gg fab fa-google-plus-square"></i>
+                            <span class="auth-form__social-title">
+                                Connect to Google</span>
+                        </a>
+                    </div>
                 </div>
-            </form>
-
+            </div>
             <!--Login form -->
             <div class="login-form">
                 <div class="auth-form">
@@ -321,42 +304,6 @@
         <i class="fas fa-arrow-up"></i>
     </div>
 </div>
-
-<script>
-    // ĐĂNG KÝ
-    document.getElementById('register-button').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        let email = document.getElementById('email').value;
-        let name = document.getElementById('name').value;
-        let phone = document.getElementById('phone').value;
-        let gender = document.getElementById('gender').value;
-        let address = document.getElementById('address').value;
-        let password = document.getElementById('pass-word').value;
-        let con
-
-        fetch('/api/vouchers/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ voucherValue, startDate, endDate }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                loadVouchers();  // Cập nhật danh sách voucher
-                document.querySelector('#addVoucherModal .btn-close').click();  // Đóng modal
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    });
-
-
-</script>
-
-
 
 </body>
 </html>

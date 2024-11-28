@@ -1,21 +1,3 @@
-let close = document.querySelector('.close');
-let overlay = document.querySelector('.popup-overlay');
-
-document.querySelector('.popup').onclick = function (e) {
-    e.stopPropagation();
-}
-
-close.onclick = function() {
-    document.querySelector('.stay-in-touch').style.display = 'none';
-    overlay.style.display = 'none';
-}
-
-overlay.onclick = function() {
-    document.querySelector('.stay-in-touch').style.display = 'none';
-    overlay.style.display = 'none';
-}
-
-
 let quantityWantToBuy = document.querySelector('.quantity-buttons--number').innerText;
 
 document.querySelector('.quantity-buttons--minus').onclick = function() {

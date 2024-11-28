@@ -14,25 +14,25 @@
                         <div class="product__items">
                             <h3 class="product_item-title">Danh mục</h3>
                             <ul class="product__items-list">
-                                <a th:href="@{/products/{category}(category='Bst mới tearamisu')}" class="product__item-link">
+                                <a th:href="@{/products(category='Bst mới tearamisu')}" class="product__item-link">
                                     <li class="product__items-item" th:classappend="${category == 'Bst mới tearamisu' ? ' active-btn' : ''}">Bst mới tearamisu</li>
                                 </a>
-                                <a th:href="@{/products/{category}(category='Trà trái cây')}" class="product__item-link">
+                                <a th:href="@{/products(category='Trà trái cây')}" class="product__item-link">
                                     <li class="product__items-item" th:classappend="${category == 'Trà trái cây' ? ' active-btn' : ''}">Trà trái cây</li>
                                 </a>
-                                <a th:href="@{/products/{category}(category='Trà sữa')}" class="product__item-link">
+                                <a th:href="@{/products(category='Trà sữa')}" class="product__item-link">
                                     <li class="product__items-item" th:classappend="${category == 'Trà sữa' ? ' active-btn' : ''}">Trà sữa</li>
                                 </a>
-                                <a th:href="@{/products/{category}(category='Kem silky')}" class="product__item-link">
+                                <a th:href="@{/products(category='Kem silky')}" class="product__item-link">
                                     <li class="product__items-item" th:classappend="${category == 'Kem silky' ? ' active-btn' : ''}">Kem silky</li>
                                 </a>
-                                <a th:href="@{/products/{category}(category='Cà phê')}" class="product__item-link">
+                                <a th:href="@{/products(category='Cà phê')}" class="product__item-link">
                                     <li class="product__items-item" th:classappend="${category == 'Cà phê' ? ' active-btn' : ''}">Cà phê</li>
                                 </a>
-                                <a th:href="@{/products/{category}(category='Đá xay')}" class="product__item-link">
+                                <a th:href="@{/products(category='Đá xay')}" class="product__item-link">
                                     <li class="product__items-item" th:classappend="${category == 'Đá xay' ? ' active-btn' : ''}">Đá xay</li>
                                 </a>
-                                <a th:href="@{/products/{category}(category='Bst kim cúc mộc tê')}" class="product__item-link">
+                                <a th:href="@{/products(category='Bst kim cúc mộc tê')}" class="product__item-link">
                                     <li class="product__items-item" th:classappend="${category == 'Bst kim cúc mộc tê' ? ' active-btn' : ''}">Bst kim cúc mộc tê</li>
                                 </a>
                             </ul>
@@ -42,48 +42,60 @@
                         <div class="home-filter hide-on-mobile-tablet">
                             <span class="home-filter__lable">Sắp xếp</span>
                             <div class="select-input">
-                                <span class="select-input__lable" th:text="${sort == 'desc' ? 'Giảm dần' : (sort == 'asc' ? 'Tăng dần' : 'Mặc định')}"></span>
-                                <i class="select-input__icon fas fa-angle-down "></i>
+        <span class="select-input__lable"
+              th:text="${sort == 'desc' ? 'Giảm dần' : (sort == 'asc' ? 'Tăng dần' : 'Mặc định')}">
+        </span>
+                                <i class="select-input__icon fas fa-angle-down"></i>
                                 <ul class="select-input__list">
                                     <li class="select-input__item">
-                                        <a th:href="@{/products(page=${currentPage}, size=${10}, sort='none')}" class="select-input__link">Mặc định</a>
+                                        <a th:href="@{/products(sort='none', category=${category})}"
+                                           th:if="${category != null}" class="select-input__link">Mặc định</a>
+                                        <a th:href="@{/products(page=${currentPage}, size=${10}, sort='none')}"
+                                           th:if="${category == null}" class="select-input__link">Mặc định</a>
                                     </li>
                                     <li class="select-input__item">
-                                        <a th:href="@{/products(page=${currentPage}, size=${10}, sort='asc')}" class="select-input__link">Tăng dần</a>
+                                        <a th:href="@{/products(sort='asc', category=${category})}"
+                                           th:if="${category != null}" class="select-input__link">Tăng dần</a>
+                                        <a th:href="@{/products(page=${currentPage}, size=${10}, sort='asc')}"
+                                           th:if="${category == null}" class="select-input__link">Tăng dần</a>
                                     </li>
                                     <li class="select-input__item">
-                                        <a th:href="@{/products(page=${currentPage}, size=${10}, sort='desc')}" class="select-input__link">Giảm dần</a>
+                                        <a th:href="@{/products(sort='desc', category=${category})}"
+                                           th:if="${category != null}" class="select-input__link">Giảm dần</a>
+                                        <a th:href="@{/products(page=${currentPage}, size=${10}, sort='desc')}"
+                                           th:if="${category == null}" class="select-input__link">Giảm dần</a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
+
                         <nav class="mobile-category">
                             <ul class="mobile-category__list">
                                 <li class="mobile-category__item">
-                                    <a th:href="@{/products/{category}(category='Bst mới tearamisu')}" class="mobile-category__link active-border">Bst mới tearamisu</a>
+                                    <a th:href="@{/products(category='Bst mới tearamisu')}" class="mobile-category__link active-border">Bst mới tearamisu</a>
                                 </li>
                                 <li class="mobile-category__item">
-                                    <a th:href="@{/products/{category}(category='Trà trái cây')}" class="mobile-category__link">Trà trái cây</a>
+                                    <a th:href="@{/products(category='Trà trái cây')}" class="mobile-category__link">Trà trái cây</a>
                                 </li>
                                 <li class="mobile-category__item">
-                                    <a th:href="@{/products/{category}(category='Trà sữa')}" class="mobile-category__link">Trà sữa</a>
+                                    <a th:href="@{/products(category='Trà sữa')}" class="mobile-category__link">Trà sữa</a>
                                 </li>
                                 <li class="mobile-category__item">
-                                    <a th:href="@{/products/{category}(category='Kem silky')}" class="mobile-category__link">Kem silky</a>
+                                    <a th:href="@{/products(category='Kem silky')}" class="mobile-category__link">Kem silky</a>
                                 </li>
                                 <li class="mobile-category__item">
-                                    <a th:href="@{/products/{category}(category='Cà phê')}" class="mobile-category__link">Cà phê</a>
+                                    <a th:href="@{/products(category='Cà phê')}" class="mobile-category__link">Cà phê</a>
                                 </li> <li class="mobile-category__item">
-                                <a th:href="@{/products/{category}(category='Đá xay')}" class="mobile-category__link">Đá xay</a>
+                                <a th:href="@{/products(category='Đá xay')}" class="mobile-category__link">Đá xay</a>
                             </li>
                                 <li class="mobile-category__item">
-                                <a th:href="@{/products/{category}(category='Bst kim cúc mộc tê')}" class="mobile-category__link">Bst kim cúc mộc tê</a>
+                                <a th:href="@{/products(category='Bst kim cúc mộc tê')}" class="mobile-category__link">Bst kim cúc mộc tê</a>
                             </li>
                             </ul>
                         </nav>
                         <br>
                         <div class="row products">
-                            <a th:href="@{/product/{id}(id=${product.product_id})}" th:each="product : ${products}" class="col l-2-4 m-4 c-6">
+                            <a th:href="@{/products/{id}(id=${product.product_id})}" th:each="product : ${products}" class="col l-2-4 m-4 c-6">
                                 <div class="product__item">
                                     <img th:src="${product.image}" class="product__item-img" alt="">
                                     <h5 class="product__item-name" th:text="${product.product_name}"></h5>
@@ -94,11 +106,12 @@
                                     </div>
                                     <div class="star-link-sold-wrapper">
                                         <div class="star-link">
-                                            <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                            <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                            <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                            <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <!-- Lặp để hiển thị số sao đã đánh giá -->
+                                            <i th:each="star : ${#numbers.sequence(1, product.avg_rating)}" th:if="${product.avg_rating >= 1}" class="fa fa-star star--fill"></i>
+                                            <!-- Hiển thị nửa sao nếu có -->
+                                            <i th:if="${product.avg_rating % 1 != 0 and product.avg_rating < 5}" class="fas fa-star-half-alt star--fill"></i>
+                                            <!-- Hiển thị sao trống để đạt tổng cộng là 5 sao -->
+                                            <i th:each="star : ${#numbers.sequence(1, 5 - product.avg_rating)}" th:if="${5 - product.avg_rating >= 1}" class="far fa-star star--fill"></i>
                                         </div>
                                     </div>
                                     <div class="product__item-category-wrapper">
