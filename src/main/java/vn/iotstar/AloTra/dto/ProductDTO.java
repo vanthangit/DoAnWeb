@@ -18,6 +18,8 @@ public class ProductDTO {
     private String category;
     private Double cost;
     private String image;
+    private Double avg_rating;
+    private Integer total_rating;
     private List<CartItem> cartItems;
     private List<OrderLine> orderLines;
     private List<ProductFeedback> productFeedbacks;

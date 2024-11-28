@@ -23,11 +23,20 @@ public class ProductService implements IProductService {
     @Autowired
     ProductMapper productMapper;
 
+
     @Override
-    public List<ProductDTO> getProductsByCategory(String category) {
-        List<Product> products = productRepository.findByCategory(category);
+    public List<ProductDTO> getProductsByCategory(String category, String sort) {
+        Sort sorting;
+        if ("none".equals(sort)) {
+            sorting = Sort.unsorted();
+        } else {
+            Sort.Direction direction = "desc".equalsIgnoreCase(sort) ? Sort.Direction.DESC : Sort.Direction.ASC;
+            sorting = Sort.by(direction, "cost");
+        }
+
+        List<Product> products = productRepository.findByCategory(category, sorting);
         return products.stream()
-                .map(productMapper::toDto) // Map từ Entity sang DTO
+                .map(productMapper::toDto) // Chuyển từ Entity sang DTO
                 .collect(Collectors.toList());
     }
 
@@ -45,5 +54,30 @@ public class ProductService implements IProductService {
         // Lấy danh sách sản phẩm từ repository
         Page<Product> productsPage = productRepository.findAll(pageable);
         return productsPage.map(productMapper::toDto);
+    }
+
+    @Override
+    public ProductDTO getProductById(Long id) {
+        return productRepository.findById(id)
+                .map(productMapper::toDto) // Chuyển đổi nếu tồn tại
+                .orElse(null); // Trả về null nếu không tìm thấy
+    }
+
+    @Override
+    public List<ProductDTO> findByCategory(String category, Long excludedProductId) {
+        List<Product> products = productRepository.findByCategoryAndIdNot(category, excludedProductId);
+
+        // Chuyển đổi từ Product sang ProductDTO
+        return products.stream()
+                .map(productMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDTO> getTop5NewProducts() {
+        Pageable topFive = PageRequest.of(0, 5);
+        return productRepository.findTop5ByOrderByIdDesc(topFive).stream()
+                .map(productMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

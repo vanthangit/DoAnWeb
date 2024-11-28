@@ -6,6 +6,5 @@ import vn.iotstar.AloTra.entity.Product;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
-
     ProductDTO toDto(Product product);
 }
