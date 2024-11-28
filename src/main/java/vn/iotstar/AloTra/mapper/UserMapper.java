@@ -7,4 +7,5 @@ import vn.iotstar.AloTra.entity.User;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
+    UserDTO toUserDTO(User user);
 }

@@ -1,0 +1,45 @@
+/* Đặt label và radio buttons trên cùng một hàng */
+.auth-form__gender-row {
+    display: flex; /* Sử dụng Flexbox */
+    align-items: center; /* Căn giữa các phần tử theo chiều dọc */
+    gap: 10px; /* Khoảng cách giữa label và radio buttons */
+    margin-bottom: 15px; /* Khoảng cách dưới */
+}
+
+/* Group radio buttons ngang hàng */
+.auth-form__gender-options {
+    display: flex; /* Hiển thị radio buttons ngang hàng */
+    gap: 20px; /* Khoảng cách giữa các tùy chọn Nam và Nữ */
+}
+
+/* Căn chỉnh từng tùy chọn radio */
+.auth-form__radio {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Tùy chỉnh nút radio */
+.auth-form__radio input[type="radio"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+}
+
+.auth-form__radio input[type="radio"]:checked {
+    background-color: #007bff; /* Màu nền khi được chọn */
+    border-color: #007bff;
+}
+
+/* Text bên cạnh radio */
+.radio-btn {
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+}
