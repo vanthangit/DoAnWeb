@@ -32,7 +32,7 @@ public class CartItemService {
     public CartItemDTO addCartItem(CartItemDTO request){
 
         //Luc bam nut nay thi co idUser
-        Long user_id = 21L;
+        Long user_id = 1L;
 
         // Lay duoc cartId cho User
         Long cartId = cartRepository.findCartIdByUserId(user_id);

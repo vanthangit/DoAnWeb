@@ -3,7 +3,6 @@ package vn.iotstar.AloTra.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import vn.iotstar.AloTra.entity.Cart;
 
 @Data
 @NoArgsConstructor
