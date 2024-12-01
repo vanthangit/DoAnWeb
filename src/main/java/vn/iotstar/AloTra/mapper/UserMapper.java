@@ -8,5 +8,7 @@ import vn.iotstar.AloTra.entity.User;
 public interface UserMapper {
 
     UserDTO toUserDTO(User user);
-    UserDTO toDto(User user);
+
+
+    User toUser(UserDTO userDTO);
 }
