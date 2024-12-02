@@ -53,13 +53,16 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute AuthenticationDTO authenticationDTO, Model model, HttpServletResponse response, HttpSession session) throws JOSEException, ParseException {
+    public String login(@ModelAttribute("authDTO") AuthenticationDTO authenticationDTO, Model model, HttpServletResponse response, HttpSession session) throws JOSEException, ParseException {
         // Xác thực người dùng và lấy token
         AuthenticationResponse authenticationResult = authenticationService.authenticate(authenticationDTO);
+        if(!authenticationResult.isAuthenticated()){
+            model.addAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng");
+            return "customer/login";
+        }
         String token = authenticationResult.getToken();
 
-        UserDTO myInfo = userService.getMyInfo();
-        session.setAttribute("myInfo", myInfo);
+
 
         // Lưu token vào cookie
         Cookie authCookie = new Cookie("auth_token", token);
@@ -79,6 +82,16 @@ public class AuthenticationController {
                 new UsernamePasswordAuthenticationToken(jwt.getSubject(), null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        UserDTO myInfo = userService.getMyInfo();
+        session.setAttribute("myInfo", myInfo);
+
+        if(myInfo.getRole_id()==3){
+            return "redirect:/owner/home";
+        } else if ( myInfo.getRole_id()==2) {
+            return "redirect:/employee/home";
+        } else if (myInfo.getRole_id()==1) {
+            return "redirect:/";
+        }
         return "redirect:/";
     }
 

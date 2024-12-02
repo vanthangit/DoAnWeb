@@ -15,6 +15,7 @@
                 </a>
             </div>
             <form action="#" th:action="@{/auth/login}" th:object="${authDTO}" method="POST">
+                <span th:text="${error}" style="color: red; font-size: 14px"></span>
                 <div class="auth-form__form">
                     <div class="auth-form__group">
                         <input id="email" th:field="*{email}" type="email" class="auth-form__input" placeholder="Email">

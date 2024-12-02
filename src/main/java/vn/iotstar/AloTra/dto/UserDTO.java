@@ -10,6 +10,7 @@ import vn.iotstar.AloTra.enums.Gender;
 @Data
 public class UserDTO {
 
+    private Long user_id;
     private String full_name;
     private String phone;
     private Gender gender;
@@ -17,4 +18,5 @@ public class UserDTO {
     private String email;
     private String password;
     private String confirmPassword;
+    private Long role_id;
 }
