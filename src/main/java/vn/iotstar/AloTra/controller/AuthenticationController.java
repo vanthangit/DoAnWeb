@@ -9,23 +9,20 @@ import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import vn.iotstar.AloTra.configuration.JwtUtil;
 import vn.iotstar.AloTra.dto.UserDTO;
-import vn.iotstar.AloTra.dto.auth.*;
+import vn.iotstar.AloTra.dto.auth.request.AuthenticationRequest;
+import vn.iotstar.AloTra.dto.auth.request.LogoutRequest;
+import vn.iotstar.AloTra.dto.auth.respone.AuthenticationResponse;
 import vn.iotstar.AloTra.service.impl.AuthenticationService;
 import vn.iotstar.AloTra.service.impl.UserService;
-
 import java.text.ParseException;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/auth")
@@ -33,63 +30,58 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AuthenticationController {
 
-    @Autowired
-    AuthenticationService authenticationService;
-
-    @Autowired
-    UserService userService;
+    private AuthenticationService authenticationService;
+    private UserService userService;
+    private JwtUtil jwtUtil;
 
     @NonFinal
     @Value("${jwt.valid-duration}")
     protected int VALID_DURATION;
+
     @Autowired
-    private JwtDecoder jwtDecoder;
+    public AuthenticationController(JwtUtil jwtUtil, UserService userService, AuthenticationService authenticationService) {
+        this.jwtUtil = jwtUtil;
+        this.userService = userService;
+        this.authenticationService = authenticationService;
+    }
+
 
     @GetMapping("/form-login")
     public String showFormLogin(Model model) {
-        AuthenticationDTO authenticationDTO = new AuthenticationDTO();
+        AuthenticationRequest authenticationDTO = new AuthenticationRequest();
         model.addAttribute("authDTO", authenticationDTO);
         return "customer/login";
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("authDTO") AuthenticationDTO authenticationDTO, Model model, HttpServletResponse response, HttpSession session) throws JOSEException, ParseException {
-        // Xác thực người dùng và lấy token
+    public String login(@ModelAttribute("authDTO") AuthenticationRequest authenticationDTO, Model model,
+                        HttpServletResponse response, HttpSession session) throws JOSEException, ParseException {
         AuthenticationResponse authenticationResult = authenticationService.authenticate(authenticationDTO);
-        if(!authenticationResult.isAuthenticated()){
+
+        if (!authenticationResult.isAuthenticated()) {
             model.addAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng");
             return "customer/login";
         }
+
         String token = authenticationResult.getToken();
-
-
 
         // Lưu token vào cookie
         Cookie authCookie = new Cookie("auth_token", token);
-        authCookie.setHttpOnly(true); // Bảo mật
-        authCookie.setPath("/"); // Đảm bảo cookie có sẵn cho mọi trang
-        authCookie.setMaxAge(VALID_DURATION); // Đặt thời gian hết hạn của cookie
+        authCookie.setHttpOnly(true);
+        authCookie.setPath("/");
+        authCookie.setMaxAge(VALID_DURATION);
         response.addCookie(authCookie);
 
-        // Cập nhật SecurityContextHolder với thông tin người dùng
-        Jwt jwt = jwtDecoder.decode(token);
-        List<GrantedAuthority> authorities = jwt.getClaimAsStringList("scope").stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-
-        // Tạo đối tượng Authentication và gán vào SecurityContext
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(jwt.getSubject(), null, authorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        jwtUtil.authenticateAndSetContext(token);
 
         UserDTO myInfo = userService.getMyInfo();
         session.setAttribute("myInfo", myInfo);
 
-        if(myInfo.getRole_id()==3){
+        if (myInfo.getRole_id() == 3) {
             return "redirect:/owner/home";
-        } else if ( myInfo.getRole_id()==2) {
+        } else if (myInfo.getRole_id() == 2) {
             return "redirect:/employee/home";
-        } else if (myInfo.getRole_id()==1) {
+        } else if (myInfo.getRole_id() == 1) {
             return "redirect:/";
         }
         return "redirect:/";
@@ -131,5 +123,4 @@ public class AuthenticationController {
         }
         return "redirect:/";
     }
-
 }

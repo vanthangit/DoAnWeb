@@ -1,4 +1,4 @@
-package vn.iotstar.AloTra.dto.auth;
+package vn.iotstar.AloTra.dto.auth.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

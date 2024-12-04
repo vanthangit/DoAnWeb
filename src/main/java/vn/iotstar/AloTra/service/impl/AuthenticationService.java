@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import vn.iotstar.AloTra.dto.auth.*;
+import vn.iotstar.AloTra.dto.auth.request.AuthenticationRequest;
+import vn.iotstar.AloTra.dto.auth.request.LogoutRequest;
+import vn.iotstar.AloTra.dto.auth.respone.AuthenticationResponse;
 import vn.iotstar.AloTra.entity.InvalidatedToken;
 import vn.iotstar.AloTra.entity.User;
 import vn.iotstar.AloTra.repository.InvalidatedTokenRepository;
@@ -30,12 +32,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthenticationService {
-    @Autowired
+
     UserRepository userRepository;
-
-    @Autowired
     InvalidatedTokenRepository invalidatedTokenRepository;
-
+    @Autowired
+    public AuthenticationService(UserRepository userRepository, InvalidatedTokenRepository invalidatedTokenRepository) {
+        this.userRepository = userRepository;
+        this.invalidatedTokenRepository = invalidatedTokenRepository;
+    }
     @NonFinal
     @Value("${jwt.signerKey}")
     protected String SIGNER_KEY;
@@ -44,7 +48,24 @@ public class AuthenticationService {
     @Value("${jwt.valid-duration}")
     protected long VALID_DURATION;
 
-    public AuthenticationResponse  authenticate(AuthenticationDTO request) {
+    @NonFinal
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    protected String CLIENT_ID;
+
+    @NonFinal
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
+    protected String CLIENT_SECRET;
+
+    @NonFinal
+    @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
+    protected String REDIRECT_URI;
+
+    @NonFinal
+    @Value("${spring.security.oauth2.client.registration.google.authorization-grant-type}")
+    protected String GRANT_TYPE;
+
+
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Người dùng không tồn tại"));
 

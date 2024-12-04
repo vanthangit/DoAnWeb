@@ -2,8 +2,6 @@ package vn.iotstar.AloTra.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,9 +42,6 @@ public class UserController {
     public String showMyInfo(Model model) {
         UserDTO  userDTO = userService.getMyInfo();
         model.addAttribute("userDTO", userDTO);
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info(authentication.getName());
-        authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
         return "customer/user-information";
     }
 }

@@ -16,10 +16,14 @@ import vn.iotstar.AloTra.repository.UserRepository;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationInitConfig {
-    @Autowired
+
     private RoleRepository roleRepository;
-    @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    public ApplicationInitConfig(RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     //Tạo tài khoản admin
     @Bean

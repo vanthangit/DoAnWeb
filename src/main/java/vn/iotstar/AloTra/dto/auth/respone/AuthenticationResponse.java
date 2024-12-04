@@ -1,4 +1,4 @@
-package vn.iotstar.AloTra.dto.auth;
+package vn.iotstar.AloTra.dto.auth.respone;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

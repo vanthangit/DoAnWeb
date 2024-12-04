@@ -1,4 +1,4 @@
-package vn.iotstar.AloTra.dto.auth;
+package vn.iotstar.AloTra.dto.auth.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class AuthenticationDTO {
+public class AuthenticationRequest {
     String email;
     String password;
 }
