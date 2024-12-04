@@ -2,6 +2,7 @@ package vn.iotstar.AloTra.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,22 +17,20 @@ import vn.iotstar.AloTra.repository.UserRepository;
 import vn.iotstar.AloTra.service.IUserService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class UserService implements IUserService {
 
-    @Autowired
     UserRepository userRepository;
-    @Autowired
     RoleRepository roleRepository;
-    @Autowired
     UserMapper userMapper;
-    @Autowired
     PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
+    @Autowired
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper,@Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.userMapper = userMapper;
@@ -45,6 +44,19 @@ public class UserService implements IUserService {
         user.setRole(role);
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         userRepository.save(user);
+    }
+
+    public void saveUserInformation(String name, String email) {
+        User user = new User();
+        user.setEmail(email);
+        user.setFull_name(name);
+        Role role = roleRepository.findById(1L).orElseThrow(() -> new RuntimeException("Role not found"));
+        user.setRole(role);
+
+        var existingUser = userRepository.findByEmail(email);
+        if (existingUser.isEmpty()) {
+            userRepository.save(user);
+        }
     }
 
     @PreAuthorize("hasRole('ADMIN')")  //Kiểm tra trước khi method được thực hiện
@@ -74,5 +86,9 @@ public class UserService implements IUserService {
                 () -> new RuntimeException("User not found"));
 
         return userMapper.toUserDTO(user);
+    }
+
+    public Optional<User> findByEmail(String email){
+        return userRepository.findByEmail(email);
     }
 }

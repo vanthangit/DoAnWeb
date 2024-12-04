@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,6 @@ import vn.iotstar.AloTra.dto.auth.respone.AuthenticationResponse;
 import vn.iotstar.AloTra.service.impl.AuthenticationService;
 import vn.iotstar.AloTra.service.impl.UserService;
 import java.text.ParseException;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/auth")

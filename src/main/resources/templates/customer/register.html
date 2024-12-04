@@ -55,16 +55,11 @@
             </form>
         </div>
         <div class="auth-form_socials">
-            <a href="" class="auth-form_socials--face btn  btn--size-s btn--width-icon">
-                <i class="auth-form_socials-icon fab fa-facebook-square"></i>
-                <span class="auth-form__social-title">
-                            Connect to Facebook</span>
-            </a>
-            <a href=""
-               class="auth-form_socials-icon auth-form_socials--google btn btn--size-s btn--width-icon">
+            <a th:href="@{/oauth2/authorization/google}"
+               class="auth-form_socials-icon auth-form_socials--google btn btn--size-s"
+               style="width: 100%;">
                 <i class="icon-gg fab fa-google-plus-square"></i>
-                <span class="auth-form__social-title">
-                            Connect to Google</span>
+                <span class="auth-form__social-title">Connect to Google</span>
             </a>
         </div>
     </div>

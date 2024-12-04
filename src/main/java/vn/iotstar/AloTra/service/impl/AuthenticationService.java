@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -48,26 +49,16 @@ public class AuthenticationService {
     @Value("${jwt.valid-duration}")
     protected long VALID_DURATION;
 
-    @NonFinal
-    @Value("${spring.security.oauth2.client.registration.google.client-id}")
-    protected String CLIENT_ID;
-
-    @NonFinal
-    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
-    protected String CLIENT_SECRET;
-
-    @NonFinal
-    @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
-    protected String REDIRECT_URI;
-
-    @NonFinal
-    @Value("${spring.security.oauth2.client.registration.google.authorization-grant-type}")
-    protected String GRANT_TYPE;
-
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Người dùng không tồn tại"));
+                .orElse(null);
+
+        if (user == null) {
+            return AuthenticationResponse.builder()
+                    .authenticated(false)
+                    .build();
+        }
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
@@ -78,7 +69,7 @@ public class AuthenticationService {
                     .build();
         }
 
-        var token = genarateToken(user);
+        var token = generateToken(user);
 
         return AuthenticationResponse.builder()
                 .token(token)
@@ -86,7 +77,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    private String genarateToken(User user) {
+    public String generateToken(User user) {
         //Tạo header
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
@@ -155,4 +146,6 @@ public class AuthenticationService {
         }
         return stringRole;
     }
+
+
 }
