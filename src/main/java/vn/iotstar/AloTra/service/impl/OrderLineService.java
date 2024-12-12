@@ -43,5 +43,7 @@ public class OrderLineService implements IOrderLineService {
             orderLine.setOrders(orders); // Set chung 1 cái order cho các orderline này
             orderLineRepository.save(orderLine); // Lưu orderLine lại
         }
+        // Xóa cart khi người dùng mua hàng rồi
+//        ...
     }
 }
