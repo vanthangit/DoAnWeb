@@ -107,203 +107,31 @@
                         </div>
                     </div>
 
-                    <!--LOGIN-->
-                    <div class="login-link__wrapper">
-                        <a class="login-link">
-                            <i class="fa fa-user"></i>
-                        </a>
-                    </div>
+                    <!-- Kiểm tra nếu chưa đăng nhập -->
+                    <a class="login-link" th:if="${session.myInfo == null}" th:href="@{/auth/form-login}">
+                        <i class="fa fa-user"></i>
+                    </a>
 
-                </div>
-                <div class="nav-mobile__overlay"></div>
-                <div class="nav-icon col l-0 m-0 c-6">
-                    <label for="nav-mobile__label">
-                        <i class="nav-link fas fa-bars"></i>
-                    </label>
-                    <input type="checkbox" hidden="" id="nav-mobile__label" class="navbar__check">
-                    <div class="nav-mobile">
-                        <label for="nav-mobile__label">
-                            <i class="icon-exit far fa-times-circle"></i>
-                        </label>
-                        <ul class="nav-mobile__list">
-                            <a href="../index.html" class="nav-mobile__link">
-                                <li class="nav-mobile__item">
-                                    Home
-                                </li>
-                            </a>
-                            <a href="../products.html" class="nav-mobile__link">
-                                <li class="nav-mobile__item">
-                                    Products
-                                </li>
-                            </a>
-                            <a href="../about.html" class="nav-mobile__link">
-                                <li class="nav-mobile__item">
-                                    About Us
-                                </li>
-                            </a>
-                            <a href="../contact.html" class="nav-mobile__link">
-                                <li class="nav-mobile__item">
-                                    Contact Us
-                                </li>
-                            </a>
-                        </ul>
+                    <!-- Kiểm tra nếu đã đăng nhập -->
+                    <div class="user-info" th:if="${session.myInfo != null}">
+                        <div class="dropdown">
+                            <button class="dropbtn" th:text="${session.myInfo.email}"></button>
+                            <div class="dropdown-content">
+                                <a th:href="@{/user/myInfo}">Thông tin cá nhân</a>
+                                <a th:href="@{/orders}">Đơn hàng</a>
+                                <a th:href="@{/auth/logout}">Đăng xuất</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </header>
     <!--Header: end-->
-    <!--    modal-->
-    <div class="modal">
-        <div class="modal__icon-close">
-            <i class="fa fa-times" aria-hidden="true"></i>
-        </div>
-        <input type="text" class="modal__input" placeholder="Search...">
-    </div>
-    <!--modal account-->
-    <div class="modal-account">
-        <div class="modal__overlay"></div>
-        <div class="modal__body">
-            <!--Register form -->
-            <div class="register-form">
-                <div class="auth-form">
-                    <div class="auth-form__container">
-                        <div class="auth-form__header">
-                            <h3 class="auth-form__heading">Register</h3>
-                            <span class="login-from__btn auth-form__switch-btn">Login</span>
-                        </div>
-                        <div class="auth-form__form">
-                            <div class="auth-form__group">
-                                <input type="email" class="auth-form__input" placeholder="User name">
-                            </div>
-                            <div class="auth-form__group">
-                                <input type="email" class="auth-form__input" placeholder="Email">
-                            </div>
-                            <div class="auth-form__group">
-                                <input type="password" class="auth-form__input" placeholder="Password">
-                            </div>
-                            <div class="auth-form__group">
-                                <input type="password" class="auth-form__input" placeholder="Confirm password">
-                            </div>
-
-                        </div>
-                        <div class="auth-form__aside">
-                            <p class="auth-form__policy-text">
-                                By registering, you agree with Cosmetics
-                                <a href="" class="auth-form__text-link">
-                                    Terms of service
-                                </a>&
-                                <a href="" class="auth-form__text-link">
-                                    Privacy policy
-                                </a>
-                            </p>
-                        </div>
-                        <div class="auth-form__controls">
-                            <button class="btn buttons auth-form__controls-back ">
-                                BACK
-                            </button>
-                            <button class="buttons">
-                                REGISTER
-                            </button>
-                        </div>
-                    </div>
-                    <div class="auth-form_socials">
-                        <a href="" class="auth-form_socials--face btn  btn--size-s btn--width-icon">
-                            <i class="auth-form_socials-icon fab fa-facebook-square"></i>
-                            <span class="auth-form__social-title">
-                                Connect to Facebook</span>
-                        </a>
-                        <a href=""
-                           class="auth-form_socials-icon auth-form_socials--google btn btn--size-s btn--width-icon">
-                            <i class="icon-gg fab fa-google-plus-square"></i>
-                            <span class="auth-form__social-title">
-                                Connect to Google</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!--Login form -->
-            <div class="login-form">
-                <div class="auth-form">
-                    <div class="auth-form__container">
-                        <div class="auth-form__header">
-                            <h3 class="auth-form__heading">Login</h3>
-                            <span class="register-from__btn auth-form__switch-btn">Register</span>
-
-                        </div>
-                        <div class="auth-form__form">
-                            <div class="auth-form__group">
-                                <input id="mail" type="email" class="auth-form__input" placeholder="User name">
-                            </div>
-                            <div class="auth-form__group">
-                                <input id="password" type="password" class="auth-form__input" placeholder="Password">
-                            </div>
-
-
-                        </div>
-                        <div class="auth-form__aside">
-                            <div class="auth-form__help">
-                                <span href="" class="auth-form__help-link auth-form__help-link--forgot">Forgot
-                                    password</span>
-                                <span class="auth-form__help-separate"></span>
-                                <a href="" class="auth-form__help-link">Help?</a>
-                            </div>
-                        </div>
-                        <div class="auth-form__controls">
-                            <button class="btn buttons auth-form__controls-back ">
-                                BACK
-                            </button>
-                            <a><input id="submit" type="submit" class="buttons" name="Login"> </a>
-
-                        </div>
-                    </div>
-                    <div class="auth-form_socials">
-                        <a href="" class="auth-form_socials--face btn  btn--size-s btn--width-icon">
-                            <i class="auth-form_socials-icon fab fa-facebook-square"></i>
-                            <span class="auth-form__social-title">
-                                Kết nối với Facebook</span>
-                        </a>
-                        <a href=""
-                           class="auth-form_socials-icon auth-form_socials--google btn btn--size-s btn--width-icon">
-                            <i class="icon-gg fab fa-google-plus-square"></i>
-                            <span class="auth-form__social-title">
-                                Kết nối với Google</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!--Forgot password-->
-            <div class="forgot-pass-form">
-                <div class="auth-form">
-                    <div class="auth-form__container">
-                        <div class="auth-form__header">
-                            <h3 class="auth-form__heading">Forgot password</h3>
-                        </div>
-                        <div class="auth-form__form">
-                            <div class="auth-form__group">
-                                <input type="mail" class="auth-form__input" placeholder="Email">
-                            </div>
-                        </div>
-                        <div class="auth-form__controls">
-                            <button class="btn buttons auth-form__controls-back ">
-                                BACK
-                            </button>
-                            <button class="buttons">
-                                SEND
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!--  Back to top  -->
     <div id="back-to-top" class="back-to-top" title="Back to top">
         <i class="fas fa-arrow-up"></i>
     </div>
 </div>
-
 </body>
 </html>

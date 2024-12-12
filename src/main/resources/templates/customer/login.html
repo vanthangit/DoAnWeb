@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{/customer/layout-customer.html}">
+<body>
+<section layout:fragment="content">
+<!--Nội dung-->
+    <!--Login form -->
+    <div class="auth-form">
+        <div class="auth-form__container">
+            <div class="auth-form__header">
+                <h3 class="auth-form__heading">ĐĂNG NHẬP</h3>
+                <a th:href="@{/user/form-register}">
+                    <span class="register-from__btn auth-form__switch-btn">Đăng ký</span>
+                </a>
+            </div>
+            <form action="#" th:action="@{/auth/login}" th:object="${authDTO}" method="POST">
+                <span th:text="${error}" style="color: red; font-size: 14px"></span>
+                <div class="auth-form__form">
+                    <div class="auth-form__group">
+                        <input id="email" th:field="*{email}" type="email" class="auth-form__input" placeholder="Email" required>
+                    </div>
+                    <div class="auth-form__group">
+                        <input id="password" th:field="*{password}" type="password" class="auth-form__input" placeholder="Mật khẩu" required>
+                    </div>
+                </div>
+                <div class="auth-form__aside">
+                    <div class="auth-form__help">
+                        <a th:href="@{/user/form-forgot}" >
+                            <span class="auth-form__help-link">Quên mật khẩu?</span>
+                        </a>
+                        <span class="auth-form__help-separate"></span>
+                        <a href="" class="auth-form__help-link">Help?</a>
+                    </div>
+                </div>
+                <div class="auth-form__controls">
+                    <button class="buttons">
+                        ĐĂNG NHẬP
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="auth-form_socials">
+            <a th:href="@{/oauth2/authorization/google}"
+               class="auth-form_socials-icon auth-form_socials--google btn btn--size-s"
+               style="width: 100%;">
+                <i class="icon-gg fab fa-google-plus-square"></i>
+                <span class="auth-form__social-title">Connect to Google</span>
+            </a>
+        </div>
+    </div>
+</section>
+</body>
+</html>
