@@ -91,4 +91,15 @@ public class UserService implements IUserService {
     public Optional<User> findByEmail(String email){
         return userRepository.findByEmail(email);
     }
+
+    public void updateUser(Long id, UserDTO userDTO) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy người dùng"));
+        existingUser.setAddress(userDTO.getAddress());
+        existingUser.setEmail(userDTO.getEmail());
+        existingUser.setFull_name(userDTO.getFull_name());
+        existingUser.setGender(userDTO.getGender());
+        existingUser.setPhone(userDTO.getPhone());
+        userRepository.save(existingUser);
+    }
 }

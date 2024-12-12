@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -21,8 +23,7 @@ public class Branch {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "order_id")
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
     @JsonBackReference
-    private Orders orders;
+    private List<Orders> orders;
 }

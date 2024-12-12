@@ -6,7 +6,7 @@
     <!--Nội dung điền vô đây-->
     <header class="header">
         <div class="grid wide ">
-            <div class="row navbar">
+            <div class="row navbar" >
                 <div class="col l-2 m-2 c-6">
                     <a th:href="@{/}" style="text-decoration: none">
                         <h1 class="logo" about="">ALOTRA</h1>
@@ -116,9 +116,9 @@
                     <div class="user-info" th:if="${session.myInfo != null}">
                         <div class="dropdown">
                             <button class="dropbtn" th:text="${session.myInfo.email}"></button>
-                            <div class="dropdown-content">
+                            <div class="dropdown-content" style="font-style: italic; font-size: 14px">
                                 <a th:href="@{/user/myInfo}">Thông tin cá nhân</a>
-                                <a th:href="@{/orders}">Đơn hàng</a>
+                                <a th:href="@{/customer/order-history}">Đơn hàng</a>
                                 <a th:href="@{/auth/logout}">Đăng xuất</a>
                             </div>
                         </div>

@@ -1,5 +1,6 @@
 package vn.iotstar.AloTra.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -43,5 +44,15 @@ public class UserController {
         UserDTO  userDTO = userService.getMyInfo();
         model.addAttribute("userDTO", userDTO);
         return "customer/user-information";
+    }
+
+    @PostMapping("/edit-profile")
+    public String updateUser(@ModelAttribute("userDTO") UserDTO userDTO, HttpSession session) {
+        UserDTO currentUser = userService.getMyInfo();
+        userService.updateUser(currentUser.getUser_id(), userDTO);
+
+        UserDTO updatedUser = userService.getMyInfo();
+        session.setAttribute("myInfo", updatedUser);
+        return "redirect:/user/myInfo";
     }
 }
