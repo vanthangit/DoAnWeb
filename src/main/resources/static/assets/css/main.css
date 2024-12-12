@@ -889,7 +889,7 @@ h1{
     background-color: var(--white-color);
     overflow: hidden;
     z-index: 20;
-    margin: auto;
+    margin: 100px auto 0;
     padding: 28px 0;
     border-radius: 3px;
 }
@@ -915,7 +915,6 @@ h1{
     color: rgb(199, 190, 190);
     font-weight: 500;
     cursor: pointer;
-
 }
 .auth-form__input {
     width: 100%;
@@ -1323,10 +1322,51 @@ select.auth-form__input:hover {
         border: 1px solid var(--border-color);
         margin-right: 6px;
     }
-/**-------------------Đào Thị Thu Thảo - end-------------------*/
 
+/* Nhóm giới tính */
+.gender-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    font-size: 14px;
+}
 
-/**-------------------Nguyễn Hữu Kha - start--------------------*/
+/* Nhãn "Giới tính" */
+.gender-label {
+    color: rgb(190, 190, 190);
+    font-size: 15px;
+    margin-left: 10px;
+}
+
+/* Các tùy chọn giới tính */
+.gender-options {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Tùy chỉnh radio button */
+.gender-options input[type="radio"] {
+    accent-color: #007bff;
+    cursor: pointer;
+}
+
+/* Định dạng nhãn tùy chọn với màu mờ */
+.gender-options label {
+    margin-left: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.5); /* Màu đen mờ (50% trong suốt) */
+    transition: color 0.3s, opacity 0.3s;
+}
+
+/* Hiệu ứng hover: Tăng độ rõ nét */
+.gender-options label:hover {
+    color: #007bff; /* Chuyển sang màu xanh khi hover */
+    opacity: 1; /* Trở nên rõ nét */
+}
+
 
 /* Product page */
 .product-slider {
@@ -2964,4 +3004,59 @@ select.auth-form__input:hover {
 .rating:not(:checked) label:hover ~ label {
     color: gold;
 }
+.header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Chỉnh về cuối */
+}
 
+.header-icon > * {
+    margin-left: 10px;
+}
+
+.search-link__wrapper, .cart-link__wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropbtn {
+    background-color: black;
+    color: white;
+    padding: 8px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: black;
+}
