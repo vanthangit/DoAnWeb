@@ -20,7 +20,12 @@
                             <div class="col l-6 m-5 c-12">
                                 <div class="product-content__text-wrapper">
                                     <div class="product-content__text">
-                                        <div class="product-content__text__title" th:text="${product.product_name}"></div>
+
+
+                                        <div class="product-content__text__title"
+                                             th:text="${product.product_name}"
+                                             th:attr="data-product-id=${product.product_id}">
+                                        </div>
 
                                         <p class="product-price price">
                                             <span class="product-price__old del" th:text="${product.cost + 5000 + 'đ'}"></span>
@@ -44,7 +49,7 @@
                                                 <button class="quantity-buttons--plus">+</button>
                                             </div>
 
-                                            <div class="purchase-buttons buttons">Add to Cart</div>
+                                            <div class="purchase-buttons buttons" onclick="addToCart()">Add to Cart</div>
                                         </div>
 
                                         <a href="#" class="product-content__add-to-wishlist">

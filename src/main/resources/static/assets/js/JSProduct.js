@@ -28,3 +28,28 @@ tabs.forEach((tab, index) => {
         pane.classList.add('tabs-active')
     }
 });
+
+function addToCart() {
+    var productId = document.querySelector('.product-content__text__title').getAttribute('data-product-id');
+    var quantity = document.querySelector('.quantity-buttons--number').innerText; // Lấy số lượng từ giao diện người dùng
+
+    // Gửi yêu cầu đến API với các tham số product_id, quantity
+    fetch('/api/cartitems', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            product_id: productId,
+            quantity: quantity
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            alert('Product added to cart!');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+

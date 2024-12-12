@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.iotstar.AloTra.dto.CartItemDTO;
+import vn.iotstar.AloTra.dto.UserDTO;
 import vn.iotstar.AloTra.service.impl.CartItemService;
+import vn.iotstar.AloTra.service.impl.UserService;
 
 @RestController
 @RequestMapping("/api/cartitems")
@@ -13,11 +15,16 @@ import vn.iotstar.AloTra.service.impl.CartItemService;
 public class CartItemController {
 
     private final CartItemService cartItemService;
+    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<CartItemDTO> addCartItem(@RequestBody CartItemDTO request){
 
-        CartItemDTO saveCartItem = cartItemService.addCartItem(request);
+        // Lấy thông tin người dùng hiện tại
+        UserDTO userDTO = userService.getMyInfo();
+        Long user_id = userDTO.getUser_id();  // Lấy user_id từ thông tin người dùng
+
+        CartItemDTO saveCartItem = cartItemService.addCartItem(request, user_id);
 
         return new ResponseEntity<>(saveCartItem, HttpStatus.CREATED);
     }
