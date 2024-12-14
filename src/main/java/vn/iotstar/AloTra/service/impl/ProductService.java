@@ -80,4 +80,17 @@ public class ProductService implements IProductService {
                 .map(productMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    public  Product findProductById(Long id) {
+        return productRepository.findByProductId(id);
+    }
+
+    @Override
+    public List<ProductDTO> getTop5BestSellingProducts() {
+        Pageable topFive = PageRequest.of(0, 5);
+        List<Product> topProducts = productRepository.findTop5BestSellingProducts(topFive);
+        return topProducts.stream()
+                .map(productMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

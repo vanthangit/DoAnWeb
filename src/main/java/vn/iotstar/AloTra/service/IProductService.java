@@ -17,4 +17,6 @@ public interface IProductService {
     public List<ProductDTO> findByCategory(String category, Long excludedProductId);
 
     public List<ProductDTO> getTop5NewProducts();
+
+    List<ProductDTO> getTop5BestSellingProducts();
 }

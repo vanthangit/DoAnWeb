@@ -39,30 +39,31 @@
                 </h1>
                 <div class="grid wide">
                     <div class="row products">
-                        <a href="#" class="col l-2-4 m-3 c-6">
+                        <a th:each="featuredProduct : ${featuredProducts}"
+                           th:href="@{/products/{id}(id=${featuredProduct.product_id})}"
+                           class="col l-2-4 m-3 c-6">
                             <div class="product__item">
                                 <img class="product__item-img"
-                                     src="https://hcm.fstorage.vn/images/2024/11/ca-phe-tearamisu-min-20241113105410.png" alt="">
-                                <h3 class="product__item-name">
-                                    Cà phê Tearamisu (L)
+                                     th:src="${featuredProduct.image}" alt="">
+                                <h3 class="product__item-name" th:text="${featuredProduct.product_name}">
                                 </h3>
                                 <div class="product__item-price-wrapper">
-                                    <h3 class="product__item-price product__item-price--old">
-                                        70000đ
+                                    <h3 class="product__item-price product__item-price--old" th:text="${featuredProduct.cost + 5000 + 'đ'}">
                                     </h3>
-                                    <h3 class="product__item-price">
-                                        65000đ
+                                    <h3 class="product__item-price" th:text="${featuredProduct.cost}">
                                     </h3>
                                 </div>
                                 <div class="star-link-sold-wrapper">
                                     <div class="star-link">
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <div class="star-link">
+                                            <!-- Lặp để hiển thị số sao đã đánh giá -->
+                                            <i th:each="star : ${#numbers.sequence(1, featuredProduct.avg_rating)}" th:if="${featuredProduct.avg_rating >= 1}" class="fa fa-star star--fill"></i>
+                                            <!-- Hiển thị nửa sao nếu có -->
+                                            <i th:if="${featuredProduct.avg_rating % 1 != 0 and featuredProduct.avg_rating < 5}" class="fas fa-star-half-alt star--fill"></i>
+                                            <!-- Hiển thị sao trống để đạt tổng cộng là 5 sao -->
+                                            <i th:each="star : ${#numbers.sequence(1, 5 - featuredProduct.avg_rating)}" th:if="${5 - featuredProduct.avg_rating >= 1}" class="far fa-star star--fill"></i>
+                                        </div>
                                     </div>
-                                    <div class="product__sold-number">22 sold</div>
                                 </div>
                                 <div class="product__item-category-wrapper">
                                     <span class="product__item-category">Bst mới tearamisu</span>
@@ -74,155 +75,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="#" class="col l-2-4 m-3 c-6">
-                            <div class="product__item">
-                                <img class="product__item-img"
-                                     src="https://hcm.fstorage.vn/images/2024/11/tra-tearamisu-min-20241113105753.png" alt="">
-                                <h3 class="product__item-name">
-                                    Trà Tearamisu (L)
-                                </h3>
-                                <div class="product__item-price-wrapper">
-                                    <h3 class="product__item-price product__item-price--old">
-                                        70000đ
-                                    </h3>
-                                    <h3 class="product__item-price">
-                                        65000đ
-                                    </h3>
-                                </div>
-                                <div class="star-link-sold-wrapper">
-                                    <div class="star-link">
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="product__sold-number">11 sold</div>
-                                </div>
-                                <div class="product__item-category-wrapper">
-                                    <span class="product__item-category">Bst mới tearamisu</span>
-                                    <span class="product__item-origin-name">VIETNAM</span>
-                                </div>
-                                <div class="product__item--describe">
-                                    <i class="fas fa-check"></i>
-                                    <span>Hot</span>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="#" class="col l-2-4 m-3 c-6">
-                            <div class="product__item">
-                                <img class="product__item-img"
-                                     src="https://hcm.fstorage.vn/images/2022/65000080-65000105-hong-tra-chanh_31c2d07e-8817-4a3d-9418-ba416e973e2a-og.png" alt="">
-                                <h3 class="product__item-name">
-                                    Hồng Trà Chanh (L)
-                                </h3>
-                                <div class="product__item-price-wrapper">
-                                    <h3 class="product__item-price product__item-price--old">
-                                        40000đ
-                                    </h3>
-                                    <h3 class="product__item-price">
-                                        35000đ
-                                    </h3>
-                                </div>
-                                <div class="star-link-sold-wrapper">
-                                    <div class="star-link">
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="product__sold-number">20 sold</div>
-                                </div>
-                                <div class="product__item-category-wrapper">
-                                    <span class="product__item-category">Trà trái cây</span>
-                                    <span class="product__item-origin-name">VIETNAM</span>
-                                </div>
-                                <div class="product__item--describe">
-                                    <i class="fas fa-check"></i>
-                                    <span>Hot</span>
-                                </div>
-                                <!--                                <div class="product__item-sale-off">-->
-                                <!--                                    <span class="product__item-sale-off-percent">43%</span>-->
-                                <!--                                </div>-->
-                            </div>
-                        </a>
-                        <a href="#" class="col l-2-4 m-3 c-6">
-                            <div class="product__item">
-                                <img class="product__item-img"
-                                     src="https://hcm.fstorage.vn/images/2024/11/tra-o-long-dau-min-20241113105844.png" alt="">
-                                <h3 class="product__item-name">
-                                    Trà Ô Long Dâu (L)
-                                </h3>
-                                <div class="product__item-price-wrapper">
-                                    <h3 class="product__item-price product__item-price--old">
-                                        70000đ
-                                    </h3>
-                                    <h3 class="product__item-price">
-                                        65000đ
-                                    </h3>
-                                </div>
-                                <div class="star-link-sold-wrapper">
-                                    <div class="star-link">
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="product__sold-number">5 sold</div>
-                                </div>
-                                <div class="product__item-category-wrapper">
-                                    <span class="product__item-category">Ordinary</span>
-                                    <span class="product__item-origin-name">USA</span>
-                                </div>
-                                <div class="product__item--describe">
-                                    <i class="fas fa-check"></i>
-                                    <span>Hot</span>
-                                </div>
-                                <!--                                <div class="product__item-sale-off">-->
-                                <!--                                    <span class="product__item-sale-off-percent">43%</span>-->
-                                <!--                                </div>-->
-                            </div>
-                        </a>
-                        <a href="#" class="col l-2-4 m-3 c-6">
-                            <div class="product__item">
-                                <img class="product__item-img"
-                                     src="https://hcm.fstorage.vn/images/2022/65000085-65000100-tra-dao-phuc-long_1dfdb8c8-94b0-4f77-a6ca-5e21ba990713-og.png" alt="">
-                                <h3 class="product__item-name">
-                                    Hồng Trà Đào (L)
-                                </h3>
-                                <div class="product__item-price-wrapper">
-                                    <h3 class="product__item-price product__item-price--old">
-                                        70000đ
-                                    </h3>
-                                    <h3 class="product__item-price">
-                                        65000đ
-                                    </h3>
-                                </div>
-                                <div class="star-link-sold-wrapper">
-                                    <div class="star-link">
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star star--fill" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="product__sold-number">3 sold</div>
-                                </div>
-                                <div class="product__item-category-wrapper">
-                                    <span class="product__item-category">Trà trái cây</span>
-                                    <span class="product__item-origin-name">VIETNAM</span>
-                                </div>
-                                <div class="product__item--describe">
-                                    <i class="fas fa-check"></i>
-                                    <span>Hot</span>
-                                </div>
-                                <!--                                <div class="product__item-sale-off">-->
-                                <!--                                    <span class="product__item-sale-off-percent">43%</span>-->
-                                <!--                                </div>-->
-                            </div>
-                        </a>
+
                     </div>
                 </div>
                 <br>

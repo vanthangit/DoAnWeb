@@ -20,4 +20,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p ORDER BY p.product_id ASC")
     List<Product> findTop5ByOrderByIdDesc(Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE p.product_id = :productId")
+    Product findByProductId(@Param("productId") Long productId);
+
+    @Query("SELECT p FROM Product p " +
+            "JOIN OrderLine ol ON ol.product.product_id = p.product_id " +
+            "WHERE ol.orders.order_status != 'CANCELLED' " +
+            "GROUP BY p.product_id " +
+            "ORDER BY SUM(ol.quantity) DESC")
+    List<Product> findTop5BestSellingProducts(Pageable pageable);
+
 }

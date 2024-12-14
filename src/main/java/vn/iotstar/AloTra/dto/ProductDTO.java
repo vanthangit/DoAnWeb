@@ -1,7 +1,5 @@
 package vn.iotstar.AloTra.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.OneToMany;
 import lombok.*;
 import vn.iotstar.AloTra.entity.CartItem;
 import vn.iotstar.AloTra.entity.OrderLine;

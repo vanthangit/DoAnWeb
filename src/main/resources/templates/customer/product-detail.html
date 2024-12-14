@@ -72,7 +72,7 @@
                                 <span class="product-review__title">Product reviews</span>
                                 <div class="product-review__header">
                                     <div class="product-review__rating-wrapper">
-                                        <span class="product-review__average-rating" th:text="${product.avg_rating}"></span>
+                                        <span class="product-review__average-rating" th:text="${#numbers.formatDecimal(product.avg_rating, 1, 1)}"></span>
                                         /5
                                         <div class="product-review__rating">
                                             <!-- Lặp để hiển thị số sao đã đánh giá -->
@@ -105,12 +105,9 @@
                                                     <span class="product-comment__content" th:text="${feedback.comment}"></span>
                                                 </div>
                                                 <div class="product-comment__created-time-wrapper">
-                                                    <span class="product-comment__created-time" th:text="${feedback.feedback_date}"></span>
+                                                    <span class="product-comment__created-time" th:text="${#dates.format(feedback.feedback_date, 'dd-MM-yyyy')}"></span>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="review-load-comment__wrapper">
-                                            <button class="buttons">load more...</button>
                                         </div>
                                     </div>
                                 </div>

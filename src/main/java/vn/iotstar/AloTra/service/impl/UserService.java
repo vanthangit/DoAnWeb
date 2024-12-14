@@ -102,4 +102,8 @@ public class UserService implements IUserService {
         existingUser.setPhone(userDTO.getPhone());
         userRepository.save(existingUser);
     }
+
+    public User findById(Long id) {
+        return userRepository.findByUserId(id);
+    }
 }

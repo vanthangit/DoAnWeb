@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
+    <title>Lịch sử mua hàng</title>
     <link
             href="https://fonts.googleapis.com/css2?family=Comforter+Brush&family=Estonia&family=Kaushan+Script&family=Marck+Script&family=Nothing+You+Could+Do&family=Patrick+Hand&family=Roboto&family=Satisfy&family=Sawarabi+Gothic&family=Tangerine:wght@700&display=swap"
             rel="stylesheet">
@@ -13,6 +14,7 @@
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/order-history.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
+
 </head>
 <body>
 <header th:replace="~{/customer/fragments/header :: header}"></header>
@@ -53,17 +55,15 @@
         <div th:if="${tab == 'tat-ca-don-hang'}" class="tab-content">
             <div th:each="order : ${orders}" class="card mb-3 container">
                 <div class="card-header">
-                    <a th:href="'/customer/followOrder/'+ ${order.order_id}"><h5
-                            th:text="'Đơn hàng ngày: ' + ${order.order_date}" style="font-size: 15px;"></h5></a>
+                    <h5 th:text="'Đơn hàng ngày: ' + ${#dates.format(order.order_date, 'dd-MM-yyyy')}" style="font-size: 25px;"></h5>
                 </div>
                 <div th:each="product : ${order.products}" class="row g-0">
                     <div class="col-md-3">
-                        <img th:src="${product.image}" class="img-fluid rounded-start" alt="Sản phẩm"
-                             style="width: 100px;">
+                        <img th:src="${product.image}" class="product__item-img" alt="">
                     </div>
                     <div class="col-md-9">
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${product.product_name}" style="font-size: 15px;"></h5>
+                            <h5 class="card-title" th:text="${product.product_name}" style="font-size: 20px;"></h5>
                             <p class="card-text" th:text="'Phân loại hàng: ' + ${product.category}" style="font-size: 15px;"></p>
                             <div class="row">
                                 <div class="col-md-6">
@@ -77,11 +77,14 @@
                     </div>
                     <div class="row mb-4">
                         <div class="d-flex justify-content-end align-items-center">
+                            <div th:if="${order.order_status.toString() == 'COMPLETED'}">
+                                <a th:href="@{/form-feedback(productId=${product.product_id})}" type="button" class="btn btn-outline me-2" style="border: 2px solid black; font-size: 15px;">Đánh giá</a>
+                            </div>
                             <div th:if="${order.order_status.toString() == 'COMPLETED' or order.order_status.toString() == 'CANCELLED' or order.order_status.toString() == 'REFUNDED'}">
                                 <form th:action="@{/add-to-cart}" method="post">
                                     <input type="hidden" name="productId" th:value="${product.product_id}"/>
                                     <input type="hidden" name="quantity" th:value="${product.quantity}"/>
-                                    <button type="submit" class="btn">Mua lại</button>
+                                    <button type="submit" class="btn btn-dark" style="font-size: 15px; ">Mua lại</button>
                                 </form>
                             </div>
                         </div>
@@ -103,17 +106,15 @@
         <div th:if="${tab == 'don-cho-xac-nhan'}" class="tab-content">
             <div th:each="order : ${orders}" class="card mb-3 container">
                 <div class="card-header">
-                    <a th:href="'/customer/followOrder/'+ ${order.order_id}"><h5
-                            th:text="'Đơn hàng ngày: ' + ${order.order_date}" style="font-size: 15px;"></h5></a>
+                    <h5 th:text="'Đơn hàng ngày: ' + ${#dates.format(order.order_date, 'dd-MM-yyyy')}" style="font-size: 25px;"></h5>
                 </div>
                 <div th:each="product : ${order.products}" class="row g-0">
                     <div class="col-md-3">
-                        <img th:src="${product.image}" class="img-fluid rounded-start" alt="Sản phẩm"
-                             style="width: 100px;">
+                        <img th:src="${product.image}" class="product__item-img" alt="">
                     </div>
                     <div class="col-md-9">
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${product.product_name}" style="font-size: 15px;"></h5>
+                            <h5 class="card-title" th:text="${product.product_name}" style="font-size: 20px;"></h5>
                             <p class="card-text" th:text="'Phân loại hàng: ' + ${product.category}" style="font-size: 15px;"></p>
                             <div class="row">
                                 <div class="col-md-6">
@@ -138,17 +139,15 @@
         <div th:if="${tab == 'don-da-xac-nhan'}" class="tab-content">
             <div th:each="order : ${orders}" class="card mb-3 container">
                 <div class="card-header">
-                    <a th:href="'/customer/followOrder/'+ ${order.order_id}"><h5
-                            th:text="'Đơn hàng ngày: ' + ${order.order_date}"></h5></a>
+                        <h5 th:text="'Đơn hàng ngày: ' + ${#dates.format(order.order_date, 'dd-MM-yyyy')}" style="font-size: 25px;"></h5>
                 </div>
                 <div th:each="product : ${order.products}" class="row g-0">
                     <div class="col-md-3">
-                        <img th:src="${product.image}" class="img-fluid rounded-start" alt="Sản phẩm"
-                             style="width: 100px;">
+                        <img th:src="${product.image}" class="product__item-img" alt="">
                     </div>
                     <div class="col-md-9">
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${product.product_name}" style="font-size: 15px;"></h5>
+                            <h5 class="card-title" th:text="${product.product_name}" style="font-size: 20px;"></h5>
                             <p class="card-text" th:text="'Phân loại hàng: ' + ${product.category}" style="font-size: 15px;"></p>
                             <div class="row">
                                 <div class="col-md-6">
@@ -173,17 +172,15 @@
         <div th:if="${tab == 'don-dang-van-chuyen'}" class="tab-content">
             <div th:each="order : ${orders}" class="card mb-3 container">
                 <div class="card-header">
-                    <a th:href="'/customer/followOrder/'+ ${order.order_id}"><h5
-                            th:text="'Đơn hàng ngày: ' + ${order.order_date}"></h5></a>
+                    <h5 th:text="'Đơn hàng ngày: ' + ${#dates.format(order.order_date, 'dd-MM-yyyy')}" style="font-size: 25px;"></h5>
                 </div>
                 <div th:each="product : ${order.products}" class="row g-0">
                     <div class="col-md-3">
-                        <img th:src="${product.image}" class="img-fluid rounded-start" alt="Sản phẩm"
-                             style="width: 100px;">
+                        <img th:src="${product.image}" class="product__item-img" alt="">
                     </div>
                     <div class="col-md-9">
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${product.product_name}" style="font-size: 15px;"></h5>
+                            <h5 class="card-title" th:text="${product.product_name}" style="font-size: 20px;"></h5>
                             <p class="card-text" th:text="'Phân loại hàng: ' + ${product.category}" style="font-size: 15px;"></p>
                             <div class="row">
                                 <div class="col-md-6">
@@ -208,17 +205,15 @@
         <div th:if="${tab == 'don-da-giao'}" class="tab-content">
             <div th:each="order : ${orders}" class="card mb-3 container">
                 <div class="card-header">
-                    <a th:href="'/customer/followOrder/'+ ${order.order_id}"><h5
-                            th:text="'Đơn hàng ngày: ' + ${order.order_date}"></h5></a>
+                    <h5 th:text="'Đơn hàng ngày: ' + ${#dates.format(order.order_date, 'dd-MM-yyyy')}" style="font-size: 25px;"></h5>
                 </div>
                 <div th:each="product : ${order.products}" class="row g-0">
                     <div class="col-md-3">
-                        <img th:src="${product.image}" class="img-fluid rounded-start" alt="Sản phẩm"
-                             style="width: 100px;">
+                        <img th:src="${product.image}" class="product__item-img" alt="">
                     </div>
                     <div class="col-md-9">
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${product.product_name}" style="font-size: 15px;"></h5>
+                            <h5 class="card-title" th:text="${product.product_name}" style="font-size: 20px;"></h5>
                             <p class="card-text" th:text="'Phân loại hàng: ' + ${product.category}" style="font-size: 15px;"></p>
                             <div class="row">
                                 <div class="col-md-6">
@@ -231,11 +226,16 @@
                         </div>
                     </div>
                     <div class="text-end mb-4 ml-4">
-                        <form th:action="@{/add-to-cart}" method="post">
-                            <input type="hidden" name="productId" th:value="${product.product_id}"/>
-                            <input type="hidden" name="quantity" th:value="${product.quantity}"/>
-                            <button type="submit" class="btn">Mua lại</button>
-                        </form>
+                        <div class="d-flex justify-content-end align-items-center">
+                            <div>
+                                <a th:href="@{/form-feedback(productId=${product.product_id})}" type="button" class="btn btn-outline-dark me-2" style="border: 2px solid black; font-size: 15px;">Đánh giá</a>
+                            </div>
+                            <form th:action="@{/add-to-cart}" method="post">
+                                <input type="hidden" name="productId" th:value="${product.product_id}"/>
+                                <input type="hidden" name="quantity" th:value="${product.quantity}"/>
+                                <button type="submit" class="btn btn-dark" style="font-size: 15px;">Mua lại</button>
+                            </form>
+                        </div>
                     </div>
                     <hr>
                 </div>
@@ -250,17 +250,15 @@
         <div th:if="${tab == 'don-huy'}" class="tab-content">
             <div th:each="order : ${orders}" class="card mb-3 container">
                 <div class="card-header">
-                    <a th:href="'/customer/followOrder/'+ ${order.order_id}"><h5
-                            th:text="'Đơn hàng ngày: ' + ${order.order_date}"></h5></a>
+                    <h5 th:text="'Đơn hàng ngày: ' + ${#dates.format(order.order_date, 'dd-MM-yyyy')}" style="font-size: 25px;"></h5>
                 </div>
                 <div th:each="product : ${order.products}" class="row g-0">
                     <div class="col-md-3">
-                        <img th:src="${product.image}" class="img-fluid rounded-start" alt="Sản phẩm"
-                             style="width: 100px;">
+                        <img th:src="${product.image}" class="product__item-img" alt="">
                     </div>
                     <div class="col-md-9">
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${product.product_name}" style="font-size: 15px;"></h5>
+                            <h5 class="card-title" th:text="${product.product_name}" style="font-size: 20px;"></h5>
                             <p class="card-text" th:text="'Phân loại hàng: ' + ${product.category}" style="font-size: 15px;"></p>
                             <div class="row">
                                 <div class="col-md-6">
@@ -276,7 +274,7 @@
                         <form th:action="@{/add-to-cart}" method="post">
                             <input type="hidden" name="productId" th:value="${product.product_id}"/>
                             <input type="hidden" name="quantity" th:value="${product.quantity}"/>
-                            <button type="submit" class="btn">Mua lại</button>
+                            <button type="submit" class="btn btn-dark" style="font-size: 15px;">Mua lại</button>
                         </form>
                     </div>
                     <hr>

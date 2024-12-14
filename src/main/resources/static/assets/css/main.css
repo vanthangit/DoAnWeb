@@ -2089,9 +2089,9 @@ select.auth-form__input:hover {
 .product-comment__content-wrapper {
     width: 100%;
     margin: 8px 0;
-    font-size: 28px;
+    font-size: 20px;
     color: var(--text-color);
-    font-family: 'Tangerine', cursive;
+    font-style: italic;
     font-weight: 500;
 }
 
