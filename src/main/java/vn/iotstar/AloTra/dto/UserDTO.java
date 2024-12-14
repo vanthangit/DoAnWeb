@@ -19,4 +19,5 @@ public class UserDTO {
     private String password;
     private String confirmPassword;
     private Long role_id;
+    private Long branch_id;
 }

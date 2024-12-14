@@ -9,6 +9,7 @@ import vn.iotstar.AloTra.entity.User;
 public interface UserMapper {
 
     @Mapping(source = "role.role_id", target = "role_id")
+    @Mapping(source = "branch.branch_id", target = "branch_id")
     UserDTO toUserDTO(User user);
 
 
