@@ -1,4 +1,4 @@
-package vn.iotstar.AloTra.controller.owner;
+package vn.iotstar.AloTra.controller.customer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

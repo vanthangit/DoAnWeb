@@ -6,11 +6,17 @@ import org.springframework.stereotype.Service;
 import vn.iotstar.AloTra.dto.OrderHistoryDTO;
 import vn.iotstar.AloTra.dto.ProductHistoryDTO;
 import vn.iotstar.AloTra.entity.Orders;
+import vn.iotstar.AloTra.entity.Payment;
 import vn.iotstar.AloTra.entity.Product;
 import vn.iotstar.AloTra.enums.OrderStatus;
+import vn.iotstar.AloTra.enums.PaymentStatus;
 import vn.iotstar.AloTra.repository.OrderRepository;
+import vn.iotstar.AloTra.repository.PaymentRepository;
 import vn.iotstar.AloTra.service.IOrderService;
-
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -20,10 +26,12 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
+    private final PaymentRepository paymentRepository;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, PaymentRepository paymentRepository) {
         this.orderRepository = orderRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     public OrderHistoryDTO mapperToPurchaseHistoryDTO(Orders order) {
@@ -85,5 +93,19 @@ public class OrderService implements IOrderService {
         }
 
         return historyDTOs;
+    }
+
+    public void updateOrderStatusPaymentTime(Long orderId, String paymentTime) {
+        Orders order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+        order.setOrder_status(OrderStatus.CONFIRMED);
+        Payment payment = paymentRepository.findByOrder(order)
+                .orElseThrow(() -> new RuntimeException("Payment not found"));
+        payment.setPayment_status(PaymentStatus.PAID);
+        LocalDateTime localDateTime = LocalDateTime.parse(paymentTime, DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        Date utilDate = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        payment.setPayment_date(sqlDate);
+        paymentRepository.save(payment);
+        orderRepository.save(order);
     }
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderDTO {
 
+    private Long order_id;
     private String branch_name;
     private String shipping_address;
     private String payment_method;

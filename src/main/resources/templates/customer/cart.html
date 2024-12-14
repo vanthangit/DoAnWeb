@@ -86,7 +86,7 @@
 
                             <option class="pay__user-info__body-content-wrapper pay__user-info__body-option">
                                 <div class="pay__user-info__body-content">
-                                    <span>Tiền mặt</span>
+                                    <span>COD</span>
                                 </div>
                             </option>
                         </select>
@@ -147,54 +147,91 @@
         </div>
     </div>
     <script>
-
-        //Function Confirm Purchase
         function confirmPurchase() {
-
             // Lấy thông tin từ các trường nhập liệu
             const shippingAddress = document.querySelector('.pay__user-info__body-content-address').value;
-
             const branchSelect = document.querySelector('.branch-select');
             const branch_name = branchSelect.selectedOptions[0].textContent.trim();
             const total_amount = parseFloat(document.getElementById('total-price').textContent.replace('$', ''));
 
-            if (!shippingAddress){
-                alert("Vui lòng nhập địa chỉ nhận hàng!")
+            if (!shippingAddress) {
+                alert("Vui lòng nhập địa chỉ nhận hàng!");
                 return;
             }
 
             const paymentMethodSelect = document.querySelector('.payment-select');
-            const paymentMethod = paymentMethodSelect ? paymentMethodSelect.value : null; // Lấy phương thức thanh toán
+            const paymentMethod = paymentMethodSelect.options[paymentMethodSelect.selectedIndex].text.trim();
 
-            // Gọi API tạo đơn hàng
+            const orderId = (Number) (generateOrderId());
+
             fetch('/api/orderlines', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    order_id: orderId,
                     shipping_address: shippingAddress,
                     branch_name: branch_name,
                     payment_method: paymentMethod,
                     total_amount: total_amount
                 })
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(orderResponse => {
-                    console.log('Đơn hàng đã được xác nhận:', orderResponse);
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(orderResponse => {
+                console.log('Đơn hàng đã được lưu vào cơ sở dữ liệu:', orderResponse);
+
+                if (paymentMethod === 'VNPAY') {
+                    console.log('Trước khi gọi API VNPAY:', { total_amount, orderId });
+
+                    fetch('/submitOrder', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `amount=${total_amount}&orderId=${orderId}`
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.text();
+                        })
+                        .then(vnpayUrl => {
+                            console.log('URL VNPAY:', vnpayUrl); // Kiểm tra URL trả về
+                            if (vnpayUrl) {
+                                window.location.replace(vnpayUrl); // Sử dụng replace thay vì href
+                            } else {
+                                console.error('URL trả về không hợp lệ:', vnpayUrl);
+                                alert('URL trả về không hợp lệ');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Lỗi khi chuyển hướng thanh toán VNPAY:', error);
+                            alert('Lỗi khi chuyển hướng thanh toán VNPAY');
+                        });
+                } else {
                     alert('Xác nhận mua hàng thành công!');
                     // Điều hướng người dùng hoặc làm mới giao diện nếu cần
-                })
-                .catch(error => {
-                    console.error('Lỗi khi xác nhận đơn hàng:', error);
-                    alert('Lỗi khi xác nhận đơn hàng!.');
-                });
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi khi xác nhận đơn hàng:', error);
+                alert('Lỗi khi xác nhận đơn hàng!');
+            });
         }
+
+        function generateOrderId() {
+            // Tạo orderId theo cách của bạn
+            return new Date().getTime();
+        }
+
+
 
         //TotalAmount function
         function totalAmount() {

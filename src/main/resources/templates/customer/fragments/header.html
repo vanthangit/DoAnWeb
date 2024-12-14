@@ -43,67 +43,9 @@
                         </a>
                     </div>
                     <div class="cart-link__wrapper">
-                        <a href="../cart.html" class="cart-link">
-                            <span class="cart-link-notice">1</span>
+                        <a th:href="@{/cart}" class="cart-link">
                             <i class="fa fa-cart-plus"></i>
                         </a>
-                        <!-- cart list -->
-                        <div class="cart-list">
-                            <!-- empty cart list -->
-                            <div class="cart-list__empty-cart">
-                                <img src="/assets/img/icon/empty_cart.png" alt="Empty cart"
-                                     class="cart-list__empty-cart-img">
-                                <div class="cart-list__empty-cart-title">
-                                    Unfortunately, Your Cart Is Empty
-                                </div>
-                                <div class="cart-list__empty-cart-message">
-                                    Please add something in your cart
-                                </div>
-                            </div>
-                            <!-- filled cart list -->
-                            <div class="cart-list__filled-cart">
-                                <div class="filled-cart__header">
-                                        <span class="filled-cart__title">
-                                            Added Products
-                                        </span>
-                                </div>
-                                <ul class="cart-list__filled-cart__items-list">
-                                    <a href="./" class="cart-list__filled-cart__item-wrapper">
-                                        <li class="cart-list__filled-cart__item">
-                                            <img src="https://hcm.fstorage.vn/images/2024/11/tra-o-long-dau-min-20241113105844.png"
-                                                 alt="foundation" class="filled-cart__item-img">
-                                            <div class="cart-list__filled-cart__item-info">
-                                                <div class="cart-list__filled-cart__item-info-head">
-                                                        <span class="cart-list__filled-cart__item-name">
-                                                            Trà Ô Long Dâu (L)
-                                                        </span>
-                                                    <div class="cart-list__filled-cart__price-wrapper">
-                                                        <div class="cart-list__filled-cart__item-price">
-                                                            65000đ
-                                                        </div>
-                                                        <div class="cart-list__filled-cart__multiphy">x</div>
-                                                        <div class="cart-list__filled-cart__item-quantity">
-                                                            2
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="cart-list__filled-cart__item-info-body">
-                                                        <span class="cart-list__filled-cart__item-category">
-                                                            Category: Bst mới tearamisu
-                                                        </span>
-                                                    <span class="cart-list__filled-cart__remove">
-                                                            Remove
-                                                        </span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </a>
-                                </ul>
-                                <a th:href="@{/cart}" class="cart-list__filled-cart__footer">
-                                    <button id="cart-list__view-button" class="buttons buttons--smaller">View Cart</button>
-                                </a>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Kiểm tra nếu chưa đăng nhập -->

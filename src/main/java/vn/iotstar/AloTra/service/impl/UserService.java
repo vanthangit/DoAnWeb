@@ -9,9 +9,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.iotstar.AloTra.dto.UserDTO;
+import vn.iotstar.AloTra.entity.Cart;
 import vn.iotstar.AloTra.entity.Role;
 import vn.iotstar.AloTra.entity.User;
 import vn.iotstar.AloTra.mapper.UserMapper;
+import vn.iotstar.AloTra.repository.CartRepository;
 import vn.iotstar.AloTra.repository.RoleRepository;
 import vn.iotstar.AloTra.repository.UserRepository;
 import vn.iotstar.AloTra.service.IUserService;
@@ -28,13 +30,15 @@ public class UserService implements IUserService {
     RoleRepository roleRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
+    CartRepository cartRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper,@Lazy PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper,@Lazy PasswordEncoder passwordEncoder, CartRepository cartRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+        this.cartRepository = cartRepository;
     }
 
     public void createUser(UserDTO userDTO) {
@@ -44,6 +48,9 @@ public class UserService implements IUserService {
         user.setRole(role);
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         userRepository.save(user);
+        Cart cart = new Cart();
+        cart.setUser(user);
+        cartRepository.save(cart);
     }
 
     public void saveUserInformation(String name, String email) {
@@ -56,6 +63,9 @@ public class UserService implements IUserService {
         var existingUser = userRepository.findByEmail(email);
         if (existingUser.isEmpty()) {
             userRepository.save(user);
+            Cart cart = new Cart();
+            cart.setUser(user);
+            cartRepository.save(cart);
         }
     }
 

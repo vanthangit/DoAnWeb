@@ -8,16 +8,19 @@ import vn.iotstar.AloTra.entity.*;
 import vn.iotstar.AloTra.enums.OrderStatus;
 import vn.iotstar.AloTra.enums.PaymentStatus;
 import vn.iotstar.AloTra.mapper.OrderLineMapper;
+import vn.iotstar.AloTra.mapper.OrderMapper;
 import vn.iotstar.AloTra.repository.*;
 import vn.iotstar.AloTra.service.IOrderLineService;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
 @Slf4j
 public class OrderLineService implements IOrderLineService {
 
+    OrderMapper orderMapper;
     CartItemRepository cartItemRepository;
     PaymentRepository paymentRepository;
     OrderLineRepository orderLineRepository;
@@ -26,7 +29,7 @@ public class OrderLineService implements IOrderLineService {
     OrderRepository orderRepository;
     BranchRepository branchRepository;
 
-    public OrderLineService(OrderLineRepository orderLineRepository, OrderLineMapper orderLineMapper, CartRepository cartRepository, OrderRepository orderRepository, BranchRepository branchRepository, PaymentRepository paymentRepository, CartItemRepository cartItemRepository) {
+    public OrderLineService(OrderLineRepository orderLineRepository, OrderLineMapper orderLineMapper, CartRepository cartRepository, OrderRepository orderRepository, BranchRepository branchRepository, PaymentRepository paymentRepository, CartItemRepository cartItemRepository, OrderMapper orderMapper) {
         this.orderLineRepository = orderLineRepository;
         this.orderLineMapper = orderLineMapper;
         this.cartRepository = cartRepository;
@@ -34,10 +37,11 @@ public class OrderLineService implements IOrderLineService {
         this.branchRepository = branchRepository;
         this.paymentRepository = paymentRepository;
         this.cartItemRepository = cartItemRepository;
+        this.orderMapper = orderMapper;
     }
 
     @Transactional
-    public void cartItemIntoOrderLine(Long user_id, OrderDTO orderDTO) { // user_id này là user hiện tại đang đăng nhập
+    public OrderDTO cartItemIntoOrderLine(Long user_id, OrderDTO orderDTO) { // user_id này là user hiện tại đang đăng nhập
 
         Long cart_id = cartRepository.findCartIdByUserId(user_id); // Đây là cartID của user hiện tại
 
@@ -51,6 +55,7 @@ public class OrderLineService implements IOrderLineService {
         log.info("Branch_name: {}", orderDTO.getBranch_name());
         Branch branch = branchRepository.findByBranchName(orderDTO.getBranch_name());
         Orders orders = new Orders();
+        orders.setOrder_id(orderDTO.getOrder_id());
         orders.setUser_id(user_id);
         orders.setBranch(branch);
         orders.setShipping_address(orderDTO.getShipping_address());
@@ -69,16 +74,14 @@ public class OrderLineService implements IOrderLineService {
         payment.setOrder(orders);
         payment.setTotal(orderDTO.getTotal_amount());
         payment.setPayment_method(orderDTO.getPayment_method());
-        if (orderDTO.getPayment_method() == "VNPAY"){
-            payment.setPayment_status(PaymentStatus.PAID);
-        }
-        else {
-            payment.setPayment_status(PaymentStatus.PENDING);
-        }
+        payment.setPayment_status(PaymentStatus.PENDING);
         payment.setPayment_date(new java.sql.Date(System.currentTimeMillis()));
         paymentRepository.save(payment);
 
         // Xóa cart khi người dùng mua hàng rồi
         cartItemRepository.deleteByCart(cart);
+
+
+        return orderMapper.toOrderDTO(orders);
     }
 }

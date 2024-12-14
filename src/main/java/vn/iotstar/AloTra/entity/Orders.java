@@ -17,7 +17,6 @@ import java.util.Set;
 @Table(name = "orders")
 public class Orders {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long order_id;
     private Long user_id;
     private Date order_date;
