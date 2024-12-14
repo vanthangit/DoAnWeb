@@ -36,7 +36,7 @@ public class Orders {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "orders")
-    @JsonManagedReference
-    private List<Branch> branch;
+    @ManyToOne
+    @JoinColumn(name = "branch_id", referencedColumnName = "branch_id")
+    private Branch branch;
 }

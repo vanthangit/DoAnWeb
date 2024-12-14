@@ -29,6 +29,8 @@ tabs.forEach((tab, index) => {
     }
 });
 
+
+//Chức năng AddToCart
 function addToCart() {
     var productId = document.querySelector('.product-content__text__title').getAttribute('data-product-id');
     var quantity = document.querySelector('.quantity-buttons--number').innerText; // Lấy số lượng từ giao diện người dùng
@@ -52,4 +54,6 @@ function addToCart() {
             console.error('Error:', error);
         });
 }
+
+
 

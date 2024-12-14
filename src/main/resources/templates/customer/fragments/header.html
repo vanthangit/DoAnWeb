@@ -100,8 +100,7 @@
                                     </a>
                                 </ul>
                                 <a th:href="@{/cart}" class="cart-list__filled-cart__footer">
-                                    <button id="cart-list__view-button" class="buttons buttons--smaller">View Cart
-                                    </button>
+                                    <button id="cart-list__view-button" class="buttons buttons--smaller">View Cart</button>
                                 </a>
                             </div>
                         </div>
@@ -132,6 +131,23 @@
     <div id="back-to-top" class="back-to-top" title="Back to top">
         <i class="fas fa-arrow-up"></i>
     </div>
+
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const viewCartButton = document.getElementById('cart-list__view-button');
+        if (viewCartButton) {
+
+            viewCartButton.addEventListener('click', function () {
+                loadCart();
+            });
+
+        } else {
+            console.error('View Cart button not found!');
+        }
+    });
+</script>
+
 </body>
 </html>
