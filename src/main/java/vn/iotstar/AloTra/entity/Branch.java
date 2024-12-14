@@ -17,10 +17,6 @@ public class Branch {
     private String branch_name;
     private String branch_address;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)

@@ -1,7 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="~{/customer/layout-customer.html}">
+
+<head>
+    <style>
+        .pay__user-info__body-content-address{
+            display: inline-block;
+            width: 500px;
+            border: revert;
+            white-space: nowrap;
+            padding: 5px 10px;
+        }
+
+        .pay__user-info__body-content-wrapper {
+            display: inline-block;
+            width: auto;
+            white-space: nowrap;
+            border: revert;
+        }
+        .pay__user-info__body-content {
+            display: inline-block;
+            width: auto;
+            white-space: nowrap;
+            padding: 5px 10px;
+            border: revert;
+        }
+        .pay__user-info__body-select {
+            width: auto;
+            border: revert;
+        }
+    </style>
+</head>
 <body>
 <section layout:fragment="content">
     <div id="cart">
@@ -14,87 +43,294 @@
                 <button class="buttons">go back</button>
             </div>
 
-            <!-- Filled cart -->
-            <div class="filled-cart">
-                <div class="filled-cart__title-bar">
-                    <input type="checkbox" class="select-all-products">
-                    <span>Product</span>
-                    <span>Unit Price</span>
-                    <span>Quantity</span>
-                    <span>Total</span>
-                    <span>Option</span>
+            <div class="pay-content">
+                <div class="pay__user-info active-tab">
+                    <div class="pay__user-info__header">
+                        <div class="pay__user-info__title">
+                            <span>Địa chỉ nhận hàng</span>
+                        </div>
+                    </div>
+                    <div class="pay__user-info__content">
+                        <input class="pay__user-info__body-content-address">
+                    </div>
+
+                    <!--CHI NHÁNH-BEGIN-->
+                    <div class="pay__user-info__header">
+                        <div class="pay__user-info__title">
+                            <span>Chi nhánh</span>
+                        </div>
+                    </div>
+
+                    <div class="pay__user-info__content">
+                        <select class="pay__user-info__body pay__user-info__body-select branch-select">
+                            <!--CHI NHANH LOAD LÊN Ở ĐÂY-->
+                        </select>
+                    </div>
+
+                    <!--CHI NHÁNH-END-->
+
+
+                    <!--PHƯƠNG THỨC THANH TOÁN-->
+                    <div class="pay__user-info__header">
+                        <div class="pay__user-info__title">
+                            <span>Phương thức thanh toán</span>
+                        </div>
+                    </div>
+                    <div class="pay__user-info__content">
+                        <select class="pay__user-info__body pay__user-info__body-select payment-select">
+                            <option class="pay__user-info__body-content-wrapper pay__user-info__body-option">
+                                <div class="pay__user-info__body-content">
+                                    <span>VNPAY</span>
+                                </div>
+                            </option>
+
+                            <option class="pay__user-info__body-content-wrapper pay__user-info__body-option">
+                                <div class="pay__user-info__body-content">
+                                    <span>Tiền mặt</span>
+                                </div>
+                            </option>
+                        </select>
+                    </div>
+
                 </div>
 
-                <div class="filled-cart__items-wrapper">
-                    <div class="filled-cart__item">
-                        <input type="checkbox" class="select-product">
-                        <a href="#" class="filled-cart__item-info">
-                            <div class="filled-cart__item-img"></div>
-                            <p class="filled-cart__item-description">K Dream Kem lót trang điểm tự nhiên lâu trôi & xịt nhũ khoá trang điểm 8h lâu trôi phù hợp với mọi loại da</p>
-                        </a>
-                        <span class="filled-cart__item-price">$24</span>
-                        <div class="filled-cart__item-quantity">
-                            <div class="quantity-buttons">
-                                <button class="quantity-buttons--minus">-</button>
-                                <div class="quantity-buttons--number">1</div>
-                                <button class="quantity-buttons--plus">+</button>
+
+
+                <!-- Filled cart -->
+                <div class="filled-cart">
+                    <div class="filled-cart__title-bar">
+                        <input type="checkbox" class="select-all-products">
+                        <span>Product</span>
+                        <span>Unit Price</span>
+                        <span>Quantity</span>
+                        <span>Total</span>
+                        <span>Option</span>
+                    </div>
+
+                    <!--Nơi chứa CartItem-->
+                    <div class="filled-cart__items-wrapper">
+
+                        <div class="filled-cart__item">
+                            <input type="checkbox" class="select-product">
+                            <a href="#" class="filled-cart__item-info">
+                                <div class="filled-cart__item-img"></div>
+                                <p class="filled-cart__item-description">K Dream Kem lót trang điểm tự nhiên lâu trôi & xịt nhũ khoá trang điểm 8h lâu trôi phù hợp với mọi loại da</p>
+                            </a>
+                            <span class="filled-cart__item-price">$24</span>
+                            <div class="filled-cart__item-quantity">
+                                <div class="quantity-buttons">
+                                    <div class="quantity-buttons--number" style="margin-left: 114px">1</div>
+                                </div>
+                            </div>
+                            <span class="filled-cart__item-totalPrice">24</span>
+
+                            <div class="filled-cart__item-delete-button">
+                                <button class="buttons">Delete</button>
                             </div>
                         </div>
-                        <span class="filled-cart__item-totalPrice">$24</span>
-                        <div class="filled-cart__item-delete-button">
-                            <button class="buttons">Delete</button>
+
+                    </div>
+
+                    <div class="pay__item">
+                        <div class="pay__total-price">
+                            Total:
+                            <span id="total-price">$60</span>
                         </div>
                     </div>
 
-                    <div class="filled-cart__item">
-                        <input type="checkbox" class="select-product">
-                        <a href="#" class="filled-cart__item-info">
-                            <div class="filled-cart__item-img"></div>
-                            <p class="filled-cart__item-description">K Dream Kem lót trang điểm tự nhiên lâu trôi</p>
-                        </a>
-                        <span class="filled-cart__item-price">$24</span>
-                        <div class="filled-cart__item-quantity">
-                            <div class="quantity-buttons">
-                                <button class="quantity-buttons--minus">-</button>
-                                <div class="quantity-buttons--number">1</div>
-                                <button class="quantity-buttons--plus">+</button>
-                            </div>
-                        </div>
-                        <span class="filled-cart__item-totalPrice">$24</span>
-                        <div class="filled-cart__item-delete-button">
-                            <button class="buttons">Delete</button>
-                        </div>
-                    </div>
-
-                    <div class="filled-cart__item">
-                        <input type="checkbox" class="select-product">
-                        <a href="#" class="filled-cart__item-info">
-                            <div class="filled-cart__item-img"></div>
-                            <p class="filled-cart__item-description">K Dream</p>
-                        </a>
-                        <span class="filled-cart__item-price">$24</span>
-                        <div class="filled-cart__item-quantity">
-                            <div class="quantity-buttons">
-                                <button class="quantity-buttons--minus">-</button>
-                                <div class="quantity-buttons--number">1</div>
-                                <button class="quantity-buttons--plus">+</button>
-                            </div>
-                        </div>
-                        <span class="filled-cart__item-totalPrice">$24</span>
-                        <div class="filled-cart__item-delete-button">
-                            <button class="buttons">Delete</button>
-                        </div>
+                    <div class="purchase-confirmation-button">
+                        <button class="buttons">Confirm Purchase</button>
                     </div>
                 </div>
-
-                <a th:href="@{/payment}" class="purchase-confirmation-button">
-                    <button class="buttons">Confirm Purchase</button>
-                </a>
             </div>
 
         </div>
-
     </div>
+    <script>
+
+        //Function Confirm Purchase
+        function confirmPurchase() {
+
+            // Lấy thông tin từ các trường nhập liệu
+            const shippingAddress = document.querySelector('.pay__user-info__body-content-address').value;
+
+            const branchSelect = document.querySelector('.branch-select');
+            const branch_name = branchSelect.selectedOptions[0].textContent.trim();
+            const total_amount = parseFloat(document.getElementById('total-price').textContent.replace('$', ''));
+
+            if (!shippingAddress){
+                alert("Vui lòng nhập địa chỉ nhận hàng!")
+                return;
+            }
+
+            const paymentMethodSelect = document.querySelector('.payment-select');
+            const paymentMethod = paymentMethodSelect ? paymentMethodSelect.value : null; // Lấy phương thức thanh toán
+
+            // Gọi API tạo đơn hàng
+            fetch('/api/orderlines', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    shipping_address: shippingAddress,
+                    branch_name: branch_name,
+                    payment_method: paymentMethod,
+                    total_amount: total_amount
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(orderResponse => {
+                    console.log('Đơn hàng đã được xác nhận:', orderResponse);
+                    alert('Xác nhận mua hàng thành công!');
+                    // Điều hướng người dùng hoặc làm mới giao diện nếu cần
+                })
+                .catch(error => {
+                    console.error('Lỗi khi xác nhận đơn hàng:', error);
+                    alert('Lỗi khi xác nhận đơn hàng!.');
+                });
+        }
+
+        //TotalAmount function
+        function totalAmount() {
+            const cartItemsWrapper = document.querySelector('.pay__item');
+            let total = 0;  // Khởi tạo biến total để lưu tổng tiền
+
+            // Gọi API để lấy danh sách CartItem
+            fetch('/api/cartitems/getCart')
+                .then(response => response.json())
+                .then(cartItems => {
+                    // Duyệt qua tất cả các item trong giỏ hàng
+                    const promises = cartItems.map(item => {
+                        return fetch(`/api/cartitems/${item.product_id}`)  // Gọi API để lấy thông tin sản phẩm
+                            .then(response => response.json())
+                            .then(productDTO => {
+                                // Tính tổng tiền (cost * quantity) và cộng vào biến total
+                                total += productDTO.cost * item.quantity;
+                            })
+                            .catch(error => console.error('Lỗi khi lấy thông tin sản phẩm:', error));
+                    });
+
+                    // Chờ tất cả các promise trả về (đảm bảo tất cả dữ liệu đã được lấy)
+                    Promise.all(promises)
+                        .then(() => {
+                            // Sau khi tính xong, cập nhật giá trị total vào thẻ span
+                            const totalPriceElement = document.getElementById('total-price');
+                            totalPriceElement.textContent = `$${total}`;
+                        })
+                        .catch(error => console.error('Lỗi khi tính tổng tiền:', error));
+                })
+                .catch(error => console.error('Lỗi khi lấy danh sách CartItems:', error));
+        }
+
+
+        function loadBranch() {
+            // Chọn phần tử <select> đã có sẵn trong DOM
+            const branchSelect = document.querySelector('.branch-select');
+
+            if (!branchSelect) {
+                console.error('Không tìm thấy phần tử .branch-select');
+                return;
+            }
+
+            // Xóa nội dung cũ của <select>
+            branchSelect.innerHTML = '';
+
+            // Gọi API để lấy danh sách chi nhánh
+            fetch('/api/branchs')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(branches => {
+                    // Kiểm tra nếu dữ liệu trả về là một mảng
+                    if (!Array.isArray(branches)) {
+                        throw new Error('Dữ liệu trả về không phải là một mảng');
+                    }
+
+                    // Thêm các option vào <select>
+                    branches.forEach(branchDTO => {
+                        const option = document.createElement('option');
+                        option.className = 'option-branch';
+
+                        option.innerHTML = `
+                            <div class="pay__user-info__body-content">
+                                <span>${branchDTO.branch_name}</span>
+                            </div>
+                        `;
+
+                        option.value = branchDTO.id; // Sử dụng branch_id nếu có
+                        branchSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải danh sách chi nhánh:', error);
+                });
+        }
+
+
+        // Load Cart function
+        function loadCart() {
+            console.log("loadCart is called");
+
+            const cartItemsWrapper = document.querySelector('.filled-cart__items-wrapper');
+            cartItemsWrapper.innerHTML = ''; // Xóa nội dung cũ trước khi thêm mới
+
+            // Gọi API để lấy danh sách CartItem
+            fetch('/api/cartitems/getCart')
+                .then(response => response.json())
+                .then(cartItems => {
+                    cartItems.forEach(item => {
+                        // Gọi API để lấy thông tin sản phẩm bằng productID
+                        fetch(`/api/cartitems/${item.product_id}`)  // Thay thế bằng endpoint API của bạn
+                            .then(response => response.json())
+                            .then(productDTO => {
+                                const cartItem = document.createElement('div');
+                                cartItem.className = 'filled-cart__item';
+
+                                cartItem.innerHTML = `
+                                    <input type="checkbox" class="select-product">
+                                    <a href="#" class="filled-cart__item-info">
+                                        <div class="filled-cart__item-img"></div>
+                                        <p class="filled-cart__item-description">${productDTO.product_name}</p>
+                                    </a>
+                                    <span class="filled-cart__item-price" style="padding-left: 20px">$${productDTO.cost}</span>
+                                    <div class="filled-cart__item-quantity">
+                                        <div class="quantity-buttons">
+                                            <div class="quantity-buttons--number" style="margin-left: 88px">${item.quantity}</div>
+                                        </div>
+                                    </div>
+                                    <span class="filled-cart__item-totalPrice" style="padding-right: 50px">$${productDTO.cost * item.quantity}</span>
+                                    <div class="filled-cart__item-delete-button">
+                                        <button class="buttons" style="margin-right: 50px">Delete</button>
+                                    </div>
+                                `;
+
+                                cartItemsWrapper.appendChild(cartItem);
+                            })
+                            .catch(error => console.error('Lỗi khi lấy thông tin sản phẩm:', error));
+                    });
+                })
+                .catch(error => console.error('Lỗi khi lấy thông tin giỏ hàng:', error));
+        }
+
+        // Gọi hàm loadCart khi trang được tải
+        document.addEventListener('DOMContentLoaded', function () {
+            loadCart();
+            totalAmount();
+            loadBranch();
+        });
+
+        // Gán sự kiện click vào nút Confirm Purchase
+        document.querySelector('.purchase-confirmation-button button').addEventListener('click', confirmPurchase);
+    </script>
 </section>
 
 </body>

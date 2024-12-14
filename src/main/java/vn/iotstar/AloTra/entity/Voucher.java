@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,8 +16,8 @@ public class Voucher{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long voucher_id;
     private Double voucher_value;
-    private Date start_date;
-    private Date end_date;
+    private LocalDate start_date;
+    private LocalDate end_date;
 
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")

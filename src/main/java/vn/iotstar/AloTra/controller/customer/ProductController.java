@@ -100,4 +100,6 @@ public class ProductController {
         // Trả về tên view hiển thị sản phẩm chi tiết
         return "customer/product-detail";
     }
+
+
 }
