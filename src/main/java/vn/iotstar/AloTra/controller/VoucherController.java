@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.iotstar.AloTra.dto.VoucherDTO;
+import vn.iotstar.AloTra.dto.VoucherUpdateDTO;
+import vn.iotstar.AloTra.service.IVoucherService;
 import vn.iotstar.AloTra.service.impl.VoucherService;
 
 @RestController
@@ -12,7 +14,7 @@ import vn.iotstar.AloTra.service.impl.VoucherService;
 @RequiredArgsConstructor
 public class VoucherController {
 
-    private final VoucherService voucherService;
+    private final IVoucherService voucherService;
 
     @PostMapping
     public ResponseEntity<VoucherDTO> createVoucher(@RequestBody VoucherDTO voucherDTO) {
@@ -22,7 +24,7 @@ public class VoucherController {
     }
 
     @PutMapping("/{voucher_id}")
-    public ResponseEntity<VoucherDTO> updateVoucher(@PathVariable Long voucher_id, @RequestBody VoucherDTO voucherDTO) {
+    public ResponseEntity<VoucherDTO> updateVoucher(@PathVariable Long voucher_id, @RequestBody VoucherUpdateDTO voucherDTO) {
 
         VoucherDTO voucherSave = voucherService.updateVoucher(voucher_id, voucherDTO);
         return new ResponseEntity<>(voucherSave, HttpStatus.OK);

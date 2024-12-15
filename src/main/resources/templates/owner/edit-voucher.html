@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/owner/layout-owner.html}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sửa Voucher</title>
+<link rel="stylesheet" href="/assets/css/admin/voucher.css">
+</head>
+<body>
+	<section layout:fragment="content">
+		<h2 class="page-title">Chỉnh sửa Voucher</h2>
+
+		<div class="content">
+
+			<form
+				th:action="@{/owner/voucher/edit/{id}(id=${voucher.voucher_id})}"
+				method="POST" class="voucher-form">
+
+				<div class="form-group">
+					<label for="voucher_value" class="form-label">Giá trị</label> <input
+						type="text" id="voucher_value" name="voucher_value"
+						th:value="${voucher.voucher_value}" class="form-input" required>
+				</div>
+				<div class="form-group">
+					<label for="start_date" class="form-label">Ngày áp dụng</label> <input
+						type="date" id="start_date" name="start_date"
+						th:value="${voucher.start_date}" class="form-input" required>
+				</div>
+				<div class="form-group">
+					<label for="end_date" class="form-label">Ngày hết hạn</label> <input
+						type="date" id="end_date" name="end_date"
+						th:value="${voucher.end_date}" class="form-input" required>
+				</div>
+				<button type="submit" class="btn-submit">Cập nhật</button>
+			</form>
+		</div>
+	</section>
+</body>
+</html>
