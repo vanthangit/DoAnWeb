@@ -9,15 +9,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.iotstar.AloTra.dto.UserDTO;
+import vn.iotstar.AloTra.entity.Branch;
 import vn.iotstar.AloTra.entity.Role;
 import vn.iotstar.AloTra.entity.User;
 import vn.iotstar.AloTra.mapper.UserMapper;
+import vn.iotstar.AloTra.repository.BranchRepository;
 import vn.iotstar.AloTra.repository.RoleRepository;
 import vn.iotstar.AloTra.repository.UserRepository;
 import vn.iotstar.AloTra.service.IUserService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,14 +31,16 @@ public class UserService implements IUserService {
 	RoleRepository roleRepository;
 	UserMapper userMapper;
 	PasswordEncoder passwordEncoder;
-
+	BranchRepository branchRepository;
+	
 	@Autowired
 	public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper,
-			@Lazy PasswordEncoder passwordEncoder) {
+			@Lazy PasswordEncoder passwordEncoder, BranchRepository branchRepository) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.userMapper = userMapper;
 		this.passwordEncoder = passwordEncoder;
+		this.branchRepository = branchRepository;
 	}
 
 	public void createUser(UserDTO userDTO) {
@@ -68,14 +73,12 @@ public class UserService implements IUserService {
 				.collect(Collectors.toList());
 	}
 
-	@PostAuthorize("returnObject.email == authentication.name") // Kiểm tra sau khi method được thực hiện
 	public UserDTO getUserById(Long id) {
 		log.info("In method getUserById");
 		return userMapper
 				.toUserDTO(userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found")));
 	}
 
-	// Lấy user đang đăng nhập
 	public UserDTO getMyInfo() {
 		var context = SecurityContextHolder.getContext();
 		String email = context.getAuthentication().getName();
@@ -99,5 +102,65 @@ public class UserService implements IUserService {
 		existingUser.setPhone(userDTO.getPhone());
 		userRepository.save(existingUser);
 	}
+	
+	
+	public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+	}
+	
+	@Override
+	public Set<User> findUsersByRoleId(Long roleId) {
+		return userRepository.findByRoleId(roleId);
+	}
 
+	@Override
+	public Set<User> searchUsersByEmail(String email) {
+		return userRepository.searchUsersByEmail(email);
+	}
+
+	@Override
+	public void addUser(User user, String branchName, String branchAddress) {
+	    Role role = roleRepository.findById(2L).orElseThrow(() -> new RuntimeException("Role không tìm thấy"));
+	    user.setRole(role);
+	    user.setPassword(passwordEncoder.encode(user.getPassword()));
+	    if (branchName != null && !branchName.isEmpty()) {
+	        Branch branch = branchRepository.findByBranchName(branchName);
+	        if (branch == null) {
+	            branch = new Branch();
+	            branch.setBranch_name(branchName);
+	            branch.setBranch_address(branchAddress);
+	            branchRepository.save(branch);  
+	            
+		        user.setBranch(branch);
+			    userRepository.save(user);
+	        } 
+	    }
+	}
+	
+	public User findUserById(Long id) {
+		log.info("In method getUserById");
+		return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+	}
+	
+	public void updateEmployee(Long id, User user, String branchName, String branchAddress) {
+		User existingUser = userRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Không tìm thấy người dùng"));
+		Branch existBranch = existingUser.getBranch();
+		
+		existingUser.setAddress(user.getAddress());
+		existingUser.setEmail(user.getEmail());
+		existingUser.setFull_name(user.getFull_name());
+		existingUser.setGender(user.getGender());
+		existingUser.setPhone(user.getPhone());
+		
+		existBranch.setBranch_address(branchAddress);
+		existBranch.setBranch_name(branchName);
+		
+		branchRepository.save(existBranch);
+		
+		existingUser.setBranch(existBranch);
+        
+		userRepository.save(existingUser);
+		
+	}
 }
