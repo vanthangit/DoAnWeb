@@ -2,20 +2,18 @@ package vn.iotstar.AloTra.controller.customer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import vn.iotstar.AloTra.dto.ProductCreationRequest;
 import vn.iotstar.AloTra.dto.ProductDTO;
-import vn.iotstar.AloTra.entity.Product;
 import vn.iotstar.AloTra.entity.ProductFeedback;
 import vn.iotstar.AloTra.service.IProductService;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/products")
 public class ProductController {
     @Autowired
@@ -102,4 +100,42 @@ public class ProductController {
     }
 
 
+    //TIM KIEM ADMIN
+    @GetMapping("/filter")
+    public ResponseEntity<List<ProductDTO>> findProductByName(@RequestParam(value = "product_name", required = false) String product_name) {
+
+        List<ProductDTO> productDTOList = productService.findProductByName(product_name);
+        return new ResponseEntity<>(productDTOList, HttpStatus.OK);
+    }
+
+    //UPDATE SAN PHAM
+    @PutMapping("/{product_name}/{cost}")
+    public ResponseEntity<ProductDTO> editProduct(@PathVariable String product_name, @PathVariable double cost) {
+
+        ProductDTO productDTO = productService.editProduct(product_name, cost);
+
+        return new ResponseEntity<>(productDTO, HttpStatus.OK);
+    }
+
+    //XOA SAN PHAM ADMIN
+    @DeleteMapping("/{product_name}")
+    public ResponseEntity<String> deleteProductByName(@PathVariable String product_name) {
+
+        productService.deleteProductByName(product_name);
+        return new ResponseEntity<>("Product have been deleted!", HttpStatus.OK);
+    }
+
+    //ADMIN
+    @GetMapping("/loadAllProducts")
+    public ResponseEntity<List<ProductDTO>> loadAllProducts() {
+
+        return new ResponseEntity<>(productService.loadAllProducts(), HttpStatus.OK);
+    }
+
+    //Hàm tạo mới sản phẩm
+    @PostMapping
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductCreationRequest request) {
+
+        return new ResponseEntity<>(productService.createProduct(request), HttpStatus.OK);
+    }
 }
