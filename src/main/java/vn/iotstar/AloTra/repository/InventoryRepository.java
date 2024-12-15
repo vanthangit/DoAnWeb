@@ -4,7 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import vn.iotstar.AloTra.entity.Branch;
 import vn.iotstar.AloTra.entity.Inventory;
+import vn.iotstar.AloTra.entity.Product;
 
 import java.util.List;
 
@@ -15,5 +17,7 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
     @Query("SELECT i FROM Inventory i WHERE i.branch.branch_id = :branchId")
     List<Inventory> findByBranchBranchId(@Param("branchId") Long branchId);
+
+    Inventory findByBranchAndProduct(Branch branch, Product product);
 }
 

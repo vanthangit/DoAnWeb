@@ -32,6 +32,8 @@ public class CartItemController {
         UserDTO userDTO = userService.getMyInfo();
         Long user_id = userDTO.getUser_id();  // Lấy user_id từ thông tin người dùng
 
+        System.out.println("USer id" + user_id);
+
         CartItemDTO saveCartItem = cartItemService.addCartItem(request, user_id);
 
         return new ResponseEntity<>(saveCartItem, HttpStatus.CREATED);

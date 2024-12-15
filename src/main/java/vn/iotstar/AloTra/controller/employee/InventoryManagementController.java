@@ -41,4 +41,11 @@ public class InventoryManagementController {
         return "redirect:/employee/inventory";
     }
 
+    @GetMapping("/update-all")
+    public String updateAllInventory() {
+        inventoryService.updateAllToQuantity(50);
+        return "redirect:/employee/inventory";
+    }
+
+
 }

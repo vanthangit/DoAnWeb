@@ -20,8 +20,13 @@
                             </a>
                         </li>
                         <li class="navbar__item">
-                            <a class="navbar__item-link" href="#">
+                            <a class="navbar__item-link" th:href="@{/owner/users(roleId=1)}">
                                 QUẢN LÝ NGƯỜI DÙNG
+                            </a>
+                        </li>
+                        <li class="navbar__item">
+                            <a class="navbar__item-link" th:href="@{/owner/users(roleId=2)}">
+                                QUẢN LÝ NHÂN VIÊN
                             </a>
                         </li>
                         <li class="navbar__item">

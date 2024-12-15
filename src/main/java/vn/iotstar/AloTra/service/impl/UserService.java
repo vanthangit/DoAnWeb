@@ -10,10 +10,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.iotstar.AloTra.dto.UserDTO;
 import vn.iotstar.AloTra.entity.Branch;
+import vn.iotstar.AloTra.entity.Cart;
 import vn.iotstar.AloTra.entity.Role;
 import vn.iotstar.AloTra.entity.User;
 import vn.iotstar.AloTra.mapper.UserMapper;
 import vn.iotstar.AloTra.repository.BranchRepository;
+import vn.iotstar.AloTra.repository.CartRepository;
 import vn.iotstar.AloTra.repository.RoleRepository;
 import vn.iotstar.AloTra.repository.UserRepository;
 import vn.iotstar.AloTra.service.IUserService;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserService implements IUserService {
 
+	CartRepository cartRepository;
 	UserRepository userRepository;
 	RoleRepository roleRepository;
 	UserMapper userMapper;
@@ -35,12 +38,13 @@ public class UserService implements IUserService {
 	
 	@Autowired
 	public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper,
-			@Lazy PasswordEncoder passwordEncoder, BranchRepository branchRepository) {
+					   @Lazy PasswordEncoder passwordEncoder, BranchRepository branchRepository, CartRepository cartRepository) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.userMapper = userMapper;
 		this.passwordEncoder = passwordEncoder;
 		this.branchRepository = branchRepository;
+		this.cartRepository = cartRepository;
 	}
 
 	public void createUser(UserDTO userDTO) {
@@ -50,6 +54,9 @@ public class UserService implements IUserService {
 		user.setRole(role);
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		userRepository.save(user);
+		Cart cart = new Cart();
+		cart.setUser(user);
+		cartRepository.save(cart);
 	}
 
 	public void saveUserInformation(String name, String email) {
@@ -62,6 +69,9 @@ public class UserService implements IUserService {
 		var existingUser = userRepository.findByEmail(email);
 		if (existingUser.isEmpty()) {
 			userRepository.save(user);
+			Cart cart = new Cart();
+			cart.setUser(user);
+			cartRepository.save(cart);
 		}
 	}
 
