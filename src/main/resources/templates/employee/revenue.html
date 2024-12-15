@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{/employee/layout-employee.html}">
 <head>
     <style>
         body {
@@ -18,7 +19,7 @@
             font-size: 2.5rem;
             text-align: center;
             color: #007bff;
-            margin-top: 80px; 
+            margin-top: 80px;
             margin-bottom: 30px;
         }
 
@@ -37,13 +38,13 @@
         }
 
         button.filter-btn {
-            background-color: #28a745;
+            background-color: black;
             color: white;
             cursor: pointer;
         }
 
         button.filter-btn:hover {
-            background-color: #218838;
+            background-color: black;
         }
 
         table {
@@ -58,12 +59,14 @@
             padding: 12px;
             text-align: left;
             border: 1px solid #ddd;
+            font-size: 15px;
         }
 
         table th {
-            background-color: #007bff;
+            background-color: black;
             color: white;
             font-weight: bold;
+            font-size: 15px;
         }
 
         table tbody tr:nth-child(even) {
@@ -75,18 +78,22 @@
         }
 
         .total-payment {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
+            position: relative;
+            margin-top: 20px;
+            float: right;
             background-color: #f8f9fa;
             padding: 20px 30px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             font-size: 18px;
             font-weight: bold;
-            color: #28a745;
-            transition: transform 0.3s ease;
+            color: black;
+            text-align: center;
+            display: inline-block;
+            width: auto;
         }
+
+
 
         .total-payment:hover {
             transform: scale(1.05);
@@ -106,76 +113,68 @@
     </style>
 </head>
 <body>
-<h1>Danh Sách Doanh Thu</h1>
+<section layout:fragment="content">
+    <form action="#" method="get" class="filter-form" style="margin-top: 120px;">
+        <label for="startDate">Từ Ngày:</label>
+        <input type="date" name="startDate" id="startDate" placeholder="Chọn ngày bắt đầu" th:value="${startDate}">
 
-<form action="#" method="get" class="filter-form">
-    <label for="startDate">Từ Ngày:</label>
-    <input type="date" name="startDate" id="startDate" placeholder="Chọn ngày bắt đầu" th:value="${startDate}">
+        <label for="endDate">Đến Ngày:</label>
+        <input type="date" name="endDate" id="endDate" placeholder="Chọn ngày kết thúc" th:value="${endDate}">
 
-    <label for="endDate">Đến Ngày:</label>
-    <input type="date" name="endDate" id="endDate" placeholder="Chọn ngày kết thúc" th:value="${endDate}">
+        <button type="submit" class="filter-btn">Lọc</button>
+    </form>
 
-    <button type="submit" class="filter-btn">Lọc</button>
-</form>
-
-<div class="total-payment">
-    <img src="path/to/icon.png" alt="Icon" class="payment-icon">
-    <h2>Tổng Doanh Thu: <span th:text="${totalPayment}"></span></h2>
-</div>
-
-<table>
-    <thead>
-        <tr>
-            <th>ID Thanh Toán</th>       
-            <th>Ngày Thanh Toán</th>
-            <th>Phương Thức Thanh Toán</th>
-            <th>Trạng Thái</th>
-            <th>ID Đơn Hàng</th>
-            <th>Trạng Thái Đơn Hàng</th>
-            <th>Địa Chỉ Giao Hàng</th>
-            <th>Sản Phẩm</th>
-            <th>Số Lượng</th>
-            <th>Đơn Giá</th>
-            <th>Tổng Tiền</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:if="${#lists.isEmpty(payments)}">
-            <td colspan="11" style="text-align: center;">Không có doanh thu nào thỏa mãn bộ lọc.</td>
-        </tr>
-        <tr th:each="payment : ${payments}">
-            <td th:text="${payment.payment_id}"></td>
-            <td th:text="${payment.payment_date}"></td>
-            <td th:text="${payment.payment_method}"></td>
-            <td th:text="${payment.payment_status}"></td>
-            <td th:text="${payment.order.order_id}"></td>
-            <td th:text="${payment.order.order_status}"></td>
-            <td th:text="${payment.order.shipping_address}"></td>
-            <td>
-                <ul>
-                    <li th:each="orderLine : ${payment.order.orderLines}">
-                        <span th:text="${orderLine.product.product_name}"></span>
-                    </li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li th:each="orderLine : ${payment.order.orderLines}">
-                        <span th:text="${orderLine.quantity}"></span>
-                    </li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li th:each="orderLine : ${payment.order.orderLines}">
-                        <span th:text="${orderLine.product.cost}"></span>
-                    </li>
-                </ul>
-            </td>
-            <td th:text="${payment.total}"></td>
-        </tr>
-    </tbody>
-</table>
-
+    <table class="container-fluid">
+        <thead>
+            <tr>
+                <th>ID Thanh Toán</th>
+                <th>Ngày Thanh Toán</th>
+                <th>Phương Thức Thanh Toán</th>
+                <th>Trạng Thái</th>
+                <th>ID Đơn Hàng</th>
+                <th>Trạng Thái Đơn Hàng</th>
+                <th>Địa Chỉ Giao Hàng</th>
+                <th>Sản Phẩm</th>
+                <th>Số Lượng</th>
+                <th>Đơn Giá</th>
+                <th>Tổng Tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${#lists.isEmpty(payments)}">
+                <td colspan="11" style="text-align: center;">Không có doanh thu nào thỏa mãn bộ lọc.</td>
+            </tr>
+            <tr th:each="payment : ${payments}">
+                <td th:text="${payment.payment_id}"></td>
+                <td th:text="${payment.payment_date}"></td>
+                <td th:text="${payment.payment_method}"></td>
+                <td th:text="${payment.payment_status}"></td>
+                <td th:text="${payment.order.order_id}"></td>
+                <td th:text="${payment.order.order_status}"></td>
+                <td th:text="${payment.order.shipping_address}"></td>
+                <td>
+                        <ul th:each="orderLine : ${payment.order.orderLines}">
+                            <span th:text="${orderLine.product.product_name}"></span>
+                        </ul>
+                </td>
+                <td>
+                        <ul th:each="orderLine : ${payment.order.orderLines}">
+                            <span th:text="'x'+ ${orderLine.quantity}"></span>
+                        </ul>
+                </td>
+                <td>
+                        <ul th:each="orderLine : ${payment.order.orderLines}">
+                            <span th:text="${orderLine.product.cost}"></span>
+                        </ul>
+                </td>
+                <td th:text="${payment.total}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="total-payment">
+        <img src="https://th.bing.com/th/id/R.b594a2d3e12e07bc57059e88b8a97fb7?rik=Z6%2fNwmBmeSV8Mw&pid=ImgRaw&r=0" alt="Icon" class="payment-icon" style="width: auto; margin-bottom: 20px">
+        <h2>Tổng Doanh Thu: <span th:text="${totalPayment}"></span></h2>
+    </div>
+</section>
 </body>
 </html>

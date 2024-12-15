@@ -22,4 +22,8 @@ public class Branch {
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Orders> orders;
+
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Inventory> inventories;
 }

@@ -1,12 +1,14 @@
 package vn.iotstar.AloTra.repository;
 
 import java.sql.Date;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import vn.iotstar.AloTra.entity.Orders;
 import vn.iotstar.AloTra.entity.Payment;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
@@ -17,9 +19,10 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 		       + "AND p.payment_status = 'PAID' "
 		       + "AND o.order_status <> 'CANCELLED' "
 		       + "AND o.branch.branch_id = :branchId")
-		Set<Payment> findPaymentsByTimePeriod(@Param("startDate") Date startDate,
+	Set<Payment> findPaymentsByTimePeriod(@Param("startDate") Date startDate,
 		                                      @Param("endDate") Date endDate,
 		                                      @Param("branchId") Long branchId);
 
 
+	Optional<Payment> findByOrder(Orders order);
 }

@@ -37,4 +37,8 @@ public class Product{
     @OneToMany(mappedBy = "product")
     @JsonBackReference
     private List<ProductFeedback> productFeedbacks;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Inventory> inventories;
 }

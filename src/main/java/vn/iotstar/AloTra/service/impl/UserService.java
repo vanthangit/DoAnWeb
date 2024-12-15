@@ -100,4 +100,8 @@ public class UserService implements IUserService {
 		userRepository.save(existingUser);
 	}
 
+	public User findById(Long id) {
+		return userRepository.findByUserId(id);
+	}
+
 }

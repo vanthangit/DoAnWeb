@@ -122,7 +122,7 @@
                         <!-- Product recommend -->
                         <div class="row products">
                             <a th:each="relatedProduct : ${relatedProducts}"
-                               th:href="@{/product/{id}(id=${relatedProduct.product_id})}"
+                               th:href="@{/products/{id}(id=${relatedProduct.product_id})}"
                                class="col l-2-4 m-4 c-6">
                                 <div class="product__item">
                                     <img class="product__item-img"

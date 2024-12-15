@@ -99,10 +99,9 @@
                 <!-- Filled cart -->
                 <div class="filled-cart">
                     <div class="filled-cart__title-bar">
-                        <input type="checkbox" class="select-all-products">
                         <span>Product</span>
-                        <span>Unit Price</span>
-                        <span>Quantity</span>
+                        <span style="margin-left: 235px">Unit Price</span>
+                        <span style="margin-left: -250px">Quantity</span>
                         <span>Total</span>
                         <span>Option</span>
                     </div>
@@ -111,7 +110,6 @@
                     <div class="filled-cart__items-wrapper">
 
                         <div class="filled-cart__item">
-                            <input type="checkbox" class="select-product">
                             <a href="#" class="filled-cart__item-info">
                                 <div class="filled-cart__item-img"></div>
                                 <p class="filled-cart__item-description">K Dream Kem lót trang điểm tự nhiên lâu trôi & xịt nhũ khoá trang điểm 8h lâu trôi phù hợp với mọi loại da</p>
@@ -152,6 +150,7 @@
             const shippingAddress = document.querySelector('.pay__user-info__body-content-address').value;
             const branchSelect = document.querySelector('.branch-select');
             const branch_name = branchSelect.selectedOptions[0].textContent.trim();
+            const branchId = branchSelect.value;
             const total_amount = parseFloat(document.getElementById('total-price').textContent.replace('$', ''));
 
             if (!shippingAddress) {
@@ -164,68 +163,103 @@
 
             const orderId = (Number) (generateOrderId());
 
-            fetch('/api/orderlines', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    order_id: orderId,
-                    shipping_address: shippingAddress,
-                    branch_name: branch_name,
-                    payment_method: paymentMethod,
-                    total_amount: total_amount
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(orderResponse => {
-                console.log('Đơn hàng đã được lưu vào cơ sở dữ liệu:', orderResponse);
+            // Kiểm tra tồn kho
+            const cartItemsWrapper = document.querySelector('.filled-cart__items-wrapper');
+            const cartItems = Array.from(cartItemsWrapper.querySelectorAll('.filled-cart__item'));
 
-                if (paymentMethod === 'VNPAY') {
-                    console.log('Trước khi gọi API VNPAY:', { total_amount, orderId });
+            const checkStockPromises = cartItems.map(item => {
+                const productId = item.dataset.productId;
+                const productName = item.dataset.productName;
+                const quantity = parseInt(item.querySelector('.quantity-buttons--number').textContent);
 
-                    fetch('/submitOrder', {
+                return fetch(`/api/inventory/checkStock?productId=${productId}&branchId=${branchId}&quantity=${quantity}`)
+                    .then(response => response.json())
+                    .then(inStock => {
+                        if (!inStock) {
+                            throw new Error(`Sản phẩm ${productName} không đủ tồn kho tại chi nhánh ${branch_name}.`);
+                        }
+                    });
+            });
+
+            Promise.all(checkStockPromises)
+                .then(() => {
+                    // Nếu tất cả sản phẩm đều có đủ tồn kho, tiếp tục quá trình đặt hàng
+                    return fetch('/api/orderlines', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Content-Type': 'application/json'
                         },
-                        body: `amount=${total_amount}&orderId=${orderId}`
-                    })
-                        .then(response => {
+                        body: JSON.stringify({
+                            order_id: orderId,
+                            shipping_address: shippingAddress,
+                            branch_name: branch_name,
+                            payment_method: paymentMethod,
+                            total_amount: total_amount
+                        })
+                    });
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(orderResponse => {
+                    console.log('Đơn hàng đã được lưu vào cơ sở dữ liệu:', orderResponse);
+
+                    // Cập nhật tồn kho sau khi đơn hàng được lưu thành công
+                    const updateStockPromises = cartItems.map(item => {
+                        const productId = item.dataset.productId;
+                        const quantity = parseInt(item.querySelector('.quantity-buttons--number').textContent);
+
+                        return fetch(`/api/inventory/updateStock?productId=${productId}&branchId=${branchId}&quantity=${quantity}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }).then(response => {
                             if (!response.ok) {
                                 throw new Error(`HTTP error! status: ${response.status}`);
                             }
                             return response.text();
-                        })
-                        .then(vnpayUrl => {
-                            console.log('URL VNPAY:', vnpayUrl); // Kiểm tra URL trả về
-                            if (vnpayUrl) {
-                                window.location.replace(vnpayUrl); // Sử dụng replace thay vì href
-                            } else {
-                                console.error('URL trả về không hợp lệ:', vnpayUrl);
-                                alert('URL trả về không hợp lệ');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Lỗi khi chuyển hướng thanh toán VNPAY:', error);
-                            alert('Lỗi khi chuyển hướng thanh toán VNPAY');
                         });
-                } else {
-                    alert('Xác nhận mua hàng thành công!');
-                    // Điều hướng người dùng hoặc làm mới giao diện nếu cần
-                }
-            })
-            .catch(error => {
-                console.error('Lỗi khi xác nhận đơn hàng:', error);
-                alert('Lỗi khi xác nhận đơn hàng!');
-            });
-        }
+                    });
 
+                    return Promise.all(updateStockPromises).then(() => orderResponse);
+                })
+                .then(orderResponse => {
+                    if (paymentMethod === 'VNPAY') {
+                        console.log('Trước khi gọi API VNPAY:', { total_amount, orderId });
+
+                        return fetch('/submitOrder', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `amount=${total_amount}&orderId=${orderId}`
+                        });
+                    } else {
+                        alert('Xác nhận mua hàng thành công!');
+                        return null;
+                    }
+                })
+                .then(response => {
+                    if (response && !response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response ? response.text() : '';
+                })
+                .then(vnpayUrl => {
+                    if (vnpayUrl) {
+                        console.log('URL VNPAY:', vnpayUrl);
+                        window.location.replace(vnpayUrl);
+                    }
+                })
+                .catch(error => {
+                    console.error(error.message);
+                    alert(error.message);
+                });
+        }
         function generateOrderId() {
             // Tạo orderId theo cách của bạn
             return new Date().getTime();
@@ -297,13 +331,14 @@
                         const option = document.createElement('option');
                         option.className = 'option-branch';
 
+
                         option.innerHTML = `
                             <div class="pay__user-info__body-content">
                                 <span>${branchDTO.branch_name}</span>
                             </div>
                         `;
 
-                        option.value = branchDTO.id; // Sử dụng branch_id nếu có
+                        option.value = branchDTO.branch_id; // Sử dụng branch_id nếu có
                         branchSelect.appendChild(option);
                     });
                 })
@@ -331,9 +366,11 @@
                             .then(productDTO => {
                                 const cartItem = document.createElement('div');
                                 cartItem.className = 'filled-cart__item';
+                                cartItem.dataset.productId = item.product_id;
+                                cartItem.dataset.productName = productDTO.product_name;
+
 
                                 cartItem.innerHTML = `
-                                    <input type="checkbox" class="select-product">
                                     <a href="#" class="filled-cart__item-info">
                                         <div class="filled-cart__item-img"></div>
                                         <p class="filled-cart__item-description">${productDTO.product_name}</p>
