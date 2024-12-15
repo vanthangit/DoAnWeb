@@ -1,3 +1,4 @@
+
 package vn.iotstar.AloTra.repository;
 
 import vn.iotstar.AloTra.entity.User;
@@ -16,8 +17,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.role.role_id = :roleId")
     Set<User> findByRoleId(@Param("roleId") Long roleId);
 
-    @Query("SELECT u FROM User u WHERE u.email LIKE %:email% ")
-    Set<User> searchUsersByEmail(@Param("email") String email);
+    @Query("SELECT u FROM User u WHERE u.email LIKE %:email% AND u.role.role_id = :roleId")
+    Set<User> searchUsersByEmailAndRoleId(@Param("email") String email, @Param("roleId") Long roleId);
+
 
     @Query("SELECT u FROM User u WHERE u.user_id = :user_id")
     User findByUserId(@Param("user_id") Long user_id);

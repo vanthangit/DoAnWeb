@@ -108,4 +108,25 @@ public class OrderService implements IOrderService {
         paymentRepository.save(payment);
         orderRepository.save(order);
     }
+
+	@Override
+	public Set<Orders> getAllOrdersByBranch(Long branchId) {
+        return orderRepository.findAllByBranchId(branchId);
+	}
+
+	@Override
+	public Set<Orders> getOrdersByStatusAndBranch(OrderStatus status, Long branchId) {
+        return orderRepository.findAllByStatusAndBranchId(status, branchId);
+	}
+
+    public void updateOrderStatus(Long orderId, String status) {
+        Orders order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        order.setOrder_status(OrderStatus.valueOf(status.toUpperCase()));
+        orderRepository.save(order);
+    }
+
+	public Set<Orders> findOrdersByDate(java.sql.Date date, Long branchId) {
+		return orderRepository.findOrdersByDate(date, branchId);
+	}
 }
