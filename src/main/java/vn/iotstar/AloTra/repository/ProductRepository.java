@@ -3,6 +3,7 @@ package vn.iotstar.AloTra.repository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -20,4 +21,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p ORDER BY p.product_id ASC")
     List<Product> findTop5ByOrderByIdDesc(Pageable pageable);
+
+    //TÌM KIẾM TRONG ADMIN
+    @Query("SELECT p FROM Product p " +
+            "WHERE (:product_name IS NULL OR LOWER(p.product_name) LIKE LOWER(CONCAT('%', :product_name, '%' )))")
+    List<Product> findByProductName(String product_name);
+
+    //XÓA SẢN PHẨM ADMIN
+    @Modifying
+    @Query("DELETE FROM Product p WHERE p.product_name LIKE :product_name")
+    void deleteByProductName(@Param("product_name")String product_name);
+
+    //Tìm 1 sản phẩm bằng tên
+    @Query("SELECT p FROM Product p WHERE p.product_name LIKE ?1")
+    Product findOneByProductName(String product_name);
+
 }
