@@ -77,10 +77,8 @@ public class ManageOrderController {
     @GetMapping("/search")
     public String searchOrdersByDate(@RequestParam("orderDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, Model model) {
         Long branchId = userService.getMyInfo().getBranch_id();
-        System.out.println("Ngày tìm kiếm: " + date);
         Set<Orders> orders = orderService.findOrdersByDate(java.sql.Date.valueOf(date), branchId);
 
-        System.out.print(orders);
 
         model.addAttribute("searchOrders", orders); 
         model.addAttribute("orderDate", date);
