@@ -113,12 +113,14 @@ public class UserService implements IUserService {
 		return userRepository.findByRoleId(roleId);
 	}
 
-	public Set<User> searchUsersByEmailAndRoleId(String email, Long roleId) {
-	    if (email == null || email.isEmpty()) {
-	        return userRepository.findByRoleId(roleId); 
-	    }
-	    return userRepository.searchUsersByEmailAndRoleId(email, roleId);
-	}
+	@Override
+    public Set<User> searchUsersByEmailAndRoleId(String email, Long roleId) {
+        if (email == null || email.isEmpty()) {
+            return userRepository.findByRoleId(roleId);
+        }
+        return userRepository.searchUsersByEmailAndRoleId(email, roleId);
+    }
+
 
 
 	@Override

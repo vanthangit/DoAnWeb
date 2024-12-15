@@ -12,7 +12,7 @@ public interface IUserService {
 	Set<User> findUsersByRoleId(Long roleId);
 
 	Set<User> searchUsersByEmailAndRoleId(String email, Long roleId);
-	 
+
     void addUser(User user, String branchName, String branchAddress);
 
 }
