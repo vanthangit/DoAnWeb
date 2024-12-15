@@ -32,7 +32,7 @@ public class User{
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     private Role role;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "branch_id")
     private Branch branch;
 }

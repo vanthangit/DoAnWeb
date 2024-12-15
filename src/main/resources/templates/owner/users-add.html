@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thêm Nhân Viên</title>
+<!-- Link to a Google Font -->
+<link
+	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+	rel="stylesheet">
+<style>
+body {
+	font-family: 'Poppins', sans-serif;
+	background-color: #f8f9fa;
+	color: #333;
+	margin: 0;
+	padding: 0;
+}
+
+.header-title {
+	text-align: center;
+	font-size: 2em;
+	color: #007bff;
+	padding: 20px 0;
+	background-color: #ffffff;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-container {
+	width: 50%;
+	margin: 30px auto;
+	padding: 20px;
+	background-color: #ffffff;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
+}
+
+.form-group {
+	margin-bottom: 15px;
+}
+
+label {
+	display: block;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+input, select {
+	width: 100%;
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}
+
+.form-actions {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.submit-button {
+	background-color: #007bff;
+	color: white;
+	padding: 10px 20px;
+	border-radius: 5px;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+	background-color: #0056b3;
+}
+
+.cancel-button {
+	background-color: #6c757d;
+	color: white;
+	padding: 10px 20px;
+	border-radius: 5px;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	margin-left: 10px;
+}
+
+.cancel-button:hover {
+	background-color: #5a6268;
+}
+</style>
+</head>
+
+<body layout:fragment="content">
+	<h1 class="header-title">THÊM NHÂN VIÊN</h1>
+
+	<div class="form-container">
+		<form action="/owner/user/add/submit" method="post">
+			<!-- Email -->
+			<div class="form-group">
+				<label for="email">Email:</label> <input type="email" id="email"
+					name="email" placeholder="Nhập email"
+					required>
+			</div>
+
+			<!-- Mật khẩu -->
+			<div class="form-group">
+				<label for="password">Mật khẩu:</label> <input type="password"
+					id="password" name="password" 
+					placeholder="Nhập mật khẩu" required>
+			</div>
+
+			<!-- Họ và tên -->
+			<div class="form-group">
+				<label for="full_name">Họ và tên:</label> <input type="text"
+					id="full_name" name="full_name" 
+					placeholder="Nhập họ và tên" required>
+			</div>
+
+			<!-- Giới tính -->
+			<div class="form-group">
+				<label for="gender">Giới tính:</label> <select name="gender"
+					id="gender">
+					<option value="MALE">Nam</option>
+					<option value="FEMALE">Nữ</option>
+				</select>
+			</div>
+
+			<!-- Số điện thoại -->
+			<div class="form-group">
+				<label for="phone">Số điện thoại:</label> <input type="text"
+					id="phone" name="phone" 
+					placeholder="Nhập số điện thoại" required>
+			</div>
+
+			<!-- Địa chỉ -->
+			<div class="form-group">
+				<label for="address">Địa chỉ:</label> <input type="text"
+					id="address" name="address" 
+					placeholder="Nhập địa chỉ" required>
+			</div>
+
+			<!-- Chi nhánh -->
+			<div class="form-group">
+				<label for="branchName">Chi nhánh:</label> <input type="text"
+					id="branchName" name="branchName" 
+					placeholder="Nhập chi nhánh" required>
+			</div>
+
+			<!-- Địa chỉ chi nhánh -->
+			<div class="form-group">
+				<label for="branchAddress">Địa chỉ chi nhánh:</label> <input
+					type="text" id="branchAddress" name="branchAddress" 
+					placeholder="Nhập địa chi chi nhánh" required>
+			</div>
+
+
+			<div class="form-actions">
+				<button type="submit" class="submit-button">Thêm Nhân Viên</button>
+				<a href="/owner/users?roleId=2" class="cancel-button">Hủy</a>
+			</div>
+		</form>
+
+	</div>
+</body>
+
+</html>
