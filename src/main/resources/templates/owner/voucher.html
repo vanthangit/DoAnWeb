@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/owner/layout-owner.html}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kho Voucher</title>
+<link rel="stylesheet" href="/assets/css/admin/voucher.css">
+</head>
+
+<body>
+	<section layout:fragment="content">
+
+		<div class="content">
+
+			<div class="bar">
+				<h1>Kho Voucher</h1>
+
+				<nav>
+					<button id="btn-add-voucher" onclick="location.href='/owner/voucher/add'">Thêm
+						Voucher mới</button>
+				</nav>
+			</div>
+			<div th:if="${error}" class="error-message">
+				<p th:text="${error}"></p>
+			</div>
+			<div class="filter">
+				<form action="/owner/voucher" method="GET">
+					<select name="status" onchange="this.form.submit()">
+						<option value="all" th:selected="${status == 'all'}">Tất
+							cả trạng thái</option>
+						<option value="valid" th:selected="${status == 'valid'}">Còn
+							hiệu lực</option>
+						<option value="expired" th:selected="${status == 'expired'}">Hết
+							hạn</option>
+					</select> <input type="hidden" name="page" value="0"> <input
+						type="hidden" name="size" value="10">
+				</form>
+			</div>
+
+			<table class="voucher-table">
+				<thead>
+					<tr>
+						<th>Mã</th>
+						<th>Ngày áp dụng</th>
+						<th>Ngày hết hạn</th>
+						<th>Giá trị</th>
+						<th>Thao tác</th>
+					</tr>
+				</thead>
+				<tbody id="voucher-list">
+
+					<tr th:each="voucher : ${vouchers}">
+						<td th:text="${voucher.voucher_id ?: 'Không có dữ liệu'}">Mã</td>
+						<td th:text="${voucher.start_date ?: 'Không có dữ liệu'}">Ngày
+							áp dụng</td>
+						<td th:text="${voucher.end_date ?: 'Không có dữ liệu'}">Ngày
+							hết hạn</td>
+						<td th:text="${voucher.voucher_value ?: 'Không có dữ liệu'}">Giá
+							trị</td>
+						<td><a
+							th:href="@{/owner/voucher/edit/{id}(id=${voucher.voucher_id})}">
+								<button type="button" class="btn-action">Chỉnh sửa</button>
+						</a> <a
+							th:href="@{/owner/voucher/delete/{id}(id=${voucher.voucher_id})}">
+								<button type="button" class="btn-action btn-danger">Xóa</button>
+						</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+</body>
+</html>

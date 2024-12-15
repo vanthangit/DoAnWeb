@@ -348,6 +348,29 @@
         }
 
 
+        // Delete CartItem Function
+        function deleteCartItem(button) {
+            const cart_item_id = button.getAttribute('data-cartItm-id');
+
+            fetch(`api/cartitems/${cart_item_id}`, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Không thể xóa sản phẩm');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                })
+                .catch(error => {
+                    console.error('Đã xóa thành công!', error);
+                    alert('Đã xóa thành công!');
+                    loadCart();
+                    totalAmount();
+                });
+        }
+
         // Load Cart function
         function loadCart() {
             console.log("loadCart is called");
@@ -383,7 +406,9 @@
                                     </div>
                                     <span class="filled-cart__item-totalPrice" style="padding-right: 50px">$${productDTO.cost * item.quantity}</span>
                                     <div class="filled-cart__item-delete-button">
-                                        <button class="buttons" style="margin-right: 50px">Delete</button>
+                                        <button class="buttons" style="margin-right: 50px" data-cartItm-id="${item.cart_item_id}" onclick="deleteCartItem(this)">
+                                            Delete
+                                        </button>
                                     </div>
                                 `;
 
