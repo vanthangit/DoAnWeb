@@ -9,6 +9,8 @@ import vn.iotstar.AloTra.dto.VoucherUpdateDTO;
 import vn.iotstar.AloTra.service.IVoucherService;
 import vn.iotstar.AloTra.service.impl.VoucherService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/vouchers")
 @RequiredArgsConstructor
@@ -35,5 +37,11 @@ public class VoucherController {
 
         voucherService.deleteVoucher(voucher_id);
         return new ResponseEntity<String>("Voucher have been deleted", HttpStatus.OK);
+    }
+
+    @GetMapping("/loadAllVouchers")
+    public ResponseEntity<List<VoucherDTO>> getAllVouchers(){
+
+        return new ResponseEntity<>(voucherService.loadAllVoucher(), HttpStatus.OK);
     }
 }

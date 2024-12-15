@@ -1,6 +1,7 @@
 package vn.iotstar.AloTra.service;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -20,6 +21,8 @@ public interface IVoucherService  {
 	void deleteVoucher(Long voucher_id);
 
 	VoucherDTO updateVoucher(Long voucher_id, VoucherUpdateDTO voucherDTO);
+
+	List<VoucherDTO> loadAllVoucher();
 
 	VoucherDTO createVoucher(VoucherDTO voucherDTO);
 

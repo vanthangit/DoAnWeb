@@ -15,4 +15,5 @@ public class VoucherDTO {
     private Double voucher_value;
     private LocalDate start_date;
     private LocalDate end_date;
+    private Long order_id;
 }

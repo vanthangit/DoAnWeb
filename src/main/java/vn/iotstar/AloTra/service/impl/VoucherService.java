@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class VoucherService implements IVoucherService {
@@ -28,6 +29,15 @@ public class VoucherService implements IVoucherService {
 		this.voucherRepository = voucherRepository;
 		this.voucherMapper = voucherMapper;
 	}
+
+	@Override
+	public List<VoucherDTO> loadAllVoucher() {
+		List<Voucher> vouchers = voucherRepository.findAll();
+		return vouchers.stream()
+				.map(voucherMapper::toVoucherDTO)
+				.collect(Collectors.toList());
+	}
+
 
 	@Override
 	public VoucherDTO createVoucher(VoucherDTO voucherDTO) {
