@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{/customer/layout-customer.html}">
+<head>
+  <style>
+    .star-rating {
+      direction: rtl;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 40px; /* Kích thước ngôi sao lớn hơn */
+    }
+    .star-rating input[type="radio"] {
+      display: none;
+    }
+    .star-rating label {
+      color: #bbb;
+      padding: 0;
+      cursor: pointer;
+    }
+    .star-rating label:hover,
+    .star-rating label:hover ~ label,
+    .star-rating input[type="radio"]:checked ~ label {
+      color: #f2b600;
+    }
+  </style>
+</head>
+<body>
+<section layout:fragment="content">
+  <div class="my-account__main">
+    <div class="my-account__top">
+      <h5 class="my-account__top-title">
+        Đánh giá sản phẩm
+      </h5>
+      <div th:if="${message}" class="alert alert-success">
+        <p style="color: green; font-size: 15px; margin-top: 10px" th:text="${message}"></p>
+      </div>
+    </div>
+    <form class="my-account__form" method="post" action="#" th:object="${productFeedback}" th:action="@{/create-feedback}">
+      <input type="hidden" th:value="${product.product_id}" name="productId"/>
+      <h5 class="card-title" th:text="${product.product_name}" style="font-size: 20px;"></h5>
+      <div class="col-md-3">
+        <img th:src="${product.image}" class="product__item-img" alt="">
+      </div>
+      <div class="my-account__form-name">
+        <div class="star-rating">
+          <input type="radio" id="5-stars" name="rating" th:field="*{rating}" value="5" />
+          <label for="5-stars" class="star">&#9733;</label>
+          <input type="radio" id="4-stars" name="rating" th:field="*{rating}" value="4" />
+          <label for="4-stars" class="star">&#9733;</label>
+          <input type="radio" id="3-stars" name="rating" th:field="*{rating}" value="3" />
+          <label for="3-stars" class="star">&#9733;</label>
+          <input type="radio" id="2-stars" name="rating" th:field="*{rating}" value="2" />
+          <label for="2-stars" class="star">&#9733;</label>
+          <input type="radio" id="1-star" name="rating" th:field="*{rating}" value="1" />
+          <label for="1-star" class="star">&#9733;</label>
+        </div>
+      </div>
+      <div class="my-account__form-name">
+        <textarea th:field="*{comment}" class="auth-form__input" placeholder="Nhận xét" rows="6" cols="50" required></textarea>
+      </div>
+      <button class="btn buttons my-account__password-btn" type="submit">
+        Lưu
+      </button>
+    </form>
+  </div>
+  <script th:if="${message}">
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        window.location.href = '/customer/order-history';
+      }, 3000);
+    });
+  </script>
+</section>
+</body>
+</html>

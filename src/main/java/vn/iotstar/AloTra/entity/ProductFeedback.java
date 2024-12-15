@@ -19,8 +19,12 @@ public class ProductFeedback{
     @Column(columnDefinition = "LONGTEXT")
     private String comment;
     private Date feedback_date;
-    private Long user_id;
+
     private Double rating;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")

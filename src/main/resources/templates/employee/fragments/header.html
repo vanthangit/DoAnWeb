@@ -3,39 +3,64 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <body>
 <div th:fragment="header">
-<!--Nội dung-->
+    <!--Nội dung điền vô đây-->
     <header class="header">
-        <div class="grid wide">
-            <div class="header-wrap">
-                <div class="header__logo">
-                    <i class="header__logo-icon fas fa-leaf"></i>
-                    <span class="header__logo-text">Management</span>
+        <div class="grid wide ">
+            <div class="row navbar">
+                <div class="col l-2 m-2 c-6">
+                    <a th:href="@{/employee/home}" style="text-decoration: none">
+                        <h1 class="logo" about="">ALOTRA</h1>
+                    </a>
                 </div>
-                <div class="header__welcome">
-                    <div class="header__welcome-item">
+                <div class="col l-8 m-8 c-0">
+                    <ul class="navbar__list">
+                        <li class="navbar__item">
+                            <a th:href="@{/employee/inventory}" class="navbar__item-link">
+                                QUẢN LÝ SẢN PHẨM
+                            </a>
+                        </li>
+                        <li class="navbar__item">
+                            <a class="navbar__item-link" href="#">
+                                QUẢN LÝ ĐƠN HÀNG
+                            </a>
+                        </li>
+                        <li class="navbar__item">
+                            <a class="navbar__item-link" href="#">
+                                QUẢN LÝ MÃ GIẢM GIÁ
+                            </a>
+                        </li>
+                        <li class="navbar__item">
+                            <a class="navbar__item-link" th:href="@{/employee/revenue}">
+                                QUẢN LÝ DOANH THU
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="header-icon col l-2 m-2 c-0">
+                    <!-- Kiểm tra nếu chưa đăng nhập -->
+                    <a class="login-link" th:if="${session.myInfo == null}" th:href="@{/auth/form-login}">
+                        <i class="fa fa-user"></i>
+                    </a>
 
-                    </div>
-                    <div class="header__welcome-item">
-
-                    </div>
-                    <div class="header__welcome-item">
-
-                    </div>
-                    <div class="header__welcome-item">
-                        xin chào Admin
-                        <ul class="header__welcome-item__board">
-                            <li class="header__welcome-item__board-row">
-                                <a href="" class="header__welcome-item__board-link">
-                                    <i class="header__welcome-item__board-icon fas fa-sign-out-alt"></i>
-                                    Đăng xuất
-                                </a>
-                            </li>
-                        </ul>
+                    <!-- Kiểm tra nếu đã đăng nhập -->
+                    <div class="user-info" th:if="${session.myInfo != null}">
+                        <div class="dropdown">
+                            <button class="dropbtn" th:text="${session.myInfo.email}"></button>
+                            <div class="dropdown-content">
+                                <a th:href="@{/user/myInfo}">Thông tin cá nhân</a>
+                                <a th:href="@{/auth/logout}">Đăng xuất</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </header>
+    <!--Header: end-->
+    <!--  Back to top  -->
+    <div id="back-to-top" class="back-to-top" title="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
 </div>
 </body>
 </html>

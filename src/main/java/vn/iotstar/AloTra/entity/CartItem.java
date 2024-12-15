@@ -28,6 +28,4 @@ public class CartItem {
     @JsonBackReference
     @JoinColumn(name = "cart_id", referencedColumnName = "cart_id")
     private Cart cart;
-
-
 }

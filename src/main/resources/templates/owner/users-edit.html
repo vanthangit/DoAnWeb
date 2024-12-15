@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Chỉnh sửa tài khoản</title>
+	<!-- Link to a Google Font -->
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+	<style>
+		/* General styles */
+		body {
+			font-family: 'Poppins', sans-serif;
+			background-color: #f8f9fa;
+			color: #333;
+			margin: 0;
+			padding: 0;
+		}
+		.header-title {
+			text-align: center;
+			font-size: 2em;
+			color: #007bff;
+			padding: 20px 0;
+			background-color: #ffffff;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+		/* Form styles */
+		.form-container {
+			width: 50%;
+			margin: 20px auto;
+			background-color: white;
+			padding: 20px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+		.form-group {
+			margin-bottom: 15px;
+		}
+		.form-label {
+			display: block;
+			font-size: 1em;
+			color: #333;
+		}
+		.form-input {
+			width: 100%;
+			padding: 10px;
+			font-size: 16px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+		}
+		.submit-button {
+			background-color: #007bff;
+			color: white;
+			padding: 10px 20px;
+			border-radius: 5px;
+			border: none;
+			cursor: pointer;
+			transition: background-color 0.3s;
+		}
+		.submit-button:hover {
+			background-color: #0056b3;
+		}
+	</style>
+</head>
+
+<body>
+	<h1 class="header-title">Chỉnh sửa tài khoản</h1>
+	
+	<!-- Form chỉnh sửa thông tin người dùng -->
+	<div class="form-container">
+		<form th:action="@{/owner/user/edit/submit}" method="POST">
+			<input type="hidden" name="roleId" th:value="${roleId}">
+			<input type="hidden" name="user_id" th:value="${user.user_id}">
+			
+			<div class="form-group">
+				<label for="email" class="form-label">Email</label>
+				<input type="email" name="email" class="form-input" th:value="${user.email}" required>
+			</div>
+
+			<div class="form-group">
+				<label for="full_name" class="form-label">Họ và tên</label>
+				<input type="text" name="full_name" class="form-input" th:value="${user.full_name}" required>
+			</div>
+
+			<div class="form-group">
+				<label for="gender" class="form-label">Giới tính</label>
+				<select id="gender" name="gender" class="form-input" required>
+				<option th:value="MALE" th:text="'Nam'" th:selected="${user.gender == 'MALE'}">Nam</option>
+				<option th:value="FEMALE" th:text="'Nữ'" th:selected="${user.gender == 'FEMALE'}">Nữ</option>
+			</select>
+
+			<div class="form-group">
+				<label for="phone" class="form-label">Số điện thoại</label>
+				<input type="text" name="phone" class="form-input" th:value="${user.phone}" required>
+			</div>
+
+			<div class="form-group">
+				<label for="address" class="form-label">Địa chỉ</label>
+				<input type="text" name="address" class="form-input" th:value="${user.address}" required>
+			</div>
+			
+			<div class="form-group">
+				<label for="branch_name" class="form-label">Tên chi nhánh</label>
+				<input type="text" name="branch_name" class="form-input" th:value="${branch.branch_name}" required>
+			</div>
+			
+			<div class="form-group">
+				<label for="branch_address" class="form-label">Địa chỉ chi nhánh</label>
+				<input type="text" name="branch_address" class="form-input" th:value="${branch.branch_address}" required>
+			</div>
+			<!-- Button submit -->
+			<button type="submit" class="submit-button">Cập nhật</button>
+		</form>
+	</div>
+	
+</body>
+</html>

@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 @Entity
+@Builder
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "user")
 public class User{
@@ -31,7 +32,7 @@ public class User{
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     private Role role;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "branch_id")
     private Branch branch;
 }

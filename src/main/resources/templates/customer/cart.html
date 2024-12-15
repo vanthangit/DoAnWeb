@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{/customer/layout-customer.html}">
+
+<head>
+    <style>
+        .pay__user-info__body-content-address{
+            display: inline-block;
+            width: 500px;
+            border: revert;
+            white-space: nowrap;
+            padding: 5px 10px;
+        }
+
+        .pay__user-info__body-content-wrapper {
+            display: inline-block;
+            width: auto;
+            white-space: nowrap;
+            border: revert;
+        }
+        .pay__user-info__body-content {
+            display: inline-block;
+            width: auto;
+            white-space: nowrap;
+            padding: 5px 10px;
+            border: revert;
+        }
+        .pay__user-info__body-select {
+            width: auto;
+            border: revert;
+        }
+    </style>
+</head>
+<body>
+<section layout:fragment="content">
+    <div id="cart">
+        <div class="cart__title">Cart</div>
+        <div class="cart__body">
+            <!-- Empty cart -->
+            <div class="empty-cart">
+                <div class="empty-cart__title">Your cart is currently empty.</div>
+                <div class="empty-cart__sub-title">Looks like you haven't made your choice yet...</div>
+                <button class="buttons">go back</button>
+            </div>
+
+            <div class="pay-content">
+                <div class="pay__user-info active-tab">
+                    <div class="pay__user-info__header">
+                        <div class="pay__user-info__title">
+                            <span>Địa chỉ nhận hàng</span>
+                        </div>
+                    </div>
+                    <div class="pay__user-info__content">
+                        <input class="pay__user-info__body-content-address">
+                    </div>
+
+                    <!--CHI NHÁNH-BEGIN-->
+                    <div class="pay__user-info__header">
+                        <div class="pay__user-info__title">
+                            <span>Chi nhánh</span>
+                        </div>
+                    </div>
+
+                    <div class="pay__user-info__content">
+                        <select class="pay__user-info__body pay__user-info__body-select branch-select">
+                            <!--CHI NHANH LOAD LÊN Ở ĐÂY-->
+                        </select>
+                    </div>
+
+                    <!--CHI NHÁNH-END-->
+
+
+                    <!--PHƯƠNG THỨC THANH TOÁN-->
+                    <div class="pay__user-info__header">
+                        <div class="pay__user-info__title">
+                            <span>Phương thức thanh toán</span>
+                        </div>
+                    </div>
+                    <div class="pay__user-info__content">
+                        <select class="pay__user-info__body pay__user-info__body-select payment-select">
+                            <option class="pay__user-info__body-content-wrapper pay__user-info__body-option">
+                                <div class="pay__user-info__body-content">
+                                    <span>VNPAY</span>
+                                </div>
+                            </option>
+
+                            <option class="pay__user-info__body-content-wrapper pay__user-info__body-option">
+                                <div class="pay__user-info__body-content">
+                                    <span>COD</span>
+                                </div>
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+
+                <!-- Filled cart -->
+                <div class="filled-cart">
+                    <div class="filled-cart__title-bar">
+                        <span>Product</span>
+                        <span style="margin-left: 235px">Unit Price</span>
+                        <span style="margin-left: -250px">Quantity</span>
+                        <span>Total</span>
+                        <span>Option</span>
+                    </div>
+
+                    <!--Nơi chứa CartItem-->
+                    <div class="filled-cart__items-wrapper">
+
+                        <div class="filled-cart__item">
+                            <a href="#" class="filled-cart__item-info">
+                                <div class="filled-cart__item-img"></div>
+                                <p class="filled-cart__item-description">K Dream Kem lót trang điểm tự nhiên lâu trôi & xịt nhũ khoá trang điểm 8h lâu trôi phù hợp với mọi loại da</p>
+                            </a>
+                            <span class="filled-cart__item-price">$24</span>
+                            <div class="filled-cart__item-quantity">
+                                <div class="quantity-buttons">
+                                    <div class="quantity-buttons--number" style="margin-left: 114px">1</div>
+                                </div>
+                            </div>
+                            <span class="filled-cart__item-totalPrice">24</span>
+
+                            <div class="filled-cart__item-delete-button">
+                                <button class="buttons">Delete</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="pay__item">
+                        <div class="pay__total-price">
+                            Total:
+                            <span id="total-price">$60</span>
+                        </div>
+                    </div>
+
+                    <div class="purchase-confirmation-button">
+                        <button class="buttons">Confirm Purchase</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        function confirmPurchase() {
+            // Lấy thông tin từ các trường nhập liệu
+            const shippingAddress = document.querySelector('.pay__user-info__body-content-address').value;
+            const branchSelect = document.querySelector('.branch-select');
+            const branch_name = branchSelect.selectedOptions[0].textContent.trim();
+            const branchId = branchSelect.value;
+            const total_amount = parseFloat(document.getElementById('total-price').textContent.replace('$', ''));
+
+            if (!shippingAddress) {
+                alert("Vui lòng nhập địa chỉ nhận hàng!");
+                return;
+            }
+
+            const paymentMethodSelect = document.querySelector('.payment-select');
+            const paymentMethod = paymentMethodSelect.options[paymentMethodSelect.selectedIndex].text.trim();
+
+            const orderId = (Number) (generateOrderId());
+
+            // Kiểm tra tồn kho
+            const cartItemsWrapper = document.querySelector('.filled-cart__items-wrapper');
+            const cartItems = Array.from(cartItemsWrapper.querySelectorAll('.filled-cart__item'));
+
+            const checkStockPromises = cartItems.map(item => {
+                const productId = item.dataset.productId;
+                const productName = item.dataset.productName;
+                const quantity = parseInt(item.querySelector('.quantity-buttons--number').textContent);
+
+                return fetch(`/api/inventory/checkStock?productId=${productId}&branchId=${branchId}&quantity=${quantity}`)
+                    .then(response => response.json())
+                    .then(inStock => {
+                        if (!inStock) {
+                            throw new Error(`Sản phẩm ${productName} không đủ tồn kho tại chi nhánh ${branch_name}.`);
+                        }
+                    });
+            });
+
+            Promise.all(checkStockPromises)
+                .then(() => {
+                    // Nếu tất cả sản phẩm đều có đủ tồn kho, tiếp tục quá trình đặt hàng
+                    return fetch('/api/orderlines', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            order_id: orderId,
+                            shipping_address: shippingAddress,
+                            branch_name: branch_name,
+                            payment_method: paymentMethod,
+                            total_amount: total_amount
+                        })
+                    });
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(orderResponse => {
+                    console.log('Đơn hàng đã được lưu vào cơ sở dữ liệu:', orderResponse);
+
+                    // Cập nhật tồn kho sau khi đơn hàng được lưu thành công
+                    const updateStockPromises = cartItems.map(item => {
+                        const productId = item.dataset.productId;
+                        const quantity = parseInt(item.querySelector('.quantity-buttons--number').textContent);
+
+                        return fetch(`/api/inventory/updateStock?productId=${productId}&branchId=${branchId}&quantity=${quantity}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.text();
+                        });
+                    });
+
+                    return Promise.all(updateStockPromises).then(() => orderResponse);
+                })
+                .then(orderResponse => {
+                    if (paymentMethod === 'VNPAY') {
+                        console.log('Trước khi gọi API VNPAY:', { total_amount, orderId });
+
+                        return fetch('/submitOrder', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `amount=${total_amount}&orderId=${orderId}`
+                        });
+                    } else {
+                        alert('Xác nhận mua hàng thành công!');
+                        return null;
+                    }
+                })
+                .then(response => {
+                    if (response && !response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response ? response.text() : '';
+                })
+                .then(vnpayUrl => {
+                    if (vnpayUrl) {
+                        console.log('URL VNPAY:', vnpayUrl);
+                        window.location.replace(vnpayUrl);
+                    }
+                })
+                .catch(error => {
+                    console.error(error.message);
+                    alert(error.message);
+                });
+        }
+        function generateOrderId() {
+            // Tạo orderId theo cách của bạn
+            return new Date().getTime();
+        }
+
+
+
+        //TotalAmount function
+        function totalAmount() {
+            const cartItemsWrapper = document.querySelector('.pay__item');
+            let total = 0;  // Khởi tạo biến total để lưu tổng tiền
+
+            // Gọi API để lấy danh sách CartItem
+            fetch('/api/cartitems/getCart')
+                .then(response => response.json())
+                .then(cartItems => {
+                    // Duyệt qua tất cả các item trong giỏ hàng
+                    const promises = cartItems.map(item => {
+                        return fetch(`/api/cartitems/${item.product_id}`)  // Gọi API để lấy thông tin sản phẩm
+                            .then(response => response.json())
+                            .then(productDTO => {
+                                // Tính tổng tiền (cost * quantity) và cộng vào biến total
+                                total += productDTO.cost * item.quantity;
+                            })
+                            .catch(error => console.error('Lỗi khi lấy thông tin sản phẩm:', error));
+                    });
+
+                    // Chờ tất cả các promise trả về (đảm bảo tất cả dữ liệu đã được lấy)
+                    Promise.all(promises)
+                        .then(() => {
+                            // Sau khi tính xong, cập nhật giá trị total vào thẻ span
+                            const totalPriceElement = document.getElementById('total-price');
+                            totalPriceElement.textContent = `$${total}`;
+                        })
+                        .catch(error => console.error('Lỗi khi tính tổng tiền:', error));
+                })
+                .catch(error => console.error('Lỗi khi lấy danh sách CartItems:', error));
+        }
+
+
+        function loadBranch() {
+            // Chọn phần tử <select> đã có sẵn trong DOM
+            const branchSelect = document.querySelector('.branch-select');
+
+            if (!branchSelect) {
+                console.error('Không tìm thấy phần tử .branch-select');
+                return;
+            }
+
+            // Xóa nội dung cũ của <select>
+            branchSelect.innerHTML = '';
+
+            // Gọi API để lấy danh sách chi nhánh
+            fetch('/api/branchs')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(branches => {
+                    // Kiểm tra nếu dữ liệu trả về là một mảng
+                    if (!Array.isArray(branches)) {
+                        throw new Error('Dữ liệu trả về không phải là một mảng');
+                    }
+
+                    // Thêm các option vào <select>
+                    branches.forEach(branchDTO => {
+                        const option = document.createElement('option');
+                        option.className = 'option-branch';
+
+
+                        option.innerHTML = `
+                            <div class="pay__user-info__body-content">
+                                <span>${branchDTO.branch_name}</span>
+                            </div>
+                        `;
+
+                        option.value = branchDTO.branch_id; // Sử dụng branch_id nếu có
+                        branchSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải danh sách chi nhánh:', error);
+                });
+        }
+
+
+        // Delete CartItem Function
+        function deleteCartItem(button) {
+            const cart_item_id = button.getAttribute('data-cartItm-id');
+
+            fetch(`api/cartitems/${cart_item_id}`, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Không thể xóa sản phẩm');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                })
+                .catch(error => {
+                    console.error('Đã xóa thành công!', error);
+                    alert('Đã xóa thành công!');
+                    loadCart();
+                    totalAmount();
+                });
+        }
+
+        // Load Cart function
+        function loadCart() {
+            console.log("loadCart is called");
+
+            const cartItemsWrapper = document.querySelector('.filled-cart__items-wrapper');
+            cartItemsWrapper.innerHTML = ''; // Xóa nội dung cũ trước khi thêm mới
+
+            // Gọi API để lấy danh sách CartItem
+            fetch('/api/cartitems/getCart')
+                .then(response => response.json())
+                .then(cartItems => {
+                    cartItems.forEach(item => {
+                        // Gọi API để lấy thông tin sản phẩm bằng productID
+                        fetch(`/api/cartitems/${item.product_id}`)  // Thay thế bằng endpoint API của bạn
+                            .then(response => response.json())
+                            .then(productDTO => {
+                                const cartItem = document.createElement('div');
+                                cartItem.className = 'filled-cart__item';
+                                cartItem.dataset.productId = item.product_id;
+                                cartItem.dataset.productName = productDTO.product_name;
+
+
+                                cartItem.innerHTML = `
+                                    <a href="#" class="filled-cart__item-info">
+                                        <div class="filled-cart__item-img"></div>
+                                        <p class="filled-cart__item-description">${productDTO.product_name}</p>
+                                    </a>
+                                    <span class="filled-cart__item-price" style="padding-left: 20px">$${productDTO.cost}</span>
+                                    <div class="filled-cart__item-quantity">
+                                        <div class="quantity-buttons">
+                                            <div class="quantity-buttons--number" style="margin-left: 88px">${item.quantity}</div>
+                                        </div>
+                                    </div>
+                                    <span class="filled-cart__item-totalPrice" style="padding-right: 50px">$${productDTO.cost * item.quantity}</span>
+                                    <div class="filled-cart__item-delete-button">
+                                        <button class="buttons" style="margin-right: 50px" data-cartItm-id="${item.cart_item_id}" onclick="deleteCartItem(this)">
+                                            Delete
+                                        </button>
+                                    </div>
+                                `;
+
+                                cartItemsWrapper.appendChild(cartItem);
+                            })
+                            .catch(error => console.error('Lỗi khi lấy thông tin sản phẩm:', error));
+                    });
+                })
+                .catch(error => console.error('Lỗi khi lấy thông tin giỏ hàng:', error));
+        }
+
+        // Gọi hàm loadCart khi trang được tải
+        document.addEventListener('DOMContentLoaded', function () {
+            loadCart();
+            totalAmount();
+            loadBranch();
+        });
+
+        // Gán sự kiện click vào nút Confirm Purchase
+        document.querySelector('.purchase-confirmation-button button').addEventListener('click', confirmPurchase);
+    </script>
+</section>
+
+</body>
+</html>

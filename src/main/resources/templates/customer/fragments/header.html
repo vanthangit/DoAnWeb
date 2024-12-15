@@ -3,10 +3,10 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <body>
 <div th:fragment="header">
-<!--Nội dung điền vô đây-->
+    <!--Nội dung điền vô đây-->
     <header class="header">
         <div class="grid wide ">
-            <div class="row navbar">
+            <div class="row navbar" >
                 <div class="col l-2 m-2 c-6">
                     <a th:href="@{/}" style="text-decoration: none">
                         <h1 class="logo" about="">ALOTRA</h1>
@@ -25,12 +25,12 @@
                             </a>
                         </li>
                         <li class="navbar__item">
-                            <a class="navbar__item-link" href="../about.html">
+                            <a class="navbar__item-link" th:href="@{/about-us}">
                                 VỀ CHÚNG TÔI
                             </a>
                         </li>
                         <li class="navbar__item">
-                            <a class="navbar__item-link" href="./contact.html">
+                            <a class="navbar__item-link" th:href="@{/contact-us}">
                                 LIÊN HỆ
                             </a>
                         </li>
@@ -43,115 +43,53 @@
                         </a>
                     </div>
                     <div class="cart-link__wrapper">
-                        <a href="../cart.html" class="cart-link">
-                            <span class="cart-link-notice">1</span>
+                        <a th:href="@{/cart}" class="cart-link">
                             <i class="fa fa-cart-plus"></i>
                         </a>
-                        <!-- cart list -->
-                        <div class="cart-list">
-                            <!-- empty cart list -->
-                            <div class="cart-list__empty-cart">
-                                <img src="/assets/img/icon/empty_cart.png" alt="Empty cart" class="cart-list__empty-cart-img">
-                                <div class="cart-list__empty-cart-title">
-                                    Unfortunately, Your Cart Is Empty
-                                </div>
-                                <div class="cart-list__empty-cart-message">
-                                    Please add something in your cart
-                                </div>
-                            </div>
-                            <!-- filled cart list -->
-                            <div class="cart-list__filled-cart">
-                                <div class="filled-cart__header">
-                                        <span class="filled-cart__title">
-                                            Added Products
-                                        </span>
-                                </div>
-                                <ul class="cart-list__filled-cart__items-list">
-                                    <a href="./" class="cart-list__filled-cart__item-wrapper">
-                                        <li class="cart-list__filled-cart__item">
-                                            <img src="https://hcm.fstorage.vn/images/2024/11/tra-o-long-dau-min-20241113105844.png" alt="foundation" class="filled-cart__item-img">
-                                            <div class="cart-list__filled-cart__item-info">
-                                                <div class="cart-list__filled-cart__item-info-head">
-                                                        <span class="cart-list__filled-cart__item-name">
-                                                            Trà Ô Long Dâu (L)
-                                                        </span>
-                                                    <div class="cart-list__filled-cart__price-wrapper">
-                                                        <div class="cart-list__filled-cart__item-price">
-                                                            65000đ
-                                                        </div>
-                                                        <div class="cart-list__filled-cart__multiphy">x</div>
-                                                        <div class="cart-list__filled-cart__item-quantity">
-                                                            2
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="cart-list__filled-cart__item-info-body">
-                                                        <span class="cart-list__filled-cart__item-category">
-                                                            Category: Bst mới tearamisu
-                                                        </span>
-                                                    <span class="cart-list__filled-cart__remove">
-                                                            Remove
-                                                        </span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </a>
-                                </ul>
-                                <a href="../cart.html" class="cart-list__filled-cart__footer">
-                                    <button id="cart-list__view-button" class="buttons buttons--smaller">View Cart</button>
-                                </a>
+                    </div>
+
+                    <!-- Kiểm tra nếu chưa đăng nhập -->
+                    <a class="login-link" th:if="${session.myInfo == null}" th:href="@{/auth/form-login}">
+                        <i class="fa fa-user"></i>
+                    </a>
+
+                    <!-- Kiểm tra nếu đã đăng nhập -->
+                    <div class="user-info" th:if="${session.myInfo != null}">
+                        <div class="dropdown">
+                            <button class="dropbtn" th:text="${session.myInfo.email}"></button>
+                            <div class="dropdown-content" style="font-style: italic; font-size: 14px">
+                                <a th:href="@{/user/myInfo}">Thông tin cá nhân</a>
+                                <a th:href="@{/customer/order-history}">Đơn hàng</a>
+                                <a th:href="@{/auth/logout}">Đăng xuất</a>
                             </div>
                         </div>
                     </div>
-
-                    <!--LOGIN-->
-                    <div class="login-link__wrapper">
-                        <a class="login-link">
-                            <i class="fa fa-user"></i>
-                        </a>
-                    </div>
-
                 </div>
-                <div class="nav-mobile__overlay"></div>
-                <div class="nav-icon col l-0 m-0 c-6">
-                    <label for="nav-mobile__label">
-                        <i class="nav-link fas fa-bars"></i>
-                    </label>
-                    <input type="checkbox" hidden="" id="nav-mobile__label" class="navbar__check">
-                    <div class="nav-mobile">
-                        <label for="nav-mobile__label">
-                            <i class="icon-exit far fa-times-circle"></i>
-                        </label>
-                        <ul class="nav-mobile__list">
-                            <a href="../index.html" class="nav-mobile__link">
-                                <li class="nav-mobile__item">
-                                    Home
-                                </li>
-                            </a>
-                            <a href="../products.html" class="nav-mobile__link">
-                                <li class="nav-mobile__item">
-                                    Products
-                                </li>
-                            </a>
-                            <a href="../about.html" class="nav-mobile__link">
-                                <li class="nav-mobile__item">
-                                    About Us
-                                </li>
-                            </a>
-                            <a href="../contact.html" class="nav-mobile__link">
-                                <li class="nav-mobile__item">
-                                    Contact Us
-                                </li>
-                            </a>
-                        </ul>
-                    </div>
-                </div>
-
             </div>
         </div>
     </header>
     <!--Header: end-->
+    <!--  Back to top  -->
+    <div id="back-to-top" class="back-to-top" title="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const viewCartButton = document.getElementById('cart-list__view-button');
+        if (viewCartButton) {
+
+            viewCartButton.addEventListener('click', function () {
+                loadCart();
+            });
+
+        } else {
+            console.error('View Cart button not found!');
+        }
+    });
+</script>
 
 </body>
 </html>

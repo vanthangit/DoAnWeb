@@ -15,7 +15,6 @@ public class Product{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long product_id;
-    private String product_code;
     private String product_name;
     private String category;
     private Double cost;
@@ -33,4 +32,13 @@ public class Product{
     @JsonBackReference
     private List<OrderLine> orderLines;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "product")
+    @JsonBackReference
+    private List<ProductFeedback> productFeedbacks;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Inventory> inventories;
 }

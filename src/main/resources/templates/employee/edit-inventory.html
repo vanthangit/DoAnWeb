@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{/employee/layout-employee.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Sửa Hàng Tồn Kho</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+            text-decoration: none; /* Loại bỏ gạch chân cho liên kết */
+            display: inline-block; /* Đảm bảo thẻ <a> hoạt động như một thẻ <button> */
+        }
+
+        .btn-save {
+            background-color: #28a745;
+        }
+
+        .btn-cancel {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="container" style="margin-top: 100px">
+        <h2>Sửa Hàng Tồn Kho</h2>
+        <form th:action="@{/employee/inventory/edit}" th:object="${inventory}" method="post">
+            <input type="hidden" th:field="*{inventory_id}" />
+            <div class="form-group" style="font-size: 15px">
+                <label for="branch">Chi nhánh: <span id="branch_name" th:text="${inventory.branch.branch_name}"></span></label>
+                <input type="hidden" id="branch" th:field="*{branch.branch_id}" readonly/>
+            </div>
+            <div class="form-group" style="font-size: 15px">
+                <label for="product">Sản phẩm: <span id="product_name" th:text="${inventory.product.product_name}"></span></label>
+                <input type="hidden" id="product" th:field="*{product.product_id}" readonly/>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Số lượng:</label>
+                <input type="number" id="quantity" th:field="*{quantity}" />
+            </div>
+            <button type="submit" class="btn btn-save">Lưu</button>
+            <a th:href="@{/employee/inventory}" class="btn btn-cancel">Hủy</a>
+        </form>
+    </div>
+</section>
+</body>
+</html>

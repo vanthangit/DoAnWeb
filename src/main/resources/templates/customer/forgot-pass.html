@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{/customer/layout-customer.html}">
+<body>
+<section layout:fragment="content">
+  <!--Nội dung-->
+  <!--Forgot password-->
+    <div class="auth-form">
+      <div class="auth-form__container">
+        <div class="auth-form__header">
+          <h3 class="auth-form__heading">Forgot password</h3>
+        </div>
+        <div class="auth-form__form">
+          <div class="auth-form__group">
+            <input type="mail" class="auth-form__input" placeholder="Email">
+          </div>
+        </div>
+        <div class="auth-form__controls">
+          <button class="btn buttons auth-form__controls-back ">
+            BACK
+          </button>
+          <button class="buttons">
+            SEND
+          </button>
+        </div>
+      </div>
+    </div>
+</section>
+
+</body>
+</html>

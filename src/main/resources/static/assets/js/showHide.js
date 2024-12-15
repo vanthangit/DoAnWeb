@@ -6,7 +6,6 @@ const iconSearch = $('.search-link')
 const modal =  $('.modal')
 const iconClose = $('.modal__icon-close')
 const inputSearch = $('.modal__input')
-const searchHistory = $('.modal__history')
 
 function showSearch () {
     modal.classList.add('modal__open')
@@ -19,10 +18,6 @@ iconSearch.addEventListener('click', showSearch)
 iconClose.addEventListener('click', hideSearch)
 modal.addEventListener('click',hideSearch)
 inputSearch.addEventListener('click',function(event){
-    // ngừng việc nổi bọt
-    event.stopPropagation()
-})
-searchHistory.addEventListener('click',function(event){
     // ngừng việc nổi bọt
     event.stopPropagation()
 })
@@ -77,23 +72,6 @@ for(const authForm of authForms) {
     authForm.addEventListener('click', function (e) {
         e.stopPropagation()
     })
-}
-
-
-const close = $('.close');
-const overlay = $('.popup-overlay');
-const popup = $('.popup');
-
-popup.onclick = function (e) {
-    e.stopPropagation();
-}
-close.onclick = function(e) {
-    document.querySelector('.stay-in-touch').style.display = 'none';
-    overlay.style.display = 'none';
-}
-overlay.onclick = function (){
-    document.querySelector('.stay-in-touch').style.display = 'none';
-    overlay.style.display = 'none';
 }
 
 const submitLink = $(".auth-form__controls a");

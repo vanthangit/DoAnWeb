@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{/customer/layout-customer.html}">
+<body>
+<section layout:fragment="content">
+    <div class="my-account__main">
+        <div class="my-account__top">
+            <h5 class="my-account__top-title">
+                Tài khoản của tôi
+            </h5>
+            <p class="my-account__top-text">
+                Quản lý thông tin hồ sơ để bảo mật tài khoản!
+            </p>
+        </div>
+        <form class="my-account__form" method="post" action="#" th:action="@{/user/edit-profile}">
+            <div class="my-account__form-name">
+                <label class="my-account__form-label" for="full_name">
+                    Họ và tên:
+                </label>
+                <input id="full_name" name="full_name" class="my-account__form-input" type="text" th:value="${session.myInfo.full_name}" />
+            </div>
+            <div class="my-account__form-name">
+                <label class="my-account__form-label" for="gender">
+                    Giới tính:
+                </label>
+                <select id="gender" name="gender" class="my-account__form-input">
+                    <option th:selected="${session.myInfo.gender?.toString() == 'MALE'}">MALE</option>
+                    <option th:selected="${session.myInfo.gender?.toString() == 'FEMALE'}">FEMALE</option>
+                </select>
+            </div>
+            <div class="my-account__form-name">
+                <label class="my-account__form-label" for="email">
+                    Email:
+                </label>
+                <input id="email" name="email" class="my-account__form-input" type="email" th:value="${session.myInfo.email}" readonly/>
+            </div>
+            <div class="my-account__form-name">
+                <label class="my-account__form-label" for="address">
+                    Địa chỉ:
+                </label>
+                <input id="address" name="address" class="my-account__form-input" type="text" th:value="${session.myInfo.address}" />
+            </div>
+            <div class="my-account__form-name">
+                <label class="my-account__form-label" for="phone">
+                    Số điện thoại:
+                </label>
+                <input id="phone" name="phone" class="my-account__form-input" type="text" th:value="${session.myInfo.phone}" />
+            </div>
+            <button class="btn buttons my-account__password-btn" type="submit">
+                Lưu thay đổi
+            </button>
+        </form>
+    </div>
+</section>
+</body>
+</html>
