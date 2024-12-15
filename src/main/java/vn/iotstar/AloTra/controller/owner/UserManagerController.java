@@ -94,7 +94,7 @@ public class UserManagerController {
 
 	@RequestMapping("user/search")
 	public String searchUserByEmail(Model model, @RequestParam("email") String email, @RequestParam("roleId") Long roleId) {
-		Set<User> users = userService.searchUsersByEmail(email);
+		Set<User> users = userService.searchUsersByEmailAndRoleId(email, roleId);
 		model.addAttribute("roleId", roleId);
 		model.addAttribute("users", users);
 		return "owner/users-list";
