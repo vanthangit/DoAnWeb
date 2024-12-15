@@ -19,4 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.email LIKE %:email% ")
     Set<User> searchUsersByEmail(@Param("email") String email);
 
+    @Query("SELECT u FROM User u WHERE u.user_id = :user_id")
+    User findByUserId(@Param("user_id") Long user_id);
 }
