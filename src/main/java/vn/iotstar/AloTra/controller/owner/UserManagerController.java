@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -32,7 +33,7 @@ public class UserManagerController {
 	@Autowired
 	private BranchRepository branchRepository;
 	
-	@RequestMapping("/users")
+	@GetMapping("/users")
 	public String getUsersByRoleId(Model model, @RequestParam("roleId") Long roleId) {
 		Set<User> users = userService.findUsersByRoleId(roleId);
 
@@ -42,7 +43,7 @@ public class UserManagerController {
 		return "owner/users-list";
 	}
 	
-    @RequestMapping("/user/add")
+    @GetMapping("/user/add")
     public String showAddEmployy(Model model) {
     	User user = new User();
     
@@ -54,13 +55,13 @@ public class UserManagerController {
         return "owner/users-add";
     }
 
-    @RequestMapping("/user/add/submit")
+    @PostMapping("/user/add/submit")
     public String addEmployyWithBranch(@ModelAttribute User user, @RequestParam(value = "branchName", required = false) String branchName, @RequestParam(value = "branchAddress", required = false) String branchAddress) {
         userService.addUser(user, branchName, branchAddress);  
         return "redirect:/owner/users?roleId=2";
     }	
 
-	@RequestMapping("user/edit/{id}")
+	@GetMapping("user/edit/{id}")
 	public String editUser(@PathVariable Long id, @RequestParam("roleId") Long roleId, Model model) {
 	    User user = userService.findUserById(id);
 	    Branch branch = branchRepository.findByBranchId(user.getBranch().getBranch_id());
@@ -70,7 +71,7 @@ public class UserManagerController {
 	    return "owner/users-edit";
 	}
 
-	@RequestMapping("/user/edit/submit")
+	@PostMapping("/user/edit/submit")
 	public String updateUser(@ModelAttribute User user, 
 	                         @RequestParam("roleId") Long roleId, 
 	                         @RequestParam("branch_name") String branchName, 
@@ -92,9 +93,9 @@ public class UserManagerController {
 	    return "redirect:/owner/users";  
 	}
 
-	@RequestMapping("user/search")
+	@GetMapping("user/search")
 	public String searchUserByEmail(Model model, @RequestParam("email") String email, @RequestParam("roleId") Long roleId) {
-		Set<User> users = userService.searchUsersByEmail(email);
+		Set<User> users = userService.searchUsersByEmailAndRoleId(email, roleId);
 		model.addAttribute("roleId", roleId);
 		model.addAttribute("users", users);
 		return "owner/users-list";

@@ -11,8 +11,8 @@ import vn.iotstar.AloTra.entity.User;
 public interface IUserService {
 	Set<User> findUsersByRoleId(Long roleId);
 
-	Set<User> searchUsersByEmail(String email);
-	
+	Set<User> searchUsersByEmailAndRoleId(String email, Long roleId);
+	 
     void addUser(User user, String branchName, String branchAddress);
 
 }

@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.role.role_id = :roleId")
     Set<User> findByRoleId(@Param("roleId") Long roleId);
 
-    @Query("SELECT u FROM User u WHERE u.email LIKE %:email% ")
-    Set<User> searchUsersByEmail(@Param("email") String email);
+    @Query("SELECT u FROM User u WHERE u.email LIKE %:email% AND u.role.role_id = :roleId")
+    Set<User> searchUsersByEmailAndRoleId(@Param("email") String email, @Param("roleId") Long roleId);
 
 }

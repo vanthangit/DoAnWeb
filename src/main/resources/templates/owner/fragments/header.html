@@ -15,13 +15,19 @@
                 <div class="col l-8 m-8 c-0">
                     <ul class="navbar__list">
                         <li class="navbar__item">
-                            <a th:href="@{/owner/home}" class="navbar__item-link">
-                                TRANG CHỦ
+                       <li class="navbar__item">
+                            <a class="navbar__item-link" th:href="@{/owner/users(roleId=1)}">
+                                QUẢN LÝ NGƯỜI DÙNG
                             </a>
                         </li>
                         <li class="navbar__item">
+<<<<<<< Updated upstream
                             <a class="navbar__item-link" th:href="@{/owner/users(roleId=1)}">
                                 QUẢN LÝ NGƯỜI DÙNG
+=======
+                            <a class="navbar__item-link" th:href="@{/owner/users(roleId=2)}">
+                                QUẢN LÝ NHÂN VIÊN
+>>>>>>> Stashed changes
                             </a>
                         </li>
                         <li class="navbar__item">
