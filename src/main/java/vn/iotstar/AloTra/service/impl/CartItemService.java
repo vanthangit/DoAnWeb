@@ -41,7 +41,8 @@ public class CartItemService {
 
         Product product = productRepository.findById(request.getProduct_id()).orElseThrow(() -> new RuntimeException("Product not found"));
 
-        CartItem cartItem = cartItemRepository.findByProduct(product);
+        //Tim cartitem cho nguoi dung hien tai
+        CartItem cartItem = cartItemRepository.findByCart(cart, product);
 
         if(cartItem != null){
             cartItem.setQuantity(cartItem.getQuantity() + request.getQuantity());
