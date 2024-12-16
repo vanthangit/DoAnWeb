@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/owner/layout-owner.html}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thêm Voucher</title>
+<link rel="stylesheet" href="/assets/css/admin/voucher.css">
+<head>
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<div class="content">
+			<h2>Thêm Voucher Mới</h2>
+
+			<div th:if="${error}" class="error-message">
+				<p th:text="${error}"></p>
+			</div>
+
+			<form th:action="@{/owner/voucher/add}" method="POST" class="voucher-form">
+				<div class="form-group">
+					<label for="voucher_value">Giá trị</label> <input
+						type="number" id="voucher_value" name="voucher_value"
+						th:value="${voucher.voucher_value}" class="form-input" required>
+				</div>
+
+				<div class="form-group">
+					<label for="start_date">Ngày Bắt Đầu</label> <input type="date"
+						id="start_date" name="start_date" th:value="${voucher.start_date}" class="form-input">
+				</div>
+
+				<div class="form-group">
+					<label for="end_date">Ngày Hết Hạn</label> <input type="date"
+						id="end_date" name="end_date" th:value="${voucher.end_date}" class="form-input">
+				</div>
+
+				<button type="submit" class="btn-submit">Thêm Voucher</button>
+			</form>
+		</div>
+	</section>
+</body>
+</html>

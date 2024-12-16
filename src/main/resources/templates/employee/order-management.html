@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/employee/layout-employee.html}">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản Lý Đơn Hàng</title>
+
+<style>
+.manageproduct-body {
+	margin: 0px;
+}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f4f4f9;
+	margin: 0;
+	padding: 0;
+}
+
+#orderDate {
+	width: 120px;
+	font-size: 14px;
+	padding: 5px;
+}
+
+header, footer {
+	background-color: #333;
+	color: #fff;
+	padding: 10px;
+	text-align: center;
+}
+
+.container {
+	width: 80%;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.tab {
+	display: flex;
+	justify-content: space-between;
+	overflow-x: auto;
+	background-color: #ffffff;
+	padding: 10px 20px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	margin-top: 100px;
+}
+
+.tab a {
+	flex: 1;
+	text-align: center;
+	font-size: 17px;
+	padding: 10px;
+	text-decoration: none;
+	color: #495057;
+	border-radius: 5px;
+	transition: all 0.3s ease;
+}
+
+.tab a:hover {
+	background-color: black;
+	color: #fff;
+}
+
+.tab a.active {
+	background-color: black;
+	color: #fff;
+}
+
+.tab-content {
+	background-color: #ffffff;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.order-list {
+	width: 100%;
+	max-width: 1200px;
+	margin: 20px auto;
+	border-collapse: collapse;
+	background-color: #fff;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.order-list th, .order-list td {
+	padding: 15px;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
+}
+
+.order-list th {
+	background-color: rgb(0, 0, 0);
+	color: white;
+}
+
+.order-list tr:nth-child(even) {
+	background-color: #f9f9f9;
+}
+
+.order-list tr:hover {
+	background-color: #f1f1f1;
+}
+
+.message {
+	color: red;
+	font-weight: bold;
+	margin: 20px 0;
+}
+
+h3 {
+	color: #333;
+}
+
+.no-orders {
+	color: #888;
+}
+
+.status-select {
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	background-color: #f8f9fa;
+	font-size: 15px;
+	color: #333;
+}
+
+button {
+	background-color: #28a745;
+	color: white;
+	padding: 10px 15px;
+	border: none;
+	border-radius: 5px;
+	font-size: 15px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+button:hover {
+	background-color: #0056b3;
+}
+
+footer {
+	background-color: #333;
+	color: white;
+	text-align: center;
+	padding: 15px;
+	margin-top: 20px;
+}
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.pagination .page-item {
+	margin: 0 5px;
+}
+
+.pagination .page-link {
+	font-size: 12px;
+	padding: 10px 20px;
+	text-decoration: none;
+	color: #495057;
+	border-radius: 5px;
+	transition: all 0.3s ease;
+}
+
+.pagination .page-link:hover {
+	background-color: #007bff;
+	color: white;
+}
+
+.pagination .page-item.active .page-link {
+	background-color: #007bff;
+	color: white;
+}
+</style>
+
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<div class="tab">
+			<a href="?tab=tat-ca-don-hang"
+				th:classappend="${tab == 'tat-ca-don-hang' ? ' active' : ''}">Tất
+				Cả Đơn Hàng</a> <a href="?tab=don-cho-xac-nhan"
+				th:classappend="${tab == 'don-cho-xac-nhan' ? ' active' : ''}">Đơn
+				Chờ Xác Nhận</a> <a href="?tab=don-da-xac-nhan"
+				th:classappend="${tab == 'don-da-xac-nhan' ? ' active' : ''}">Đơn
+				Đã Xác Nhận</a> <a href="?tab=don-dang-van-chuyen"
+				th:classappend="${tab == 'don-dang-van-chuyen' ? ' active' : ''}">Đơn
+				Đang Vận Chuyển</a> <a href="?tab=don-da-giao"
+				th:classappend="${tab == 'don-da-giao' ? ' active' : ''}">Đơn Đã
+				Giao</a> <a href="?tab=don-huy"
+				th:classappend="${tab == 'don-huy' ? ' active' : ''}">Đơn Hủy</a>
+		</div>
+		<div class="tab-content">
+			<form th:action="@{/employee/order-management/search}" method="get">
+				<div class="form-group">
+					<label for="orderDate">Ngày đặt hàng:</label> <input type="date"
+						id="orderDate" name="orderDate" required class="form-control">
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary">Tìm kiếm</button>
+				</div>
+			</form>
+		</div>
+
+		<div th:if="${tab == 'tat-ca-don-hang'}" class="tab-content">
+			<table class="order-list">
+				<tr>
+					<th>Mã Đơn Hàng</th>
+					<th>Mã Khách Hàng</th>
+					<th>Ngày Vận Chuyển</th>
+					<th>Ngày Đặt Hàng</th>
+					<th>Trạng Thái Đơn Hàng</th>
+					<th>Địa Chỉ Vận Chuyển</th>
+					<th>Cập Nhật Trạng Thái Đơn Hàng</th>
+				</tr>
+				<tr th:each="Order : ${Orders}">
+					<td th:text="${Order.order_id}"></td>
+					<td th:text="${Order.user_id}"></td>
+					<td th:text="${Order.delivery_date}"></td>
+					<td th:text="${Order.order_date}"></td>
+					<td th:text="${Order.order_status}"></td>
+					<td th:text="${Order.shipping_address}"></td>
+					<td>
+						<form th:action="@{/employee/order-management}" method="post">
+							<input type="hidden" name="orderId" th:value="${Order.order_id}" />
+							<select name="status" class="status-select">
+								<option value="PENDING"
+									th:selected="${Order.order_status.toString() == 'PENDING'}">PENDING
+								</option>
+								<option value="CONFIRMED"
+									th:selected="${Order.order_status.toString() == 'CONFIRMED'}">CONFIRMED
+								</option>
+								<option value="SHIPPING"
+									th:selected="${Order.order_status.toString() == 'SHIPPING'}">SHIPPING
+								</option>
+								<option value="COMPLETED"
+									th:selected="${Order.order_status.toString() == 'COMPLETED'}">COMPLETED
+								</option>
+
+							</select>
+							<button type="submit">Cập nhật</button>
+						</form>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div th:if="${tab == 'don-cho-xac-nhan'}" class="tab-content">
+			<table class="order-list">
+				<tr>
+					<th>Mã Đơn Hàng</th>
+					<th>Mã Khách Hàng</th>
+					<th>Ngày Vận Chuyển</th>
+					<th>Ngày Đặt Hàng</th>
+					<th>Trạng Thái Đơn Hàng</th>
+					<th>Địa Chỉ Vận Chuyển</th>
+				</tr>
+				<tr th:each="Order : ${Orders}">
+					<td th:text="${Order.order_id}"></td>
+					<td th:text="${Order.user_id}"></td>
+					<td th:text="${Order.delivery_date}"></td>
+					<td th:text="${Order.order_date}"></td>
+					<td th:text="${Order.order_status}"></td>
+					<td th:text="${Order.shipping_address}"></td>
+			</table>
+		</div>
+		<div th:if="${tab == 'don-da-xac-nhan'}" class="tab-content">
+			<table class="order-list">
+				<tr>
+					<th>Mã Đơn Hàng</th>
+					<th>Mã Khách Hàng</th>
+					<th>Ngày Vận Chuyển</th>
+					<th>Ngày Đặt Hàng</th>
+					<th>Trạng Thái Đơn Hàng</th>
+					<th>Địa Chỉ Vận Chuyển</th>
+				</tr>
+				<tr th:each="Order : ${Orders}">
+					<td th:text="${Order.order_id}"></td>
+					<td th:text="${Order.user_id}"></td>
+					<td th:text="${Order.delivery_date}"></td>
+					<td th:text="${Order.order_date}"></td>
+					<td th:text="${Order.order_status}"></td>
+					<td th:text="${Order.shipping_address}"></td>
+			</table>
+		</div>
+		<div th:if="${tab == 'don-dang-van-chuyen'}" class="tab-content">
+			<table class="order-list">
+				<tr>
+					<th>Mã Đơn Hàng</th>
+					<th>Mã Khách Hàng</th>
+					<th>Ngày Vận Chuyển</th>
+					<th>Ngày Đặt Hàng</th>
+					<th>Trạng Thái Đơn Hàng</th>
+					<th>Địa Chỉ Vận Chuyển</th>
+				</tr>
+				<tr th:each="Order : ${Orders}">
+					<td th:text="${Order.order_id}"></td>
+					<td th:text="${Order.user_id}"></td>
+					<td th:text="${Order.delivery_date}"></td>
+					<td th:text="${Order.order_date}"></td>
+					<td th:text="${Order.order_status}"></td>
+					<td th:text="${Order.shipping_address}"></td>
+			</table>
+		</div>
+		<div th:if="${tab == 'don-da-giao'}" class="tab-content">
+			<table class="order-list">
+				<tr>
+					<th>Mã Đơn Hàng</th>
+					<th>Mã Khách Hàng</th>
+					<th>Ngày Vận Chuyển</th>
+					<th>Ngày Đặt Hàng</th>
+					<th>Trạng Thái Đơn Hàng</th>
+					<th>Địa Chỉ Vận Chuyển</th>
+				</tr>
+				<tr th:each="Order : ${Orders}">
+					<td th:text="${Order.order_id}"></td>
+					<td th:text="${Order.user_id}"></td>
+					<td th:text="${Order.delivery_date}"></td>
+					<td th:text="${Order.order_date}"></td>
+					<td th:text="${Order.order_status}"></td>
+					<td th:text="${Order.shipping_address}"></td>
+			</table>
+		</div>
+		<!-- Tab Đơn Hủy (Chưa có nội dung) -->
+		<div th:if="${tab == 'don-huy'}" class="tab-content">
+			<table class="order-list">
+				<tr>
+					<th>Mã Đơn Hàng</th>
+					<th>Mã Khách Hàng</th>
+					<th>Ngày Vận Chuyển</th>
+					<th>Ngày Đặt Hàng</th>
+					<th>Trạng Thái Đơn Hàng</th>
+					<th>Địa Chỉ Vận Chuyển</th>
+				</tr>
+				<tr th:each="Order : ${Orders}">
+					<td th:text="${Order != null ? Order.order_id : 'N/A'}"></td>
+					<td th:text="${Order != null ? Order.user_id : 'N/A'}"></td>
+					<td th:text="${Order != null ? Order.delivery_date : 'N/A'}"></td>
+					<td th:text="${Order != null ? Order.order_date : 'N/A'}"></td>
+					<td th:text="${Order != null ? Order.order_status : 'N/A'}"></td>
+					<td th:text="${Order != null ? Order.shipping_address : 'N/A'}"></td>
+				</tr>
+
+			</table>
+		</div>
+		<div th:if="${not #lists.isEmpty(searchOrders)}" class="tab-content">
+			<table class="order-list">
+				<tr>
+					<th>Mã Đơn Hàng</th>
+					<th>Mã Khách Hàng</th>
+					<th>Ngày Vận Chuyển</th>
+					<th>Ngày Đặt Hàng</th>
+					<th>Trạng Thái Đơn Hàng</th>
+					<th>Địa Chỉ Vận Chuyển</th>
+					<th>Cập Nhật Trạng Thái Đơn Hàng</th>
+				</tr>
+				<tr th:each="Order : ${searchOrders}">
+					<td th:text="${Order.order_id}"></td>
+					<td th:text="${Order.user_id}"></td>
+					<td th:text="${Order.delivery_date}"></td>
+					<td th:text="${Order.order_date}"></td>
+					<td th:text="${Order.order_status}"></td>
+					<td th:text="${Order.shipping_address}"></td>
+					<td>
+						<form th:action="@{/employee/order-management}" method="post">
+							<input type="hidden" name="orderId" th:value="${Order.order_id}" />
+							<select name="status" class="status-select">
+								<option value="PENDING"
+									th:selected="${Order.order_status.toString() == 'PENDING'}">PENDING
+								</option>
+								<option value="CONFIRMED"
+									th:selected="${Order.order_status.toString() == 'CONFIRMED'}">CONFIRMED
+								</option>
+								<option value="SHIPPING"
+									th:selected="${Order.order_status.toString() == 'SHIPPING'}">SHIPPING
+								</option>
+								<option value="COMPLETED"
+									th:selected="${Order.order_status.toString() == 'COMPLETED'}">COMPLETED
+								</option>
+
+							</select>
+							<button type="submit">Cập nhật</button>
+						</form>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div
+			th:if="${#lists.isEmpty(searchOrders) and #lists.isEmpty(Orders)}"
+			class="message">Không tìm thấy đơn hàng nào</div>
+	</section>
+
+</body>
+
+</html>

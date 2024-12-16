@@ -29,6 +29,9 @@
             width: auto;
             border: revert;
         }
+
+
+
     </style>
 </head>
 <body>
@@ -92,9 +95,22 @@
                         </select>
                     </div>
 
+                    <!-- DISCOUNT CODE SECTION-BEGIN -->
+                    <div class="discount-code__header">
+                        <div class="discount-code__title">
+                            <span style="font-size: 17px;">Chọn mã giảm giá</span>
+                        </div>
+                    </div>
+                    <div class="discount-code__content">
+                        <select id="coupon-select" class="discount-code__body discount-code__body-select coupon-select">
+                            <option value="sample-id">SAMPLECODE - 10%</option>
+                            <!-- Các tùy chọn khác sẽ được thêm vào đây -->
+                        </select>
+                    </div>
+
+                    <!-- DISCOUNT CODE SECTION-END -->
+
                 </div>
-
-
 
                 <!-- Filled cart -->
                 <div class="filled-cart">
@@ -136,15 +152,98 @@
                         </div>
                     </div>
 
-                    <div class="purchase-confirmation-button">
-                        <button class="buttons">Confirm Purchase</button>
+                    <div>
+                        <button class="buttons btn-useVoucher" id="nutGiamGia" style="margin-right: 20px;" onclick="useVoucher(this)">Áp dụng mã giảm giá</button>
                     </div>
+
+                    <div class="purchase-confirmation-button">
+                        <button class="buttons">Xác nhận mua</button>
+                    </div>
+
+
                 </div>
             </div>
 
         </div>
     </div>
     <script>
+
+        // Hàm lấy giá trị của tùy chọn đã chọn
+        function getSelectedCoupon() {
+            const selectElement = document.getElementById('coupon-select');
+            const selectedValue = selectElement.value; // Lấy giá trị của tùy chọn đã chọn
+        }
+
+        // Gọi hàm này khi cần lấy giá trị
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     // Lắng nghe sự kiện thay đổi trên thẻ select
+        //     const selectElement = document.getElementById('coupon-select');
+        //     selectElement.addEventListener('change', getSelectedCoupon);
+        // });
+
+        // Function use voucher
+        function useVoucher(button) {
+            const selectElement = document.getElementById('coupon-select');
+            const phanTram = selectElement.selectedOptions[0].textContent.trim();
+            const phanTramDone = parseFloat(phanTram.replace("Giảm ", "")); // Chuyển đổi thành số thập phân
+            //Tiền chưa giảm giá
+            const totalPriceElement = parseFloat(document.getElementById('total-price').textContent.replace("$", ""));
+            const newTotalPrice = totalPriceElement * (1 - phanTramDone / 100); // Tính toán giá mới sau khi giảm giá
+            const totalPriceElement1 = document.getElementById('total-price');
+            totalPriceElement1.textContent = `$${newTotalPrice}`;
+
+            const option = document.getElementById('voucher_option');
+
+            // <button className="buttons btn-useVoucher" style="margin-right: 20px;" onClick="useVoucher(this)">Áp dụng mã
+            //     giảm giá</button>
+
+
+
+        }
+
+
+        //function load voucher
+        function loadVoucher() {
+
+            const voucherSelect = document.querySelector('.coupon-select');
+
+            voucherSelect.innerHTML = '';
+
+            // Gọi API để lấy danh sách chi nhánh
+            fetch('/api/vouchers/loadAllVouchers')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(vouchers => {
+                    // Kiểm tra nếu dữ liệu trả về là một mảng
+                    if (!Array.isArray(vouchers)) {
+                        throw new Error('Dữ liệu trả về không phải là một mảng');
+                    }
+
+                    // Thêm các option vào <select>
+                    vouchers.forEach(voucherDTO => {
+
+                        if(voucherDTO.order_id == null){
+                                const option = document.createElement('option');
+                                option.className = 'option-voucher';
+                                option.id = 'voucher_option';
+                                option.innerHTML = `
+                                Giảm ${voucherDTO.voucher_value}
+                            `;
+                            option.value = voucherDTO.voucher_id; // Sử dụng branch_id nếu có
+                            voucherSelect.appendChild(option);
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải danh sách chi nhánh:', error);
+                });
+        }
+
+
         function confirmPurchase() {
             // Lấy thông tin từ các trường nhập liệu
             const shippingAddress = document.querySelector('.pay__user-info__body-content-address').value;
@@ -348,6 +447,29 @@
         }
 
 
+        // Delete CartItem Function
+        function deleteCartItem(button) {
+            const cart_item_id = button.getAttribute('data-cartItm-id');
+
+            fetch(`api/cartitems/${cart_item_id}`, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Không thể xóa sản phẩm');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                })
+                .catch(error => {
+                    console.error('Đã xóa thành công!', error);
+                    alert('Đã xóa thành công!');
+                    loadCart();
+                    totalAmount();
+                });
+        }
+
         // Load Cart function
         function loadCart() {
             console.log("loadCart is called");
@@ -383,7 +505,9 @@
                                     </div>
                                     <span class="filled-cart__item-totalPrice" style="padding-right: 50px">$${productDTO.cost * item.quantity}</span>
                                     <div class="filled-cart__item-delete-button">
-                                        <button class="buttons" style="margin-right: 50px">Delete</button>
+                                        <button class="buttons" style="margin-right: 50px" data-cartItm-id="${item.cart_item_id}" onclick="deleteCartItem(this)">
+                                            Delete
+                                        </button>
                                     </div>
                                 `;
 
@@ -400,6 +524,7 @@
             loadCart();
             totalAmount();
             loadBranch();
+            loadVoucher();
         });
 
         // Gán sự kiện click vào nút Confirm Purchase
