@@ -14,10 +14,10 @@
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/order-history.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-
 </head>
 <body>
 <header th:replace="~{/customer/fragments/header :: header}"></header>
+<div th:if="${message}" id="success-message" style="display: none;" th:text="${message}"></div>
     <div class="main container" style="margin-top: 125px">
         <div class="tab mt-10 mb-4 container text-center">
             <ul class="nav nav-tabs justify-content-center">
@@ -81,11 +81,9 @@
                                 <a th:href="@{/form-feedback(productId=${product.product_id})}" type="button" class="btn btn-outline me-2" style="border: 2px solid black; font-size: 15px;">Đánh giá</a>
                             </div>
                             <div th:if="${order.order_status.toString() == 'COMPLETED' or order.order_status.toString() == 'CANCELLED' or order.order_status.toString() == 'REFUNDED'}">
-                                <form th:action="@{/add-to-cart}" method="post">
-                                    <input type="hidden" name="productId" th:value="${product.product_id}"/>
-                                    <input type="hidden" name="quantity" th:value="${product.quantity}"/>
-                                    <button type="submit" class="btn btn-dark" style="font-size: 15px; ">Mua lại</button>
-                                </form>
+                                <div class="product-history-id" th:text="${product.product_id}" style="display: none;"></div>
+                                <div class="quantity-history" th:text="${product.quantity}" style="display: none;"></div>
+                                <button type="button" class="btn btn-dark reOrderBtn" style="font-size: 15px;" onclick="reOrder(this)">Mua lại</button>
                             </div>
                         </div>
                     </div>
@@ -98,6 +96,16 @@
                 <div class="row">
                     <div class="col-md-12 text-end mb-4">
                         <strong class="card-text" th:text="'Tổng tiền: ' + ${order.totalCost}" style="font-size: 15px;"></strong>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end align-items-center">
+                    <div th:if="${order.order_status.toString() == 'PENDING'}">
+                        <a href="javascript:void(0);"
+                           th:onclick="'confirmCancel(\'/customer/order-history/cancel?orderId=' + ${order.order_id} + '\')'"
+                           class="btn btn-danger me-2"
+                           style="border: 2px solid red; font-size: 15px; margin-bottom: 10px">
+                            Hủy đơn
+                        </a>
                     </div>
                 </div>
             </div>
@@ -132,10 +140,19 @@
                     <div class="col-md-12 text-end mb-4">
                         <strong class="card-text" th:text="'Tổng tiền: ' + ${order.totalCost}" style="font-size: 15px;"></strong>
                     </div>
+                    <div class="d-flex justify-content-end align-items-center">
+                        <div th:if="${order.order_status.toString() == 'PENDING'}">
+                            <a href="javascript:void(0);"
+                               th:onclick="'confirmCancel(\'/customer/order-history/cancel?orderId=' + ${order.order_id} + '\')'"
+                               class="btn btn-danger me-2"
+                               style="border: 2px solid red; font-size: 15px; margin-bottom: 10px">
+                                Hủy đơn
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
         <div th:if="${tab == 'don-da-xac-nhan'}" class="tab-content">
             <div th:each="order : ${orders}" class="card mb-3 container">
                 <div class="card-header">
@@ -230,11 +247,9 @@
                             <div>
                                 <a th:href="@{/form-feedback(productId=${product.product_id})}" type="button" class="btn btn-outline-dark me-2" style="border: 2px solid black; font-size: 15px;">Đánh giá</a>
                             </div>
-                            <form th:action="@{/add-to-cart}" method="post">
-                                <input type="hidden" name="productId" th:value="${product.product_id}"/>
-                                <input type="hidden" name="quantity" th:value="${product.quantity}"/>
-                                <button type="submit" class="btn btn-dark" style="font-size: 15px;">Mua lại</button>
-                            </form>
+                            <div class="product-history-id" th:text="${product.product_id}" style="display: none;"></div>
+                            <div class="quantity-history" th:text="${product.quantity}" style="display: none;"></div>
+                            <button type="button" class="btn btn-dark reOrderBtn" style="font-size: 15px;" onclick="reOrder(this)">Mua lại</button>
                         </div>
                     </div>
                     <hr>
@@ -271,11 +286,9 @@
                         </div>
                     </div>
                     <div class="text-end mb-4">
-                        <form th:action="@{/add-to-cart}" method="post">
-                            <input type="hidden" name="productId" th:value="${product.product_id}"/>
-                            <input type="hidden" name="quantity" th:value="${product.quantity}"/>
-                            <button type="submit" class="btn btn-dark" style="font-size: 15px;">Mua lại</button>
-                        </form>
+                        <div class="product-history-id" th:text="${product.product_id}" style="display: none;"></div>
+                        <div class="quantity-history" th:text="${product.quantity}" style="display: none;"></div>
+                        <button type="button" class="btn btn-dark reOrderBtn" style="font-size: 15px;" onclick="reOrder(this)">Mua lại</button>
                     </div>
                     <hr>
                 </div>
@@ -291,5 +304,45 @@
         </div>
     </div>
 <footer th:replace="~{/customer/fragments/footer :: footer}"></footer>
+<script>
+    function confirmCancel(url) {
+        if (confirm("Bạn có chắc chắn muốn hủy đơn không?")) {
+            window.location.href = url;
+        }
+    }
+
+    window.onload = function() {
+        const successMessage = document.getElementById('success-message');
+        if (successMessage) {
+            alert("Hủy đơn hàng thành công.");
+        }
+    }
+</script>
+<script>
+    function reOrder(button) {
+        var parentDiv = button.closest('div');
+        var productId = parentDiv.querySelector('.product-history-id').textContent.trim();
+        var quantity = parentDiv.querySelector('.quantity-history').textContent.trim();
+
+        // Gửi yêu cầu đến API với các tham số product_id, quantity
+        fetch('/api/cartitems', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                quantity: quantity
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert('Product added to cart!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
 </body>
 </html>

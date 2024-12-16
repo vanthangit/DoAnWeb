@@ -78,7 +78,7 @@ public class AuthenticationController {
         if (myInfo.getRole_id() == 3) {
             return "redirect:/owner/home";
         } else if (myInfo.getRole_id() == 2) {
-            return "redirect:/employee/home";
+            return "redirect:/employee/inventory";
         } else if (myInfo.getRole_id() == 1) {
             return "redirect:/";
         }

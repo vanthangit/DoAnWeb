@@ -9,7 +9,7 @@
             width: 500px;
             border: revert;
             white-space: nowrap;
-            padding: 5px 10px;
+            padding: 10px 10px;
         }
 
         .pay__user-info__body-content-wrapper {
@@ -22,7 +22,7 @@
             display: inline-block;
             width: auto;
             white-space: nowrap;
-            padding: 5px 10px;
+            padding: 10px 10px;
             border: revert;
         }
         .pay__user-info__body-select {
@@ -339,6 +339,7 @@
                         });
                     } else {
                         alert('Xác nhận mua hàng thành công!');
+                        window.location.replace("/cart");
                         return null;
                     }
                 })

@@ -129,4 +129,13 @@ public class OrderService implements IOrderService {
 	public Set<Orders> findOrdersByDate(java.sql.Date date, Long branchId) {
 		return orderRepository.findOrdersByDate(date, branchId);
 	}
+
+    public void cancelOrder(Long orderId) {
+        Orders order = orderRepository.findById(orderId).orElse(null);
+        if (order != null && order.getOrder_status() == OrderStatus.PENDING) {
+            order.setOrder_status(OrderStatus.CANCELLED);
+            orderRepository.save(order);
+        }
+    }
+
 }

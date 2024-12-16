@@ -187,6 +187,21 @@ footer {
 	background-color: #007bff;
 	color: white;
 }
+.form-container {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start; /* Canh về phía đầu */
+	gap: 20px; /* Khoảng cách giữa các phần tử */
+}
+
+.form-group {
+	display: flex;
+	align-items: center;
+}
+
+.form-group label {
+	margin-right: 10px; /* Khoảng cách giữa nhãn và input */
+}
 </style>
 
 </head>
@@ -208,15 +223,20 @@ footer {
 				th:classappend="${tab == 'don-huy' ? ' active' : ''}">Đơn Hủy</a>
 		</div>
 		<div class="tab-content">
-			<form th:action="@{/employee/order-management/search}" method="get">
-				<div class="form-group">
-					<label for="orderDate">Ngày đặt hàng:</label> <input type="date"
-						id="orderDate" name="orderDate" required class="form-control">
-				</div>
-				<div class="form-group">
-					<button type="submit" class="btn btn-primary">Tìm kiếm</button>
+			<form th:action="@{/employee/order-management/search}" method="get" style="margin-left: 200px">
+				<div class="form-container">
+					<div class="form-group">
+						<label for="orderDate" style="font-size: 20px">Ngày đặt hàng:</label>
+						<input type="date" id="orderDate" name="orderDate" required class="form-control">
+					</div>
+					<div class="form-group">
+						<button type="submit" style="font-size: 15px">Tìm kiếm</button>
+					</div>
 				</div>
 			</form>
+			<div
+				th:if="${#lists.isEmpty(searchOrders) and #lists.isEmpty(Orders)}"
+				class="message" style="margin-left: 200px; font-size: 20px">Không tìm thấy đơn hàng nào</div>
 		</div>
 
 		<div th:if="${tab == 'tat-ca-don-hang'}" class="tab-content">
@@ -401,9 +421,6 @@ footer {
 				</tr>
 			</table>
 		</div>
-		<div
-			th:if="${#lists.isEmpty(searchOrders) and #lists.isEmpty(Orders)}"
-			class="message">Không tìm thấy đơn hàng nào</div>
 	</section>
 
 </body>

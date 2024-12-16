@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.iotstar.AloTra.dto.OrderHistoryDTO;
 import vn.iotstar.AloTra.dto.UserDTO;
 import vn.iotstar.AloTra.enums.OrderStatus;
@@ -68,4 +69,18 @@ public class OrderHistoryController {
         model.addAttribute("tab", tab);
         return "customer/order-history";
     }
+
+    @GetMapping("/cancel")
+    public String cancelOrder(@RequestParam("orderId") Long orderId, RedirectAttributes redirectAttributes) {
+        UserDTO currentUser = userService.getMyInfo();
+        if (currentUser == null) {
+            return "redirect:/auth/form-login";
+        }
+
+        orderService.cancelOrder(orderId);
+        redirectAttributes.addFlashAttribute("message", "Hủy đơn hàng thành công.");
+
+        return "redirect:/customer/order-history";
+    }
+
 }

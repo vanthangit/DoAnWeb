@@ -8,17 +8,12 @@
         <div class="grid wide ">
             <div class="row navbar">
                 <div class="col l-2 m-2 c-6">
-                    <a th:href="@{/owner/home}" style="text-decoration: none">
+                    <a th:href="@{/product-managements}" style="text-decoration: none">
                         <h1 class="logo" about="">ALOTRA</h1>
                     </a>
                 </div>
                 <div class="col l-8 m-8 c-0">
                     <ul class="navbar__list">
-                        <li class="navbar__item">
-                            <a th:href="@{/owner/home}" class="navbar__item-link">
-                                TRANG CHỦ
-                            </a>
-                        </li>
                         <li class="navbar__item">
                             <a class="navbar__item-link" th:href="@{/owner/users(roleId=1)}">
                                 QUẢN LÝ NGƯỜI DÙNG
