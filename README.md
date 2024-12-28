@@ -30,7 +30,8 @@ Hệ thống sử dụng **JPA** và **Spring Security** để đảm bảo xác
 ---
 
 ## 4. Hỗ trợ nhiều loại xác thực
-- Đăng nhập mặc định của Spring Security.
+- Đăng nhập JWT
+- Google
 
 ---
 
